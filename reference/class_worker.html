@@ -23,24 +23,23 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
      
-    <span class="caret"></span>
   </a>
-  <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/specification.html">Specification</a>
-    </li>
-  </ul></li>
+</li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../reference/index.html">Functions</a>
+</li>
+<li>
+  <a href="../articles/specification.html">Specification</a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/wlandau/crew/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="https://github.com/ropensci/targets" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -164,7 +163,7 @@ to mark eligible groups of workers in scheduling operations.</p></dd>
 <h3 id="method-send-">Method <code>send()</code><a class="anchor" aria-label="anchor" href="#method-send-"></a></h3>
 <p>Send a job.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span><span class="va">fun</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span><span class="va">fun</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, block <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -177,6 +176,13 @@ on the closure or global variables in the environment.</p></dd>
 
 <dt><code>args</code></dt>
 <dd><p>Named list of arguments to <code>fun</code>.</p></dd>
+
+
+<dt><code>block</code></dt>
+<dd><p>Logical of length 1, whether to prevent
+new jobs from being submitted to the worker
+until the output of the current job is collected with
+the <code>receive()</code> method.</p></dd>
 
 
 </dl><p></p></div>

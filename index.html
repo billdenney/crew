@@ -49,28 +49,25 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+  <a href="index.html">
+    <span class="fa fa-home fa-lg"></span>
      
-    <span class="caret"></span>
   </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/specification.html">Specification</a>
-    </li>
-  </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="reference/index.html">Functions</a>
+</li>
+<li>
+  <a href="articles/specification.html">Specification</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/wlandau/crew/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="https://github.com/ropensci/targets" class="external-link">
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -96,7 +93,7 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ropensci/crew"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"wlandau/crew"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -135,9 +132,9 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span>
 <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; worker_1153f52705e11 worker_1153f4f2fd85f worker_1153f3ce4baef </span>
+<span class="co">#&gt; worker_155d12ac10db7 worker_155d1686b7f4e   worker_155d1fab826 </span>
 <span class="co">#&gt;                FALSE                FALSE                FALSE </span>
-<span class="co">#&gt; worker_1153f4cacc024 </span>
+<span class="co">#&gt; worker_155d14c4fc74a </span>
 <span class="co">#&gt;                FALSE</span></code></pre></div>
 <p>To start any or all workers, either use <code>launch()</code> or <code>send()</code>. The latter finds a suitable available worker, launches it if necessary, and then sends a job. Poll with <code>receivable()</code> and get the output with <code>receive()</code>. Tags let you control which kinds of workers get the jobs, and they are are supported and optional in all relevant crew methods.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -161,11 +158,12 @@
 <span class="op">}</span>
 
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.004</span>
-<span class="co">#&gt; [1] 2.014</span>
-<span class="co">#&gt; [1] 3.019</span>
-<span class="co">#&gt; [1] 4.025</span>
-<span class="co">#&gt; [1] 5.027</span>
+<span class="co">#&gt; [1] 1.001</span>
+<span class="co">#&gt; [1] 2.011</span>
+<span class="co">#&gt; [1] 3.015</span>
+<span class="co">#&gt; [1] 4.017</span>
+<span class="co">#&gt; [1] 5.018</span>
+<span class="co">#&gt; [1] 6.022</span>
 
 <span class="co"># Get the output when ready.</span>
 <span class="va">output</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -182,9 +180,9 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">is_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">is_up</span>
-<span class="co">#&gt; worker_1153f52705e11 worker_1153f4f2fd85f worker_1153f3ce4baef </span>
+<span class="co">#&gt; worker_155d12ac10db7 worker_155d1686b7f4e   worker_155d1fab826 </span>
 <span class="co">#&gt;                FALSE                FALSE                 TRUE </span>
-<span class="co">#&gt; worker_1153f4cacc024 </span>
+<span class="co">#&gt; worker_155d14c4fc74a </span>
 <span class="co">#&gt;                FALSE</span></code></pre></div>
 <p>Sure enough, the running worker has the tags of the previous job.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -197,25 +195,25 @@
 <span class="va">crew</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">job</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seconds <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># May run on any available worker.</span>
 
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.005</span>
-<span class="co">#&gt; [1] 2.011</span>
-<span class="co">#&gt; [1] 3.016</span>
-<span class="co">#&gt; [1] 4.022</span>
-<span class="co">#&gt; [1] 5.028</span>
+<span class="co">#&gt; [1] 1.002</span>
+<span class="co">#&gt; [1] 2.003</span>
+<span class="co">#&gt; [1] 3.004</span>
+<span class="co">#&gt; [1] 4.005</span>
+<span class="co">#&gt; [1] 5.009</span>
 
 <span class="va">output_first</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1</span>
-<span class="co">#&gt; [1] 2.002</span>
-<span class="co">#&gt; [1] 3.004</span>
+<span class="co">#&gt; [1] 1.003</span>
+<span class="co">#&gt; [1] 2.004</span>
+<span class="co">#&gt; [1] 3.005</span>
 
 <span class="va">output_second</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output_first</span><span class="op">)</span>
 <span class="co">#&gt; List of 5</span>
 <span class="co">#&gt;  $ value    : chr "Job ran in 4 seconds."</span>
-<span class="co">#&gt;  $ seconds  : num 4.01</span>
+<span class="co">#&gt;  $ seconds  : num 4</span>
 <span class="co">#&gt;  $ error    : NULL</span>
 <span class="co">#&gt;  $ traceback: NULL</span>
 <span class="co">#&gt;  $ warnings : chr "This is a warning."</span>
@@ -236,19 +234,19 @@
 <p>To delete one or more worker objects from the crew, use <code>dismiss()</code>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">crew</span><span class="op">$</span><span class="fu">dismiss</span><span class="op">(</span>tags <span class="op">=</span> <span class="st">"long_jobs_go_here"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span> <span class="co"># should be 2</span>
-<span class="co">#&gt; [1] 3</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span> <span class="co"># Should be 2.</span>
+<span class="co">#&gt; [1] 2</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="nested-crews">Nested crews<a class="anchor" aria-label="anchor" href="#nested-crews"></a>
 </h2>
 <p>Large data science pipelines manage hundreds of distributed workers on different machines, from traditional clusters to cloud platforms by Amazon and Google. In these situations, orchestration itself is computationally demanding. Sending jobs, receiving job output, and detecting crashes may severely block the main process.</p>
-<p>To overcome this bottleneck, the <code>crew</code> package will eventually support nested crews. The outer crew will support a small number of <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> workers running on the same machine as the main process. Each of these outer workers will run a crew of its own, and the inner crews will run hundreds of inner workers on distributed systems like AWS Batch. The outer workers will run a different event loop that forwards jobs from the outer crew to the inner crews and back.</p>
+<p>To overcome this bottleneck, <code>crew</code> package will eventually support nested crews. The outer crew will support a small number of <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> workers running on the same machine as the main process. Each of these outer workers will run a crew of its own, and the inner crews will run hundreds of inner workers on distributed systems like AWS Batch. The outer workers will run a different event loop that forwards jobs from the outer crew to the inner crews and back.</p>
 </div>
 <div class="section level2">
 <h2 id="new-backends">New backends<a class="anchor" aria-label="anchor" href="#new-backends"></a>
 </h2>
-<p>The <code>crew</code> package is arbitrarily extensible. It is designed to support multiple backend services (e.g. Amazon, Google, Azure) with minimal changes to the <code>R6</code> interface. For Amazon S3 storage for jobs, one can write a new subclass of <code>class_store</code> and write methods analogous to those of <code>class_store_local</code>. Likewise, for Amazon AWS Batch or Google Cloud Run workers, one can write new worker subclasses analogous to <code>class_worker_callr</code> and <code>class_worker_future</code>. All these classes are documented in help files, and a specification of required methods and fields is in the <a href="https://wlandau.github.io/crew/articles/specification.html" class="external-link">specification vignette</a>.</p>
+<p>The <code>crew</code> package is arbitrarily extensible. It is designed to support multiple backend services (e.g. Amazon, Google, Azure) with minimal changes to the <code>R6</code> interface. For Amazon S3 storage for jobs, one can write a new subclass of <code>class_store</code> and write methods analogous to those of <code>class_store_local</code>. Likewise, for Amazon AWS Batch or Google Cloud Run workers, one can write new worker subclasses analogous to <code>class_worker_callr</code> and <code>class_worker_future</code>. All these classes are documented in help files, and a specification of required methods and fields is in the <a href="https://wlandau.github.io/crew/articles/specification.html" class="external-link">specification vignette</a>. The new subclasses will be supported in separate R packages that import <code>crew</code>, ideally one package per cloud platform.</p>
 </div>
 <div class="section level2">
 <h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>
@@ -342,9 +340,9 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.repostatus.org/#wip" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="status"></a></li>
-<li><a href="https://github.com/ropensci/crew/actions?query=workflow%3Acheck" class="external-link"><img src="https://github.com/ropensci/crew/workflows/check/badge.svg" alt="check"></a></li>
-<li><a href="https://app.codecov.io/gh/ropensci/crew" class="external-link"><img src="https://codecov.io/gh/ropensci/crew/branch/main/graph/badge.svg?token=3T5DlLwUVl" alt="codecov"></a></li>
-<li><a href="https://github.com/ropensci/crew/actions?query=workflow%3Alint" class="external-link"><img src="https://github.com/ropensci/crew/workflows/lint/badge.svg" alt="lint"></a></li>
+<li><a href="https://github.com/wlandau/crew/actions?query=workflow%3Acheck" class="external-link"><img src="https://github.com/wlandau/crew/workflows/check/badge.svg" alt="check"></a></li>
+<li><a href="https://app.codecov.io/gh/wlandau/crew" class="external-link"><img src="https://codecov.io/gh/wlandau/crew/branch/main/graph/badge.svg?token=3T5DlLwUVl" alt="codecov"></a></li>
+<li><a href="https://github.com/wlandau/crew/actions?query=workflow%3Alint" class="external-link"><img src="https://github.com/wlandau/crew/workflows/lint/badge.svg" alt="lint"></a></li>
 </ul>
 </div>
 
