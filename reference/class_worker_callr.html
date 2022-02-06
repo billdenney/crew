@@ -161,7 +161,18 @@ through the data store.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">crew</span> <span class="op">&lt;-</span> <span class="va"><a href="class_crew.html">class_crew</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>worker_classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">class_worker_callr</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">crew</span><span class="op">$</span><span class="fu">recruit</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">worker</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"job"</span>, <span class="va">arg</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arg <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw">while</span> <span class="op">(</span><span class="op">!</span><span class="va">worker</span><span class="op">$</span><span class="fu">receivable</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">job</span> <span class="op">&lt;-</span> <span class="va">worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">job</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "job 1"</span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">job</span><span class="op">$</span><span class="va">error</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span class="va">worker</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
