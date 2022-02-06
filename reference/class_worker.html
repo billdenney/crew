@@ -62,6 +62,19 @@
     </div>
 
 
+    <div id="details">
+    <h2>Details</h2>
+    <p>A worker object is an interface to manage a single
+high-performance computing worker. Supported methods
+send jobs, receive output, and poll, etc.
+This particular worker class is the parent abstract class
+and is not usable on its own. Subclasses like
+<a href="class_worker_callr.html">class_worker_callr</a> and <a href="class_worker_future.html">class_worker_future</a>
+are concrete and usable. In addition, worker needs a crew in
+order to be valid. So it is recommended to create a worker
+of a given subclass through the <code>recruit()</code> method of the crew.
+See the examples.</p>
+    </div>
     <div id="public-fields">
     <h2>Public fields</h2>
     <p></p><div class="r6-fields"><dl><dt><code>name</code></dt>
@@ -150,6 +163,11 @@ to mark eligible groups of workers in scheduling operations.</p></dd>
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p>The <code>new()</code> method calls the constructor
+and returns a new worker object.</p>
+</div>
 
 </div><p></p><hr><a id="method-sendable"></a><div class="section">
 <h3 id="method-sendable-">Method <code>sendable()</code><a class="anchor" aria-label="anchor" href="#method-sendable-"></a></h3>
@@ -158,6 +176,11 @@ to mark eligible groups of workers in scheduling operations.</p></dd>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">sendable</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p><code>TRUE</code> if the worker is ready for a job
+(or not properly blocked) and <code>FALSE</code> otherwise.</p>
+</div>
 
 </div><p></p><hr><a id="method-send"></a><div class="section">
 <h3 id="method-send-">Method <code>send()</code><a class="anchor" aria-label="anchor" href="#method-send-"></a></h3>
@@ -181,29 +204,56 @@ on the closure or global variables in the environment.</p></dd>
 <dt><code>block</code></dt>
 <dd><p>Logical of length 1, whether to prevent
 new jobs from being submitted to the worker
-until the output of the current job is collected with
-the <code>receive()</code> method.</p></dd>
+until the output of the job is collected with
+the <code>receive()</code> method. <code>TRUE</code> is highly recommended
+so job output is not lost. Should only be <code>FALSE</code>
+if called inside <code>shutdown()</code>. If <code>block</code> is <code>TRUE</code>,
+then <code>sendable()</code> will return <code>FALSE</code> for the worker
+until the output is collected with <code>recieve()</code>.</p></dd>
 
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
 
 </div><p></p><hr><a id="method-receivable"></a><div class="section">
 <h3 id="method-receivable-">Method <code>receivable()</code><a class="anchor" aria-label="anchor" href="#method-receivable-"></a></h3>
-<p><code>TRUE</code> if a worker is receivable with a job and the
-main process can receive the output of the job. <code>FALSE</code> otherwise.</p><div class="section">
+<p>Check if job output is available to collect.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">receivable</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p><code>TRUE</code> if a job output can be collected from the worker,
+<code>FALSE</code> otherwise.</p>
+</div>
 
 </div><p></p><hr><a id="method-receive"></a><div class="section">
 <h3 id="method-receive-">Method <code>receive()</code><a class="anchor" aria-label="anchor" href="#method-receive-"></a></h3>
-<p>Collect the results of a job.</p><div class="section">
+<p>Collect the results of a job and free up the worker.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>Once collected and returned. the job output is deleted from
+the data store and no longer available to receive.
+<code>receive()</code> also marks the worker as "sendable" again (unblocked)
+which makes the worker ready for another job (<code>send()</code> method).</p>
+</div>
+
+<div class="section">
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<p>A named list of job output. The <code>value</code> element has the
+actual result of the job function, if successful. Other elements
+have job metadata such as the error message (if any), traceback,
+warnings, and runtime in seconds.</p>
+</div>
 
 </div><p></p><hr><a id="method-shutdown"></a><div class="section">
 <h3 id="method-shutdown-">Method <code>shutdown()</code><a class="anchor" aria-label="anchor" href="#method-shutdown-"></a></h3>
@@ -212,6 +262,23 @@ main process can receive the output of the job. <code>FALSE</code> otherwise.</p
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>The underlying worker process should promptly
+shut down if successful. A new <code>send()</code> or <code>launch()</code>
+call will re-launch the worker.</p>
+<p>The default shutdown method
+sends a special shutdown job through the data store.
+This is not always reliable, e.g. if a worker freezes.
+Subclasses of <code>class_worker</code> should write their own
+shutdown methods that leverage the backend technology.
+to achieve more reliable shutdowns.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
 
 </div><p></p><hr><a id="method-tagged"></a><div class="section">
 <h3 id="method-tagged-">Method <code>tagged()</code><a class="anchor" aria-label="anchor" href="#method-tagged-"></a></h3>
@@ -229,6 +296,11 @@ of the tags in the argument.</p><div class="section">
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p><code>TRUE</code> if the worker has any of the tags in the <code>tags</code> argument.
+<code>FALSE</code> otherwise.</p>
+</div>
 
 </div><p></p><hr><a id="method-validate"></a><div class="section">
 <h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
@@ -237,11 +309,30 @@ of the tags in the argument.</p><div class="section">
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
 
 </div>
 
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">crew</span> <span class="op">&lt;-</span> <span class="va"><a href="class_crew.html">class_crew</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>worker_classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">class_worker_callr</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">crew</span><span class="op">$</span><span class="fu">recruit</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">worker</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"job"</span>, <span class="va">arg</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arg <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw">while</span> <span class="op">(</span><span class="op">!</span><span class="va">worker</span><span class="op">$</span><span class="fu">receivable</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">job</span> <span class="op">&lt;-</span> <span class="va">worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">job</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "job 1"</span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">job</span><span class="op">$</span><span class="va">error</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span class="va">worker</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

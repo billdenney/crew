@@ -97,14 +97,32 @@
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker_callr</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
 
 </div><p></p><hr><a id="method-up"></a><div class="section">
 <h3 id="method-up-">Method <code>up()</code><a class="anchor" aria-label="anchor" href="#method-up-"></a></h3>
-<p><code>TRUE</code> if the worker is up and <code>FALSE</code> otherwise.</p><div class="section">
+<p>Check if the underlying worker R process
+is actually running.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker_callr</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>While running, the worker could be actually running a job,
+or it could be waiting for job input. This way, a worker
+can accept multiple jobs throughout its lifetime before it
+times out and is possibly relaunched. This is what it means
+to be a "semi-persistent" worker.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p><code>TRUE</code> if the worker is running and <code>FALSE</code> otherwise.</p>
+</div>
 
 </div><p></p><hr><a id="method-shutdown"></a><div class="section">
 <h3 id="method-shutdown-">Method <code>shutdown()</code><a class="anchor" aria-label="anchor" href="#method-shutdown-"></a></h3>
@@ -113,6 +131,21 @@
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker_callr</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>The underlying worker process should promptly
+shut down if successful. A new <code>send()</code> or <code>launch()</code>
+call will re-launch the worker.</p>
+<p>The shutdown method
+for a <code>callr</code> worker is quicker and more reliable
+than the default method of sending a shutdown job
+through the data store.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
 
 </div><p></p><hr><a id="method-validate"></a><div class="section">
 <h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
@@ -126,6 +159,21 @@
 
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">crew</span> <span class="op">&lt;-</span> <span class="va"><a href="class_crew.html">class_crew</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>worker_classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">class_worker_callr</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">crew</span><span class="op">$</span><span class="fu">recruit</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">worker</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">arg</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"job"</span>, <span class="va">arg</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>arg <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw">while</span> <span class="op">(</span><span class="op">!</span><span class="va">worker</span><span class="op">$</span><span class="fu">receivable</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">job</span> <span class="op">&lt;-</span> <span class="va">worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">job</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "job 1"</span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">job</span><span class="op">$</span><span class="va">error</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-in"><span class="va">worker</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
