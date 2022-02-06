@@ -62,7 +62,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">crew_worker_loop</span><span class="op">(</span><span class="va">name</span>, <span class="va">store</span>, <span class="va">timeout</span>, <span class="va">wait_input</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">crew_worker_loop</span><span class="op">(</span><span class="va">name</span>, <span class="va">store</span>, <span class="va">timeout</span>, <span class="va">wait</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -78,7 +78,7 @@ should reconstruct the usable store object inside the worker event loop.</p></dd
 <dt>timeout</dt>
 <dd><p>Positive numeric of length 1, number of seconds
 that a worker can idle before timing out.</p></dd>
-<dt>wait_input</dt>
+<dt>wait</dt>
 <dd><p>Positive numeric of length 1, number of seconds
 that the worker waits between checking if a job exists.</p></dd>
 </dl></div>
@@ -98,27 +98,26 @@ loop exits.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Example of send one job that shuts down the loop:</span></span>
-<span class="r-in"><span class="va">dir_root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">dir_root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_root</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">store</span> <span class="op">&lt;-</span> <span class="va"><a href="class_store_local.html">class_store_local</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>dir_root <span class="op">=</span> <span class="va">dir_root</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">store</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">abort</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"x"</span>, class <span class="op">=</span> <span class="st">"crew_shutdown"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">store</span><span class="op">$</span><span class="fu">write_input</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_worker"</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"job"</span>, <span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in">  <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span></span>
 <span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">12</span>, store <span class="op">=</span> <span class="va">store</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">args</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fun <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/deparse.html" class="external-link">deparse</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span>, args <span class="op">=</span> <span class="va">args</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">store</span><span class="op">$</span><span class="fu">write_input</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_worker"</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">crew_worker_loop</span><span class="op">(</span></span>
-<span class="r-in">  name <span class="op">=</span> <span class="st">"my_worker"</span>,</span>
-<span class="r-in">  store <span class="op">=</span> <span class="va">store</span><span class="op">$</span><span class="fu">marshal</span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">  timeout <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span class="r-in">  wait_input <span class="op">=</span> <span class="fl">0</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span> <span class="co"># The worker throws a special error class when it times out.</span></span>
+<span class="r-in">  <span class="fu">crew_worker_loop</span><span class="op">(</span></span>
+<span class="r-in">    name <span class="op">=</span> <span class="st">"my_worker"</span>,</span>
+<span class="r-in">    store <span class="op">=</span> <span class="va">store</span><span class="op">$</span><span class="fu">marshal</span><span class="op">(</span><span class="op">)</span>,</span>
+<span class="r-in">    timeout <span class="op">=</span> <span class="fl">0</span>,</span>
+<span class="r-in">    wait <span class="op">=</span> <span class="fl">0</span></span>
+<span class="r-in">  <span class="op">)</span>,</span>
+<span class="r-in">  silent <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">store</span><span class="op">$</span><span class="fu">read_output</span><span class="op">(</span><span class="st">"my_worker"</span><span class="op">)</span><span class="op">$</span><span class="va">value</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "job 12"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 </code></pre></div>
     </div>
   </div>

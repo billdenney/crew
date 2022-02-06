@@ -90,7 +90,7 @@ See the examples.</p>
 number of seconds of idling for the worker to time out.</p></dd>
 
 
-<dt><code>wait_input</code></dt>
+<dt><code>wait</code></dt>
 <dd><p>Positive numeric of length 1,
 number of seconds for a worker to wait between iterations of
 polling input.</p></dd>
@@ -120,6 +120,7 @@ already has a job to do.</p></dd>
 <li><p><a href="#method-send"><code>class_worker$send()</code></a></p></li>
 <li><p><a href="#method-receivable"><code>class_worker$receivable()</code></a></p></li>
 <li><p><a href="#method-receive"><code>class_worker$receive()</code></a></p></li>
+<li><p><a href="#method-clear"><code>class_worker$clear()</code></a></p></li>
 <li><p><a href="#method-shutdown"><code>class_worker$shutdown()</code></a></p></li>
 <li><p><a href="#method-tagged"><code>class_worker$tagged()</code></a></p></li>
 <li><p><a href="#method-validate"><code>class_worker$validate()</code></a></p></li>
@@ -131,7 +132,7 @@ already has a job to do.</p></dd>
   name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"worker_"</span><span class="op">)</span><span class="op">)</span>,
   crew <span class="op">=</span> <span class="cn">NULL</span>,
   timeout <span class="op">=</span> <span class="fl">60</span>,
-  wait_input <span class="op">=</span> <span class="fl">0.1</span>,
+  wait <span class="op">=</span> <span class="fl">0.1</span>,
   tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div><p></p></div>
 </div>
@@ -151,7 +152,7 @@ already has a job to do.</p></dd>
 that a worker can idle before timing out.</p></dd>
 
 
-<dt><code>wait_input</code></dt>
+<dt><code>wait</code></dt>
 <dd><p>Positive numeric of length 1, number of seconds
 that the worker waits between checking if a job exists.</p></dd>
 
@@ -186,7 +187,7 @@ and returns a new worker object.</p>
 <h3 id="method-send-">Method <code>send()</code><a class="anchor" aria-label="anchor" href="#method-send-"></a></h3>
 <p>Send a job.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span><span class="va">fun</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, block <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span><span class="va">fun</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, block <span class="op">=</span> <span class="cn">TRUE</span>, timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -210,6 +211,16 @@ so job output is not lost. Should only be <code>FALSE</code>
 if called inside <code>shutdown()</code>. If <code>block</code> is <code>TRUE</code>,
 then <code>sendable()</code> will return <code>FALSE</code> for the worker
 until the output is collected with <code>recieve()</code>.</p></dd>
+
+
+<dt><code>timeout</code></dt>
+<dd><p>Number of seconds to wait for job data to
+send successfully.</p></dd>
+
+
+<dt><code>wait</code></dt>
+<dd><p>Number of seconds to wait between iterations checking
+if the job data was sent successfully.</p></dd>
 
 
 </dl><p></p></div>
@@ -236,9 +247,23 @@ until the output is collected with <code>recieve()</code>.</p></dd>
 <h3 id="method-receive-">Method <code>receive()</code><a class="anchor" aria-label="anchor" href="#method-receive-"></a></h3>
 <p>Collect the results of a job and free up the worker.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>timeout</code></dt>
+<dd><p>Number of seconds to wait for the file deletion to
+succeed.</p></dd>
+
+
+<dt><code>wait</code></dt>
+<dd><p>Number of seconds to wait between iterations checking
+that the worker files were successfully removed from the data store.</p></dd>
+
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
 <p>Once collected and returned. the job output is deleted from
@@ -255,15 +280,46 @@ have job metadata such as the error message (if any), traceback,
 warnings, and runtime in seconds.</p>
 </div>
 
+</div><p></p><hr><a id="method-clear"></a><div class="section">
+<h3 id="method-clear-">Method <code>clear()</code><a class="anchor" aria-label="anchor" href="#method-clear-"></a></h3>
+<p>Clear worker input and output.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>timeout</code></dt>
+<dd><p>Number of seconds to wait for the file deletion to
+succeed.</p></dd>
+
+
+<dt><code>wait</code></dt>
+<dd><p>Number of seconds to wait between iterations checking
+that the worker files were successfully removed from the data store.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>Deletes worker input and output files.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p><code>NULL</code> (invisibly)</p>
+</div>
+
 </div><p></p><hr><a id="method-shutdown"></a><div class="section">
 <h3 id="method-shutdown-">Method <code>shutdown()</code><a class="anchor" aria-label="anchor" href="#method-shutdown-"></a></h3>
 <p>Gracefully shut down the worker.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>The underlying worker process should promptly
 shut down if successful. A new <code>send()</code> or <code>launch()</code>
 call will re-launch the worker.</p>
@@ -276,7 +332,7 @@ to achieve more reliable shutdowns.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
@@ -284,12 +340,12 @@ to achieve more reliable shutdowns.</p>
 <h3 id="method-tagged-">Method <code>tagged()</code><a class="anchor" aria-label="anchor" href="#method-tagged-"></a></h3>
 <p>Check if the worker has one or more
 of the tags in the argument.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">tagged</span><span class="op">(</span><span class="va">tags</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>tags</code></dt>
 <dd><p>Character vector of tags to check.</p></dd>
 
@@ -297,7 +353,7 @@ of the tags in the argument.</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><code>TRUE</code> if the worker has any of the tags in the <code>tags</code> argument.
 <code>FALSE</code> otherwise.</p>
 </div>
@@ -305,12 +361,12 @@ of the tags in the argument.</p><div class="section">
 </div><p></p><hr><a id="method-validate"></a><div class="section">
 <h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
 <p>Worker validator.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 

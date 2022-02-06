@@ -62,7 +62,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">crew_worker_loop_run</span><span class="op">(</span><span class="va">name</span>, <span class="va">store</span>, <span class="va">timeout</span>, <span class="va">wait_input</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">crew_worker_loop_run</span><span class="op">(</span><span class="va">name</span>, <span class="va">store</span>, <span class="va">timeout</span>, <span class="va">wait</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -78,7 +78,7 @@ should reconstruct the usable store object inside the worker event loop.</p></dd
 <dt>timeout</dt>
 <dd><p>Positive numeric of length 1, number of seconds
 that a worker can idle before timing out.</p></dd>
-<dt>wait_input</dt>
+<dt>wait</dt>
 <dd><p>Positive numeric of length 1, number of seconds
 that the worker waits between checking if a job exists.</p></dd>
 </dl></div>

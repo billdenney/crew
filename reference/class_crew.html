@@ -103,6 +103,7 @@ is the default.</p></dd>
 <li><p><a href="#method-send"><code>class_crew$send()</code></a></p></li>
 <li><p><a href="#method-receivable"><code>class_crew$receivable()</code></a></p></li>
 <li><p><a href="#method-receive"><code>class_crew$receive()</code></a></p></li>
+<li><p><a href="#method-clear"><code>class_crew$clear()</code></a></p></li>
 <li><p><a href="#method-shutdown"><code>class_crew$shutdown()</code></a></p></li>
 <li><p><a href="#method-dismiss"><code>class_crew$dismiss()</code></a></p></li>
 <li><p><a href="#method-validate"><code>class_crew$validate()</code></a></p></li>
@@ -300,10 +301,49 @@ have job metadata such as the error message (if any), traceback,
 warnings, and runtime in seconds.</p>
 </div>
 
+</div><p></p><hr><a id="method-clear"></a><div class="section">
+<h3 id="method-clear-">Method <code>clear()</code><a class="anchor" aria-label="anchor" href="#method-clear-"></a></h3>
+<p>Clear worker input and output.</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span>, down_only <span class="op">=</span> <span class="cn">TRUE</span>, tags <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>timeout</code></dt>
+<dd><p>Number of seconds to wait for the file deletion to
+succeed.</p></dd>
+
+
+<dt><code>wait</code></dt>
+<dd><p>Number of seconds to wait between iterations checking
+that the worker files were successfully removed from the data store.</p></dd>
+
+
+<dt><code>down_only</code></dt>
+<dd><p>Logical of length 1, whether to only clear down jobs.</p></dd>
+
+
+<dt><code>tags</code></dt>
+<dd><p>Character vector of allowable tags of eligible workers.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>Deletes worker input and output files.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p><code>NULL</code> (invisibly)</p>
+</div>
+
 </div><p></p><hr><a id="method-shutdown"></a><div class="section">
 <h3 id="method-shutdown-">Method <code>shutdown()</code><a class="anchor" aria-label="anchor" href="#method-shutdown-"></a></h3>
 <p>Shut down one or more running workers.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span>
   workers <span class="op">=</span> <span class="cn">Inf</span>,
   sendable_only <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -313,7 +353,7 @@ warnings, and runtime in seconds.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>workers</code></dt>
 <dd><p>Positive integer of length 1. Maximum number of workers
 to try to shut down. Does not count busy (non-sendable)
@@ -337,7 +377,7 @@ that are not up.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>This method loops through the workers
 from first to last in the worker list. If the worker
 is up (running) and sendable (able to receive a job)
@@ -346,14 +386,14 @@ the loop moves on to another worker.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-dismiss"></a><div class="section">
 <h3 id="method-dismiss-">Method <code>dismiss()</code><a class="anchor" aria-label="anchor" href="#method-dismiss-"></a></h3>
 <p>delete all worker objects.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">dismiss</span><span class="op">(</span>
   workers <span class="op">=</span> <span class="cn">Inf</span>,
   sendable_only <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -363,7 +403,7 @@ the loop moves on to another worker.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>workers</code></dt>
 <dd><p>Positive integer of length 1. Maximum number of workers
 to try to dismiss. Does not count up or busy (non-sendable) workers
@@ -387,7 +427,7 @@ workers that are still up.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
+<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
 <p>This method loops through the workers
 from first to last in the worker list. If the worker
 is down and sendable (able to receive a job)
@@ -396,19 +436,19 @@ the loop moves on to another worker.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-validate"></a><div class="section">
 <h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
 <p>Crew validator.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
