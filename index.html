@@ -58,6 +58,9 @@
   <a href="reference/index.html">Functions</a>
 </li>
 <li>
+  <a href="articles/usage.html">Usage</a>
+</li>
+<li>
   <a href="articles/specification.html">Specification</a>
 </li>
 <li>
@@ -96,152 +99,22 @@
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"wlandau/crew"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
-<p>First, create a <code>crew</code> object.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span>
-<span class="va">crew</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/class_crew.html">class_crew</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Optionally, supply the store and worker classes you plan to use. The store determines where the input and output data live for jobs (local file system, Amazon S3 bucket, Google Cloud bucket, etc.), and worker classes control where and how the workers run (locally in a different R session, Amazon Web Services, Google Cloud Platform, etc.).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crew</span> <span class="op">&lt;-</span> <span class="va"><a href="reference/class_crew.html">class_crew</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  store <span class="op">=</span> <span class="va"><a href="reference/class_store_local.html">class_store_local</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>,
-  worker_classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    <span class="va">class_worker_callr</span>,
-    <span class="va">class_worker_future</span>
-  <span class="op">)</span>
-<span class="op">)</span></code></pre></div>
-<p>If you use <code>class_worker_future</code>, choose a plan.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.callr.futureverse.org" class="external-link">future.callr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://future.futureverse.org/reference/plan.html" class="external-link">plan</a></span><span class="op">(</span><span class="va">callr</span><span class="op">)</span></code></pre></div>
-<p>Create worker objects with the <code>recruit()</code> method.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crew</span><span class="op">$</span><span class="fu">recruit</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># callr workers</span></code></pre></div>
-<p>Optionally, create worker objects of a specified class and set fields like timeout and tags.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">worker_classes</span><span class="op">)</span>
-<span class="co">#&gt; [1] "worker_callr"  "worker_future"</span>
-<span class="va">crew</span><span class="op">$</span><span class="fu">recruit</span><span class="op">(</span>
-  workers <span class="op">=</span> <span class="fl">2</span>,
-  class <span class="op">=</span> <span class="st">"worker_future"</span>,
-  tags <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"long_jobs_go_here"</span>, <span class="st">"my_future_workers"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
-<p>No workers are running yet.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; worker_e42926df1465 worker_e4297fb406d2 worker_e429665e3c55 worker_e42934cb24f4 </span>
-<span class="co">#&gt;               FALSE               FALSE               FALSE               FALSE</span></code></pre></div>
-<p>To start any or all workers, either use <code>launch()</code> or <code>send()</code>. The latter finds a suitable available worker, launches it if necessary, and then sends a job. Poll with <code>receivable()</code> and get the output with <code>receive()</code>. Tags let you control which kinds of workers get the jobs, and they are are supported and optional in all relevant crew methods.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">job</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seconds</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="va">seconds</span><span class="op">)</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="st">"This is a warning."</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Job ran in %s seconds."</span>, <span class="va">seconds</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># The job runs on a worker of class "worker_future" in this case</span>
-<span class="co"># because those two workers are tagged with "long_jobs_go_here".</span>
-<span class="va">crew</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">job</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seconds <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>, tags <span class="op">=</span> <span class="st">"long_jobs_go_here"</span><span class="op">)</span>
-
-<span class="co"># Do other tasks while the job runs in the background.</span>
-<span class="va">do_other_tasks</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">)</span>
-  <span class="kw">while</span> <span class="op">(</span><span class="op">!</span><span class="va">crew</span><span class="op">$</span><span class="fu">receivable</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proc.time.html" class="external-link">proc.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">start</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-
-<span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.003</span>
-<span class="co">#&gt; [1] 2.012</span>
-<span class="co">#&gt; [1] 3.013</span>
-<span class="co">#&gt; [1] 4.015</span>
-<span class="co">#&gt; [1] 5.016</span>
-
-<span class="co"># Get the output when ready.</span>
-<span class="va">output</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>The output contains the result of the job, as well as warnings, errors, etc.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
-<span class="co">#&gt; List of 5</span>
-<span class="co">#&gt;  $ value    : chr "Job ran in 4 seconds."</span>
-<span class="co">#&gt;  $ seconds  : num 4</span>
-<span class="co">#&gt;  $ error    : NULL</span>
-<span class="co">#&gt;  $ traceback: NULL</span>
-<span class="co">#&gt;  $ warnings : chr "This is a warning."</span></code></pre></div>
-<p>Once launched, workers stay running until they time out or shut down.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">is_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">is_up</span>
-<span class="co">#&gt; worker_e42926df1465 worker_e4297fb406d2 worker_e429665e3c55 worker_e42934cb24f4 </span>
-<span class="co">#&gt;               FALSE               FALSE                TRUE               FALSE</span></code></pre></div>
-<p>Sure enough, the running worker has the tags of the previous job.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">is_up</span><span class="op">[</span><span class="va">is_up</span><span class="op">]</span><span class="op">)</span>
-<span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">[[</span><span class="va">name</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">tags</span>
-<span class="co">#&gt; [1] "long_jobs_go_here" "my_future_workers"</span></code></pre></div>
-<p><code>crew</code> tries to send jobs to workers that are already running. If all running workers are busy, new ones will launch automatically. Use <code>sendable()</code> to check if any workers can accept new work.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crew</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">job</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seconds <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>, tags <span class="op">=</span> <span class="st">"long_jobs_go_here"</span><span class="op">)</span>
-<span class="va">crew</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">job</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seconds <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># May run on any available worker.</span>
-
-<span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.005</span>
-<span class="co">#&gt; [1] 2.007</span>
-<span class="co">#&gt; [1] 3.008</span>
-<span class="co">#&gt; [1] 4.009</span>
-<span class="co">#&gt; [1] 5.013</span>
-
-<span class="va">output_first</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.001</span>
-<span class="co">#&gt; [1] 2.004</span>
-<span class="co">#&gt; [1] 3.004</span>
-<span class="co">#&gt; [1] 4.01</span>
-
-<span class="va">output_second</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output_first</span><span class="op">)</span>
-<span class="co">#&gt; List of 5</span>
-<span class="co">#&gt;  $ value    : chr "Job ran in 4 seconds."</span>
-<span class="co">#&gt;  $ seconds  : num 4</span>
-<span class="co">#&gt;  $ error    : NULL</span>
-<span class="co">#&gt;  $ traceback: NULL</span>
-<span class="co">#&gt;  $ warnings : chr "This is a warning."</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output_second</span><span class="op">)</span>
-<span class="co">#&gt; List of 5</span>
-<span class="co">#&gt;  $ value    : chr "Job ran in 8 seconds."</span>
-<span class="co">#&gt;  $ seconds  : num 8.02</span>
-<span class="co">#&gt;  $ error    : NULL</span>
-<span class="co">#&gt;  $ traceback: NULL</span>
-<span class="co">#&gt;  $ warnings : chr "This is a warning."</span></code></pre></div>
-<p>To shut down one or more workers, use <code>shutdown()</code>. By default, only idle workers are shut down.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crew</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span>
-<span class="kw">while</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
-<p>To delete one or more worker objects from the crew, use <code>dismiss()</code>.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">crew</span><span class="op">$</span><span class="fu">dismiss</span><span class="op">(</span>tags <span class="op">=</span> <span class="st">"long_jobs_go_here"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span> <span class="co"># Should be 2.</span>
-<span class="co">#&gt; [1] 2</span></code></pre></div>
-<p>If eventually a worker gets stuck (not sendable, not receivable, not running) then the <code>stuck()</code> method of the worker will return <code>TRUE</code> and the <code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code> method will restart it. Use the <code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code> method of the crew object to restart one or more stuck workers.</p>
+<ul>
+<li>How to use <code>crew</code>: <a href="https://wlandau.github.io/crew/articles/usage.html" class="external-link uri">https://wlandau.github.io/crew/articles/usage.html</a>
+</li>
+<li>Design specification for developers who extend <code>crew</code>: <a href="https://wlandau.github.io/crew/articles/specification.html" class="external-link uri">https://wlandau.github.io/crew/articles/specification.html</a>.</li>
+</ul>
 </div>
 <div class="section level2">
-<h2 id="nested-crews">Nested crews<a class="anchor" aria-label="anchor" href="#nested-crews"></a>
+<h2 id="future-development-nested-crews">Future development: nested crews<a class="anchor" aria-label="anchor" href="#future-development-nested-crews"></a>
 </h2>
 <p>Large data science pipelines manage hundreds of distributed workers on different machines, from traditional clusters to cloud platforms by Amazon and Google. In these situations, orchestration itself is computationally demanding. Sending jobs, receiving job output, and detecting crashes may severely block the main process.</p>
 <p>To overcome this bottleneck, <code>crew</code> package will eventually support nested crews. The outer crew will support a small number of <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> workers running on the same machine as the main process. Each of these outer workers will run a crew of its own, and the inner crews will run hundreds of inner workers on distributed systems like AWS Batch. The outer workers will run a different event loop that forwards jobs from the outer crew to the inner crews and back.</p>
 </div>
 <div class="section level2">
-<h2 id="new-backends">New backends<a class="anchor" aria-label="anchor" href="#new-backends"></a>
+<h2 id="future-development-new-backends">Future development: new backends<a class="anchor" aria-label="anchor" href="#future-development-new-backends"></a>
 </h2>
 <p>The <code>crew</code> package is arbitrarily extensible. It is designed to support multiple backend services (e.g. Amazon, Google, Azure) with minimal changes to the <code>R6</code> interface. For Amazon S3 storage for jobs, one can write a new subclass of <code>class_store</code> and write methods analogous to those of <code>class_store_local</code>. Likewise, for Amazon AWS Batch or Google Cloud Run workers, one can write new worker subclasses analogous to <code>class_worker_callr</code> and <code>class_worker_future</code>. All these classes are documented in help files, and a specification of required methods and fields is in the <a href="https://wlandau.github.io/crew/articles/specification.html" class="external-link">specification vignette</a>. The new subclasses will be supported in separate R packages that import <code>crew</code>, ideally one package per cloud platform.</p>
 </div>
@@ -274,7 +147,7 @@
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"crew"</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; To cite package 'crew' in publications use:</span>
