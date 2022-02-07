@@ -92,6 +92,18 @@
 <h2 id="worker">worker<a class="anchor" aria-label="anchor" href="#worker"></a>
 </h2>
 <p>A <code>worker</code> object encapsulates a worker: a local process, cluster process, or cloud process that accepts and runs work that the crew dispatches.</p>
+<p>Inheritance hierarchy so far:</p>
+<pre><code>├── worker
+│   ├── worker_callr
+│   └── worker_future</code></pre>
+<p>Other subclasses will run on cloud services like AWS Batch.</p>
+<p>Instantiable concrete subclasses:</p>
+<ul>
+<li>
+<code>"worker_callr"</code>: worker that runs in a <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> process.</li>
+<li>
+<code>"worker_future"</code>: worker that runs in a <code>future</code>.</li>
+</ul>
 <p>Required fields:</p>
 <ul>
 <li>
@@ -112,7 +124,7 @@
 <li>
 <code>up()</code>: check whether the worker is running.</li>
 <li>
-<code>launch()</code>: start the worker if it not already running.</li>
+<code>launch()</code>: start the worker loop if it not already running.</li>
 <li>
 <code>sendable()</code>: whether the worker is available to accept a new job.</li>
 <li>
@@ -128,25 +140,24 @@
 <li>
 <code>tagged()</code>: check if a worker has one or more tags in a given set.</li>
 <li>
+<code>stuck()</code>: check if the worker is stuck (down, not sendable, and not receivable).</li>
+<li>
+<code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code>: relaunch the worker if it is stuck.</li>
+<li>
 <code>validate()</code>: check for errors in the fields and methods.</li>
 </ul>
-<p>Inheritance hierarchy:</p>
-<pre><code>├── worker
-│   ├── worker_callr
-│   └── worker_future</code></pre>
-<p>Instantiable concrete subclasses:</p>
+<p>New worker subclasses must supply these two methods:</p>
 <ul>
 <li>
-<code>"worker_callr"</code>: worker that runs in a <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> process.</li>
+<code>launch()</code>: check if a worker is already up. If it is, return. Then, launch the worker and wait for the worker to be up before returning. Function <code><a href="../reference/crew_wait.html">crew_wait()</a></code>, method <code>up()</code>, and worker fields <code>timeout</code> and <code>wait</code> can help with this. When launched, the worker should run a worker loop such as <code><a href="../reference/crew_worker_loop.html">crew_worker_loop()</a></code> which monitors the data store for jobs and times out when appropriate. Always return <code>NULL</code> invisibly on success.</li>
 <li>
-<code>"worker_future"</code>: worker that runs in a <code>future</code>.</li>
+<code>up()</code>: check if a worker is running. This method should make use of the backend technology.</li>
 </ul>
-<p>Other subclasses will run on cloud services like AWS Batch.</p>
 </div>
 <div class="section level2">
 <h2 id="crew">crew<a class="anchor" aria-label="anchor" href="#crew"></a>
 </h2>
-<p>A <code>crew</code> object manages a group of workers. End users can send jobs and receive output through the <code>crew</code> object directly without having to interface with individual workers.</p>
+<p>A <code>crew</code> object manages a group of workers. End users can send jobs and receive output through the <code>crew</code> object directly without having to interface with individual workers. This class may need to be refactored into backend-specific sub-classes, depending on the need. For example, <code>receivable()</code> for local <code>callr</code> workers can poll the processes one by one, but for the cloud this would submit too many API requests, and it would be better to poll all the workers at once by listing the first page of job output files in the data store.</p>
 <p>Required fields:</p>
 <ul>
 <li>
@@ -179,6 +190,8 @@
 <li>
 <code>dismiss()</code>: delete one or more worker objects from the crew. Dismissed workers must be down and sendable, so not all requested dismissals actually happen.</li>
 <li>
+<code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code>: relaunch stuck workers.</li>
+<li>
 <code>validate()</code>: check for errors in the fields and methods.</li>
 </ul>
 </div>
@@ -186,6 +199,10 @@
 <h2 id="store">store<a class="anchor" aria-label="anchor" href="#store"></a>
 </h2>
 <p>A <code>store</code> object manages files on a file system that the workers and the crew both can access. Files may exist locally or on the cloud, depending on the subclass. The directory structure of a data store has a single root folder and sub-directories <code>input/</code> and <code>output/</code>. The former contains instructions and data for submitted jobs, and the latter contains job output written by the workers. In both cases, there is at most one file per worker, with the base name equal to the worker name. That way, to check if a remote worker completed a job successfully, a worker object can simply check if the <code>output/</code> file exists for the job currently running. (Although a separate backend-specific mechanism is needed in order to detect crashed workers.)</p>
+<p>Inheritance hierarchy:</p>
+<pre><code>├── store
+│   └── store_local</code></pre>
+<p>The <code>"store_local"</code> subclass is the only instantiable sub-class built directly into <code>crew</code>. Other packages that depend on <code>crew</code> will implement other stores that use AWS/GCP buckets instead of local files.</p>
 <p>Required fields:</p>
 <ul>
 <li>
@@ -224,10 +241,7 @@
 <li>
 <code>validate()</code>: check for errors in the fields and methods.</li>
 </ul>
-<p>Inheritance hierarchy:</p>
-<pre><code>├── store
-│   └── store_local</code></pre>
-<p>The <code>"store_local"</code> subclass is the only instantiable sub-class built directly into <code>crew</code>. Other packages that depend on <code>crew</code> will implement other stores that use AWS/GCP buckets instead of local files.</p>
+<p>Subclasses must supply backend-specific versions of all the above methods except <code>path_input()</code> and <code>path_output()</code>.</p>
 </div>
   </div>
 

@@ -92,8 +92,8 @@ number of seconds of idling for the worker to time out.</p></dd>
 
 <dt><code>wait</code></dt>
 <dd><p>Positive numeric of length 1,
-number of seconds for a worker to wait between iterations of
-polling input.</p></dd>
+number of seconds in a polling interval, e.g. checking
+if an input job exists.</p></dd>
 
 
 <dt><code>tags</code></dt>
@@ -116,13 +116,15 @@ already has a job to do.</p></dd>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-new"><code>class_worker$new()</code></a></p></li>
+<li><p><a href="#method-tagged"><code>class_worker$tagged()</code></a></p></li>
 <li><p><a href="#method-sendable"><code>class_worker$sendable()</code></a></p></li>
 <li><p><a href="#method-send"><code>class_worker$send()</code></a></p></li>
 <li><p><a href="#method-receivable"><code>class_worker$receivable()</code></a></p></li>
 <li><p><a href="#method-receive"><code>class_worker$receive()</code></a></p></li>
 <li><p><a href="#method-clear"><code>class_worker$clear()</code></a></p></li>
 <li><p><a href="#method-shutdown"><code>class_worker$shutdown()</code></a></p></li>
-<li><p><a href="#method-tagged"><code>class_worker$tagged()</code></a></p></li>
+<li><p><a href="#method-stuck"><code>class_worker$stuck()</code></a></p></li>
+<li><p><a href="#method-restart"><code>class_worker$restart()</code></a></p></li>
 <li><p><a href="#method-validate"><code>class_worker$validate()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -154,7 +156,7 @@ that a worker can idle before timing out.</p></dd>
 
 <dt><code>wait</code></dt>
 <dd><p>Positive numeric of length 1, number of seconds
-that the worker waits between checking if a job exists.</p></dd>
+in a polling interval, e.g. checking if an input job exists.</p></dd>
 
 
 <dt><code>tags</code></dt>
@@ -170,15 +172,37 @@ to mark eligible groups of workers in scheduling operations.</p></dd>
 and returns a new worker object.</p>
 </div>
 
+</div><p></p><hr><a id="method-tagged"></a><div class="section">
+<h3 id="method-tagged-">Method <code>tagged()</code><a class="anchor" aria-label="anchor" href="#method-tagged-"></a></h3>
+<p>Check if the worker has one or more
+of the tags in the argument.</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">tagged</span><span class="op">(</span><span class="va">tags</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>tags</code></dt>
+<dd><p>Character vector of tags to check.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p><code>TRUE</code> if the worker has any of the tags in the <code>tags</code> argument.
+<code>FALSE</code> otherwise.</p>
+</div>
+
 </div><p></p><hr><a id="method-sendable"></a><div class="section">
 <h3 id="method-sendable-">Method <code>sendable()</code><a class="anchor" aria-label="anchor" href="#method-sendable-"></a></h3>
 <p>Check if this worker is ready to accept a job.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">sendable</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code>TRUE</code> if the worker is ready for a job
 (or not properly blocked) and <code>FALSE</code> otherwise.</p>
 </div>
@@ -186,12 +210,12 @@ and returns a new worker object.</p>
 </div><p></p><hr><a id="method-send"></a><div class="section">
 <h3 id="method-send-">Method <code>send()</code><a class="anchor" aria-label="anchor" href="#method-send-"></a></h3>
 <p>Send a job.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span><span class="va">fun</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, block <span class="op">=</span> <span class="cn">TRUE</span>, timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>fun</code></dt>
 <dd><p>Function to run in the job. Should be completely
 self-contained in the body and arguments, without relying
@@ -226,19 +250,19 @@ if the job data was sent successfully.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-receivable"></a><div class="section">
 <h3 id="method-receivable-">Method <code>receivable()</code><a class="anchor" aria-label="anchor" href="#method-receivable-"></a></h3>
 <p>Check if job output is available to collect.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">receivable</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>TRUE</code> if a job output can be collected from the worker,
 <code>FALSE</code> otherwise.</p>
 </div>
@@ -246,12 +270,12 @@ if the job data was sent successfully.</p></dd>
 </div><p></p><hr><a id="method-receive"></a><div class="section">
 <h3 id="method-receive-">Method <code>receive()</code><a class="anchor" aria-label="anchor" href="#method-receive-"></a></h3>
 <p>Collect the results of a job and free up the worker.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>timeout</code></dt>
 <dd><p>Number of seconds to wait for the file deletion to
 succeed.</p></dd>
@@ -273,7 +297,7 @@ which makes the worker ready for another job (<code>send()</code> method).</p>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>A named list of job output. The <code>value</code> element has the
 actual result of the job function, if successful. Other elements
 have job metadata such as the error message (if any), traceback,
@@ -283,12 +307,12 @@ warnings, and runtime in seconds.</p>
 </div><p></p><hr><a id="method-clear"></a><div class="section">
 <h3 id="method-clear-">Method <code>clear()</code><a class="anchor" aria-label="anchor" href="#method-clear-"></a></h3>
 <p>Clear worker input and output.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">clear</span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>timeout</code></dt>
 <dd><p>Number of seconds to wait for the file deletion to
 succeed.</p></dd>
@@ -307,14 +331,14 @@ that the worker files were successfully removed from the data store.</p></dd>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p><code>NULL</code> (invisibly)</p>
 </div>
 
 </div><p></p><hr><a id="method-shutdown"></a><div class="section">
 <h3 id="method-shutdown-">Method <code>shutdown()</code><a class="anchor" aria-label="anchor" href="#method-shutdown-"></a></h3>
 <p>Gracefully shut down the worker.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">shutdown</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
@@ -332,41 +356,49 @@ to achieve more reliable shutdowns.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-tagged"></a><div class="section">
-<h3 id="method-tagged-">Method <code>tagged()</code><a class="anchor" aria-label="anchor" href="#method-tagged-"></a></h3>
-<p>Check if the worker has one or more
-of the tags in the argument.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">tagged</span><span class="op">(</span><span class="va">tags</span><span class="op">)</span></code></pre></div><p></p></div>
+</div><p></p><hr><a id="method-stuck"></a><div class="section">
+<h3 id="method-stuck-">Method <code>stuck()</code><a class="anchor" aria-label="anchor" href="#method-stuck-"></a></h3>
+<p>Check if a worker is stuck.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">stuck</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>tags</code></dt>
-<dd><p>Character vector of tags to check.</p></dd>
-
-
-</dl><p></p></div>
+<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
+<p>A worker is stuck if it is down, not sendable,
+and not receivable.</p>
 </div>
+
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
-<p><code>TRUE</code> if the worker has any of the tags in the <code>tags</code> argument.
-<code>FALSE</code> otherwise.</p>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>Logical of length 1, whether the worker is stuck.</p>
+</div>
+
+</div><p></p><hr><a id="method-restart"></a><div class="section">
+<h3 id="method-restart-">Method <code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code><a class="anchor" aria-label="anchor" href="#method-restart-"></a></h3>
+<p>Relaunch the worker if it is stuck.</p><div class="section">
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">restart</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-validate"></a><div class="section">
 <h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
 <p>Worker validator.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_worker</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
