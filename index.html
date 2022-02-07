@@ -132,10 +132,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span>
 <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; worker_155d12ac10db7 worker_155d1686b7f4e   worker_155d1fab826 </span>
-<span class="co">#&gt;                FALSE                FALSE                FALSE </span>
-<span class="co">#&gt; worker_155d14c4fc74a </span>
-<span class="co">#&gt;                FALSE</span></code></pre></div>
+<span class="co">#&gt; worker_e42926df1465 worker_e4297fb406d2 worker_e429665e3c55 worker_e42934cb24f4 </span>
+<span class="co">#&gt;               FALSE               FALSE               FALSE               FALSE</span></code></pre></div>
 <p>To start any or all workers, either use <code>launch()</code> or <code>send()</code>. The latter finds a suitable available worker, launches it if necessary, and then sends a job. Poll with <code>receivable()</code> and get the output with <code>receive()</code>. Tags let you control which kinds of workers get the jobs, and they are are supported and optional in all relevant crew methods.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">job</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">seconds</span><span class="op">)</span> <span class="op">{</span>
@@ -158,12 +156,11 @@
 <span class="op">}</span>
 
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.001</span>
-<span class="co">#&gt; [1] 2.011</span>
-<span class="co">#&gt; [1] 3.015</span>
-<span class="co">#&gt; [1] 4.017</span>
-<span class="co">#&gt; [1] 5.018</span>
-<span class="co">#&gt; [1] 6.022</span>
+<span class="co">#&gt; [1] 1.003</span>
+<span class="co">#&gt; [1] 2.012</span>
+<span class="co">#&gt; [1] 3.013</span>
+<span class="co">#&gt; [1] 4.015</span>
+<span class="co">#&gt; [1] 5.016</span>
 
 <span class="co"># Get the output when ready.</span>
 <span class="va">output</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span></code></pre></div>
@@ -180,10 +177,8 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">is_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_lgl</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="op">~</span><span class="va">.x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">is_up</span>
-<span class="co">#&gt; worker_155d12ac10db7 worker_155d1686b7f4e   worker_155d1fab826 </span>
-<span class="co">#&gt;                FALSE                FALSE                 TRUE </span>
-<span class="co">#&gt; worker_155d14c4fc74a </span>
-<span class="co">#&gt;                FALSE</span></code></pre></div>
+<span class="co">#&gt; worker_e42926df1465 worker_e4297fb406d2 worker_e429665e3c55 worker_e42934cb24f4 </span>
+<span class="co">#&gt;               FALSE               FALSE                TRUE               FALSE</span></code></pre></div>
 <p>Sure enough, the running worker has the tags of the previous job.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">is_up</span><span class="op">[</span><span class="va">is_up</span><span class="op">]</span><span class="op">)</span>
@@ -195,18 +190,19 @@
 <span class="va">crew</span><span class="op">$</span><span class="fu">send</span><span class="op">(</span>fun <span class="op">=</span> <span class="va">job</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>seconds <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># May run on any available worker.</span>
 
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.002</span>
-<span class="co">#&gt; [1] 2.003</span>
-<span class="co">#&gt; [1] 3.004</span>
-<span class="co">#&gt; [1] 4.005</span>
-<span class="co">#&gt; [1] 5.009</span>
+<span class="co">#&gt; [1] 1.005</span>
+<span class="co">#&gt; [1] 2.007</span>
+<span class="co">#&gt; [1] 3.008</span>
+<span class="co">#&gt; [1] 4.009</span>
+<span class="co">#&gt; [1] 5.013</span>
 
 <span class="va">output_first</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.003</span>
+<span class="co">#&gt; [1] 1.001</span>
 <span class="co">#&gt; [1] 2.004</span>
-<span class="co">#&gt; [1] 3.005</span>
+<span class="co">#&gt; [1] 3.004</span>
+<span class="co">#&gt; [1] 4.01</span>
 
 <span class="va">output_second</span> <span class="op">&lt;-</span> <span class="va">crew</span><span class="op">$</span><span class="fu">receive</span><span class="op">(</span><span class="op">)</span>
 
@@ -221,7 +217,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output_second</span><span class="op">)</span>
 <span class="co">#&gt; List of 5</span>
 <span class="co">#&gt;  $ value    : chr "Job ran in 8 seconds."</span>
-<span class="co">#&gt;  $ seconds  : num 8.03</span>
+<span class="co">#&gt;  $ seconds  : num 8.02</span>
 <span class="co">#&gt;  $ error    : NULL</span>
 <span class="co">#&gt;  $ traceback: NULL</span>
 <span class="co">#&gt;  $ warnings : chr "This is a warning."</span></code></pre></div>
@@ -236,6 +232,7 @@
 <code class="sourceCode R"><span class="va">crew</span><span class="op">$</span><span class="fu">dismiss</span><span class="op">(</span>tags <span class="op">=</span> <span class="st">"long_jobs_go_here"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span> <span class="co"># Should be 2.</span>
 <span class="co">#&gt; [1] 2</span></code></pre></div>
+<p>If eventually a worker gets stuck (not sendable, not receivable, not running) then the <code>stuck()</code> method of the worker will return <code>TRUE</code> and the <code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code> method will restart it. Use the <code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code> method of the crew object to restart one or more stuck workers.</p>
 </div>
 <div class="section level2">
 <h2 id="nested-crews">Nested crews<a class="anchor" aria-label="anchor" href="#nested-crews"></a>

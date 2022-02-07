@@ -106,6 +106,7 @@ is the default.</p></dd>
 <li><p><a href="#method-clear"><code>class_crew$clear()</code></a></p></li>
 <li><p><a href="#method-shutdown"><code>class_crew$shutdown()</code></a></p></li>
 <li><p><a href="#method-dismiss"><code>class_crew$dismiss()</code></a></p></li>
+<li><p><a href="#method-restart"><code>class_crew$restart()</code></a></p></li>
 <li><p><a href="#method-validate"><code>class_crew$validate()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -392,7 +393,7 @@ the loop moves on to another worker.</p>
 
 </div><p></p><hr><a id="method-dismiss"></a><div class="section">
 <h3 id="method-dismiss-">Method <code>dismiss()</code><a class="anchor" aria-label="anchor" href="#method-dismiss-"></a></h3>
-<p>delete all worker objects.</p><div class="section">
+<p>Delete one or more worker objects.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">dismiss</span><span class="op">(</span>
   workers <span class="op">=</span> <span class="cn">Inf</span>,
@@ -440,15 +441,48 @@ the loop moves on to another worker.</p>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-validate"></a><div class="section">
-<h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
-<p>Crew validator.</p><div class="section">
+</div><p></p><hr><a id="method-restart"></a><div class="section">
+<h3 id="method-restart-">Method <code><a href="https://rdrr.io/r/base/base-defunct.html" class="external-link">restart()</a></code><a class="anchor" aria-label="anchor" href="#method-restart-"></a></h3>
+<p>Restart one or more stuck workers.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">restart</span><span class="op">(</span>workers <span class="op">=</span> <span class="cn">Inf</span>, tags <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>workers</code></dt>
+<dd><p>Positive integer of length 1. Maximum number of workers
+to try to restart. Does not count already unstuck workers.</p></dd>
+
+
+<dt><code>tags</code></dt>
+<dd><p>Character vector of allowable tags of eligible workers.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
+<p>This method loops through the workers
+from first to last in the worker list. If the worker
+is stuck, then the worker is restarted. Otherwise,
+the loop moves on to another worker.</p>
 </div>
 
 <div class="section">
 <h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
+
+</div><p></p><hr><a id="method-validate"></a><div class="section">
+<h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
+<p>Crew validator.</p><div class="section">
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">class_crew</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
