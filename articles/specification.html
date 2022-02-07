@@ -88,8 +88,6 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></code></pre></div>
 <p>The <code>crew</code> package consists of <code>R6</code> classes. Each object of class <code>crew</code> contains an object of class <code>store</code> and a list of objects of class <code>worker</code>. The <code>crew</code>, <code>store</code>, and <code>worker</code> classes have inheritance hierarchies. Each parent class is an abstract class with a <code>validate()</code> method to ensure the concrete instantiable subclasses define all the required methods and fields. Unless ellipsis (<code>...</code>) is an argument, all formal arguments of subclass methods must be the same as the arguments of the parent class (but default values can be different).</p>
 <div class="section level2">
 <h2 id="worker">worker<a class="anchor" aria-label="anchor" href="#worker"></a>
