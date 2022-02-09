@@ -175,7 +175,9 @@
 <li>
 <code>recruit()</code>: create worker objects from one or more worker definitions. Does not actually launch the new worker objects.</li>
 <li>
-<code>launch()</code>: call the <code>launch()</code> method of each worker. Assumes worker <code>launch()</code> is idempotent so no worker is re-launched if it is already up.</li>
+<code>launch()</code>: Launch one or more worker objects.</li>
+<li>
+<code>up()</code>: Check if any worker is up.</li>
 <li>
 <code>sendable()</code>: whether any worker is available to accept a new job.</li>
 <li>
