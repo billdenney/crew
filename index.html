@@ -108,15 +108,9 @@
 </ul>
 </div>
 <div class="section level2">
-<h2 id="future-development-nested-crews">Future development: nested crews<a class="anchor" aria-label="anchor" href="#future-development-nested-crews"></a>
-</h2>
-<p>Large data science pipelines manage hundreds of distributed workers on different machines, from traditional clusters to cloud platforms by Amazon and Google. In these situations, orchestration itself is computationally demanding. Sending jobs, receiving job output, and detecting crashes may severely block the main process.</p>
-<p>To overcome this bottleneck, <code>crew</code> package will eventually support nested crews. The outer crew will support a small number of <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> workers running on the same machine as the main process. Each of these outer workers will run a crew of its own, and the inner crews will run hundreds of inner workers on distributed systems like AWS Batch. The outer workers will run a different event loop that forwards jobs from the outer crew to the inner crews and back.</p>
-</div>
-<div class="section level2">
 <h2 id="future-development-new-backends">Future development: new backends<a class="anchor" aria-label="anchor" href="#future-development-new-backends"></a>
 </h2>
-<p>The <code>crew</code> package is arbitrarily extensible. It is designed to support multiple backend services (e.g. Amazon, Google, Azure) with minimal changes to the <code>R6</code> interface. For Amazon S3 storage for jobs, one can write a new subclass of <code>class_store</code> and write methods analogous to those of <code>class_store_local</code>. Likewise, for Amazon AWS Batch or Google Cloud Run workers, one can write new worker subclasses analogous to <code>class_worker_callr</code> and <code>class_worker_future</code>. All these classes are documented in help files, and a specification of required methods and fields is in the <a href="https://wlandau.github.io/crew/articles/specification.html" class="external-link">specification vignette</a>. The new subclasses will be supported in separate R packages that import <code>crew</code>, ideally one package per cloud platform.</p>
+<p>The <code>crew</code> package is extensible. It is designed to support multiple backend services (e.g. Amazon, Google, Azure) with minimal changes to the <code>R6</code> interface. For Amazon S3 storage for jobs, one can write a new subclass of <code>class_store</code> and write methods analogous to those of <code>class_store_local</code>. Likewise, for Amazon AWS Batch or Google Cloud Run workers, one can write new worker subclasses analogous to <code>class_worker_callr</code> and <code>class_worker_future</code>. All these classes are documented in help files, and a specification of required methods and fields is in the <a href="https://wlandau.github.io/crew/articles/specification.html" class="external-link">specification vignette</a>. The new subclasses will be supported in separate R packages that import <code>crew</code>, ideally one package per cloud platform.</p>
 </div>
 <div class="section level2">
 <h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>

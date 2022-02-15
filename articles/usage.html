@@ -128,16 +128,16 @@
 <p>The individual worker interfaces are <code>R6</code> objects available in <code>crew$workers</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="va">class</span><span class="op">)</span>
-<span class="co">#&gt; $worker_2d0b73f13f77</span>
+<span class="co">#&gt; $worker_2da634be8abf</span>
 <span class="co">#&gt; [1] "worker_callr" "worker"       "R6"          </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $worker_2d0bd317247</span>
+<span class="co">#&gt; $worker_2da676f52aa8</span>
 <span class="co">#&gt; [1] "worker_callr" "worker"       "R6"          </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $worker_2d0bdae5ed4</span>
+<span class="co">#&gt; $worker_2da61309dd38</span>
 <span class="co">#&gt; [1] "worker_future" "worker"        "R6"           </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $worker_2d0b6e92c60d</span>
+<span class="co">#&gt; $worker_2da62d1c0780</span>
 <span class="co">#&gt; [1] "worker_future" "worker"        "R6"</span></code></pre></div>
 </div>
 <div class="section level2">
@@ -171,8 +171,8 @@
 <span class="fu">do_other_tasks</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1.002</span>
 <span class="co">#&gt; [1] 2.009</span>
-<span class="co">#&gt; [1] 3.011</span>
-<span class="co">#&gt; [1] 4.013</span>
+<span class="co">#&gt; [1] 3.01</span>
+<span class="co">#&gt; [1] 4.012</span>
 <span class="co">#&gt; [1] 5.014</span>
 
 <span class="co"># Get the output when ready.</span>
@@ -191,7 +191,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">is_up</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">crew</span><span class="op">$</span><span class="va">workers</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="fu">up</span><span class="op">(</span><span class="op">)</span>, FUN.VALUE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="va">is_up</span>
-<span class="co">#&gt; worker_2d0b73f13f77  worker_2d0bd317247  worker_2d0bdae5ed4 worker_2d0b6e92c60d </span>
+<span class="co">#&gt; worker_2da634be8abf worker_2da676f52aa8 worker_2da61309dd38 worker_2da62d1c0780 </span>
 <span class="co">#&gt;               FALSE               FALSE                TRUE               FALSE</span></code></pre></div>
 <p>Sure enough, the running worker has the tags of the previous job.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -227,7 +227,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output_first</span><span class="op">)</span>
 <span class="co">#&gt; List of 5</span>
 <span class="co">#&gt;  $ value    : chr "Job ran in 4 seconds."</span>
-<span class="co">#&gt;  $ seconds  : num 4.01</span>
+<span class="co">#&gt;  $ seconds  : num 4</span>
 <span class="co">#&gt;  $ error    : NULL</span>
 <span class="co">#&gt;  $ traceback: NULL</span>
 <span class="co">#&gt;  $ warnings : chr "This is a warning."</span>
