@@ -64,7 +64,9 @@
 
     <div id="details">
     <h2>Details</h2>
-    <p>The interface is the same as <a href="crew_queue_session.html">crew_queue_session</a> except
+    <p>Some public methods are inherited from <a href="crew_queue.html">crew_queue</a>.
+See the <a href="crew_queue.html">crew_queue</a> help file for details on those.</p>
+<p>The interface is the same as <a href="crew_queue_session.html">crew_queue_session</a> except
 there is a data store (e.g. <a href="crew_store_local.html">crew_store_local</a>) which
 the user can customize. Most users should choose for the session queue
 <a href="crew_queue_session.html">crew_queue_session</a> instead of the background queue
@@ -82,7 +84,8 @@ the work of Gábor Csárdi, particularly
 <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q/" class="external-link">https://www.tidyverse.org/blog/2019/09/callr-task-q/</a>,
 which was also released in commit
 <code>811a02f604de2cf03264f6b35ce9ec8a412f2581</code>
-of <a href="https://github.com/r-lib/callr" class="external-link">https://github.com/r-lib/callr</a> in the <code>vignettes/taskq.R</code>
+of <a href="https://github.com/r-lib/callr" class="external-link">https://github.com/r-lib/callr</a> in the
+<code>vignettes/Task-queue-with-callr.Rmd</code>
 file under the MIT license. See the <code>crew</code> package <code>README.md</code> and
 <code>NOTICE</code> files for other mentions of this attribution.</p>
     </div>
@@ -179,7 +182,7 @@ waiting for something to happen (e.g. the arrival of a task).</p></dd>
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">queue</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ task  : chr "x65475d32_9d5b_41a4_b69a_633eba7201a8"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ task  : chr "x56d9629b_c993_4d0a_9f89_554ad4ab8c03"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ result:List of 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ result   : num 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ seconds  : num 0.001</span>

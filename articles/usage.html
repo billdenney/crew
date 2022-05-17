@@ -97,8 +97,8 @@
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span>
 <span class="co">#&gt;   worker                         handle     free  sent  up    done  task  input </span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> xed2dccf6_7b9b_43b6_a98d_a140… <span style="color: #949494;">&lt;r_sessin&gt;</span> TRUE  FALSE FALSE FALSE <span style="color: #BB0000;">NA</span>    &lt;list&gt;</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> x476d3b67_424d_4ad6_8571_da4b… <span style="color: #949494;">&lt;r_sessin&gt;</span> TRUE  FALSE FALSE FALSE <span style="color: #BB0000;">NA</span>    &lt;list&gt;</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> x9b05af2a_bba9_496a_a312_ef74… <span style="color: #949494;">&lt;r_sessin&gt;</span> TRUE  FALSE FALSE FALSE <span style="color: #BB0000;">NA</span>    &lt;list&gt;</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> x8d52ef64_e939_470e_8b7b_71a8… <span style="color: #949494;">&lt;r_sessin&gt;</span> TRUE  FALSE FALSE FALSE <span style="color: #BB0000;">NA</span>    &lt;list&gt;</span></code></pre></div>
 <p>No tasks are waiting to be assigned to workers,</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">queue</span><span class="op">$</span><span class="fu">get_tasks</span><span class="op">(</span><span class="op">)</span>
@@ -130,10 +130,10 @@
 
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span>
 <span class="co">#&gt; List of 2</span>
-<span class="co">#&gt;  $ task  : chr "x6582ecb2_e7ad_4ac6_afe2_6d040af39983"</span>
+<span class="co">#&gt;  $ task  : chr "x05d7dc0e_c47e_4bb1_8488_857edddf02e3"</span>
 <span class="co">#&gt;  $ result:List of 6</span>
 <span class="co">#&gt;   ..$ code   : int 200</span>
-<span class="co">#&gt;   ..$ message: chr "done callr-rs-result-3c3342414cbc"</span>
+<span class="co">#&gt;   ..$ message: chr "done callr-rs-result-36e73c0e27a7"</span>
 <span class="co">#&gt;   ..$ result : chr "ran for 1 seconds and completed successfully"</span>
 <span class="co">#&gt;   ..$ stdout : chr ""</span>
 <span class="co">#&gt;   ..$ stderr : chr ""</span>
@@ -184,7 +184,7 @@
 <div class="section level2">
 <h2 id="other-task-queues">Other task queues<a class="anchor" aria-label="anchor" href="#other-task-queues"></a>
 </h2>
-<p>The <code>crew_queue_future</code> task queue uses transient <a href="https://future.futureverse.org" class="external-link"><code>future</code></a>’s as workers. The queue has a default <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">future::plan()</a></code>, and you can set an individual plan for each task you push. The plan can either be the sequential plan or a plan from <a href="https://future.batchtools.futureverse.org" class="external-link"><code>future.batchtools</code></a>^[other plans are nmot supported because they cannot be sent to the <a href="https://callr.r-lib.org/reference/r_session.html" class="external-link"><code>callr::r_session</code></a> workers in the subqueue). <a href="https://future.batchtools.futureverse.org" class="external-link"><code>future.batchtools</code></a> workers have high overhead for submitting, polling, and collecting tasks, so <code>crew_queue_future</code> supports a subqueue, a local multi-process queue inside the larger queue to asynchronously manage the <a href="https://future.futureverse.org" class="external-link"><code>future</code></a>’s internally.</p>
+<p>The <code>crew_queue_future</code> task queue uses transient <a href="https://future.futureverse.org" class="external-link"><code>future</code></a>’s as workers. The queue has a default <code><a href="https://future.futureverse.org/reference/plan.html" class="external-link">future::plan()</a></code>, and you can set an individual plan for each task you push. The plan can either be the sequential plan or a plan from <a href="https://future.batchtools.futureverse.org" class="external-link"><code>future.batchtools</code></a>^[other plans are not supported because they cannot be sent to the <a href="https://callr.r-lib.org/reference/r_session.html" class="external-link"><code>callr::r_session</code></a> workers in the subqueue). <a href="https://future.batchtools.futureverse.org" class="external-link"><code>future.batchtools</code></a> workers have high overhead for submitting, polling, and collecting tasks, so <code>crew_queue_future</code> supports a subqueue, a local multi-process queue inside the larger queue to asynchronously manage the <a href="https://future.futureverse.org" class="external-link"><code>future</code></a>’s internally.</p>
 <p>A <code>crew_queue_future</code> queue is created just like a <code>crew_queue_session</code> queue, except there are a couple more arguments.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">queue</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_queue_future.html">crew_queue_future</a></span><span class="op">(</span>

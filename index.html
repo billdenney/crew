@@ -103,7 +103,7 @@
 <li>
 <a href="https://docs.ropensci.org/targets/" class="external-link"><code>targets</code></a>: a Make-like pipeline tool for R. Event loops in <a href="https://docs.ropensci.org/targets/" class="external-link"><code>targets</code></a> invoke packages <a href="https://mschubert.github.io/clustermq/" class="external-link"><code>clustermq</code></a> and <a href="https://future.futureverse.org/" class="external-link"><code>future</code></a> to run tasks concurrently and asynchronously. <a href="https://docs.ropensci.org/targets/" class="external-link"><code>targets</code></a> would be able to support different scheduling techniques and run on more platforms if it incorporated a formal task queue behind the scenes. That task queue is probably going to be <code>crew</code> or <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a>.</li>
 <li>
-<a href="https://github.com/r-lib/callr" class="external-link"><code>callr</code></a>: the previous <a href="https://github.com/r-lib/callr/blob/811a02f604de2cf03264f6b35ce9ec8a412f2581/vignettes/Task-queue-with-callr.Rmd" class="external-link">task queue vignette</a>, as well as the blog post at <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q/" class="external-link uri">https://www.tidyverse.org/blog/2019/09/callr-task-q/</a>, show how to create an efficient multi-process task queue using <a href="https://callr.r-lib.org/reference/r_session.html" class="external-link"><code>callr::r_session</code></a>. The goal of <code>crew</code> is to extend this idea to different worker types, such as <a href="https://aws.amazon.com/batch/" class="external-link">Amazon Web Services (AWS) Batch</a> jobs.</li>
+<a href="https://github.com/r-lib/callr" class="external-link"><code>callr</code></a>: the previous <a href="https://github.com/r-lib/callr/blob/811a02f604de2cf03264f6b35ce9ec8a412f2581/vignettes/Task-queue-with-callr.Rmd" class="external-link">task queue vignette</a>, as well as the blog post at <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q/" class="external-link uri">https://www.tidyverse.org/blog/2019/09/callr-task-q/</a>, show how to create an efficient multi-process task queue using <a href="https://callr.r-lib.org/reference/r_session.html" class="external-link"><code>callr::r_session</code></a>. The goal of <code>crew</code> is to eventually extend this idea to different worker types, such as <a href="https://aws.amazon.com/batch/" class="external-link">Amazon Web Services (AWS) Batch</a> jobs.</li>
 <li>
 <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a>: an R-focused task queue built on Redis, successor of <a href="http://traitecoevo.github.io/rrqueue/" class="external-link"><code>rrqueue</code></a>. It is possible that <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a> makes <code>crew</code> irrelevant.</li>
 <li>
@@ -111,15 +111,15 @@
 <li>
 <a href="https://future.futureverse.org/" class="external-link"><code>future</code></a>: a unified interface for asynchronous evaluation of single tasks and map-reduce calls on a wide variety of backend technologies. One of the backends of <code>crew</code>.</li>
 <li>
-<a href="http://mschubert.github.io/clustermq/" class="external-link"><code>clustermq</code></a>: an R layer on top of <a href="https://zeromq.org/" class="external-link">ZeroMQ</a> for submitting tasks as array jobs on traditional clusters.</li>
+<a href="https://mschubert.github.io/clustermq/" class="external-link"><code>clustermq</code></a>: an R layer on top of <a href="https://zeromq.org/" class="external-link">ZeroMQ</a> for submitting tasks as array jobs on traditional clusters.</li>
 <li>
-<a href="https://shikokuchuo.net/mirai/" class="external-link"><code>mirai</code></a>: an R framework for asychronous tasks built on <a href="https://nng.nanomsg.org" class="external-link">NNG</a>.</li>
+<a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a>: an R framework for asynchronous tasks built on <a href="https://nng.nanomsg.org" class="external-link">NNG</a>.</li>
 <li>
 <a href="https://rstudio.github.io/promises/" class="external-link"><code>promises</code></a>: minimally-invasive asynchronous programming for a small number of tasks within Shiny apps.</li>
 <li>
 <a href="https://r-lib.github.io/later/" class="external-link"><code>later</code></a>: delayed evaluation of synchronous tasks.</li>
 <li>
-<a href="https://cran.r-project.org/web/views/HighPerformanceComputing.html" class="external-link">High-performance computing CRAN task view</a>.</li>
+<a href="https://CRAN.R-project.org/view=HighPerformanceComputing" class="external-link">High-performance computing CRAN task view</a>.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -136,7 +136,7 @@
 <div class="section level2">
 <h2 id="future-development">Future development<a class="anchor" aria-label="anchor" href="#future-development"></a>
 </h2>
-<p><code>crew</code>, <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a>, or something like it will serve as a backend to get <a href="https://docs.ropensci.org/targets/" class="external-link"><code>targets</code></a> running distributed workers on the cloud (AWS Batch, AWS Fargate, Google Cloud Run, etc.). If <code>crew</code> fills this role, new <a href="">task queues</a> and <a href="">data stores</a> will be developed for cloud platforms.</p>
+<p><code>crew</code>, <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a>, or something like it will serve as a backend to get <a href="https://docs.ropensci.org/targets/" class="external-link"><code>targets</code></a> running distributed workers on the cloud (AWS Batch, AWS Fargate, Google Cloud Run, etc.). If <code>crew</code> fills this role, new <a href="https://wlandau.github.io/crew/reference/index.html#queues" class="external-link">task queues</a> and <a href="https://wlandau.github.io/crew/reference/index.html#stores" class="external-link">data stores</a> will be developed for cloud platforms.</p>
 </div>
 <div class="section level2">
 <h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>

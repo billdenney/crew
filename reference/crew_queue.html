@@ -77,7 +77,8 @@ the work of Gábor Csárdi, particularly
 <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q/" class="external-link">https://www.tidyverse.org/blog/2019/09/callr-task-q/</a>,
 which was also released in commit
 <code>811a02f604de2cf03264f6b35ce9ec8a412f2581</code>
-of <a href="https://github.com/r-lib/callr" class="external-link">https://github.com/r-lib/callr</a> in the <code>vignettes/taskq.R</code>
+of <a href="https://github.com/r-lib/callr" class="external-link">https://github.com/r-lib/callr</a> in the
+<code>vignettes/Task-queue-with-callr.Rmd</code>
 file under the MIT license. See the <code>crew</code> package <code>README.md</code> and
 <code>NOTICE</code> files for other mentions of this attribution.</p>
     </div>
@@ -366,10 +367,10 @@ and <a href="crew_queue_bg.html">crew_queue_bg</a> can shut down completely.</p>
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">queue</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ task  : chr "xcd9cfdc2_e7e7_4962_b1c4_e8f7e543bc36"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ task  : chr "xdb0e5afe_b1dc_481f_9a7d_7b58a1347602"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ result:List of 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ code   : int 200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ message: chr "done callr-rs-result-3a812f1debf2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ message: chr "done callr-rs-result-35324ebf51a8"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ result : num 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ stdout : chr ""</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ stderr : chr ""</span>
