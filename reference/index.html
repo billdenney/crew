@@ -35,9 +35,6 @@
   <a href="../articles/usage.html">Usage</a>
 </li>
 <li>
-  <a href="../articles/specification.html">Specification</a>
-</li>
-<li>
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -68,57 +65,53 @@
         <td><p>crew: abstract interface specification for semi-persistent
 high-performance computing workers</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="crew-classes">Crew classes <a href="#crew-classes" class="anchor" aria-hidden="true"></a></h2>
+          <h2 id="queues">Queues <a href="#queues" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="class_crew.html">class_crew</a></code> </p>
+          <p><code><a href="crew_queue.html">crew_queue</a></code> </p>
         </td>
-        <td><p>Crew class.</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="worker-classes">Worker classes <a href="#worker-classes" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="class_worker.html">class_worker</a></code> </p>
-        </td>
-        <td><p>Worker class.</p></td>
+        <td><p>Abstract queue</p></td>
       </tr><tr><td>
-          <p><code><a href="class_worker_callr.html">class_worker_callr</a></code> </p>
+          <p><code><a href="crew_queue_session.html">crew_queue_session</a></code> </p>
         </td>
-        <td><p><code>callr</code> worker class.</p></td>
+        <td><p>Local session queue</p></td>
       </tr><tr><td>
-          <p><code><a href="class_worker_future.html">class_worker_future</a></code> </p>
+          <p><code><a href="crew_queue_bg.html">crew_queue_bg</a></code> </p>
         </td>
-        <td><p>Future worker class.</p></td>
+        <td><p>Local background queue</p></td>
+      </tr><tr><td>
+          <p><code><a href="crew_queue_future.html">crew_queue_future</a></code> </p>
+        </td>
+        <td><p>Future queue</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="store-classes">Store classes <a href="#store-classes" class="anchor" aria-hidden="true"></a></h2>
+          <h2 id="stores">Stores <a href="#stores" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="class_store.html">class_store</a></code> </p>
+          <p><code><a href="crew_store.html">crew_store</a></code> </p>
         </td>
-        <td><p>Store class.</p></td>
+        <td><p>Abstract store</p></td>
       </tr><tr><td>
-          <p><code><a href="class_store_local.html">class_store_local</a></code> </p>
+          <p><code><a href="crew_store_local.html">crew_store_local</a></code> </p>
         </td>
-        <td><p>Local store class.</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="worker-loops">Worker loops <a href="#worker-loops" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="crew_worker_loop.html">crew_worker_loop()</a></code> </p>
-        </td>
-        <td><p>Worker event loop.</p></td>
+        <td><p>Local store</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="utilities">Utilities <a href="#utilities" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
+          <p><code><a href="crew_true.html">crew_true()</a></code> </p>
+        </td>
+        <td><p>Validate arguments</p></td>
+      </tr><tr><td>
           <p><code><a href="crew_wait.html">crew_wait()</a></code> </p>
         </td>
         <td><p>Wait for an event.</p></td>
+      </tr><tr><td>
+          <p><code><a href="crew_worker.html">crew_worker()</a></code> </p>
+        </td>
+        <td><p>Worker event loop.</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -132,7 +125,7 @@ high-performance computing workers</p></td>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

@@ -22,9 +22,6 @@
     <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/specification.html</loc>
-  </url>
-  <url>
     <loc>/articles/usage.html</loc>
   </url>
   <url>
@@ -37,34 +34,46 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/class_crew.html</loc>
-  </url>
-  <url>
-    <loc>/reference/class_store.html</loc>
-  </url>
-  <url>
-    <loc>/reference/class_store_local.html</loc>
-  </url>
-  <url>
-    <loc>/reference/class_worker.html</loc>
-  </url>
-  <url>
-    <loc>/reference/class_worker_callr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/class_worker_future.html</loc>
-  </url>
-  <url>
     <loc>/reference/crew-package.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_condition_false.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_condition_message.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_error.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_queue.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_queue_bg.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_queue_future.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_queue_session.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_store.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_store_local.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_task.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_true.html</loc>
   </url>
   <url>
     <loc>/reference/crew_wait.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_worker_loop.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crew_worker_loop_run.html</loc>
+    <loc>/reference/crew_worker.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
