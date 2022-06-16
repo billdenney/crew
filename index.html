@@ -94,7 +94,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="crew">crew<a class="anchor" aria-label="anchor" href="#crew"></a>
 </h1></div>
-<!--[![CRAN](https://www.r-pkg.org/badges/version/crew)](https://CRAN.R-project.org/package=crew)-->
+
 <p>A task queue is a central hub for orchestrating computationally demanding workloads dynamically and asynchronously. The <code>crew</code> package supports a variety of task queues with a common interface and different types of workers for different platforms, similar to the way the <a href="https://future.futureverse.org/" class="external-link"><code>future</code></a> package provides a unified R interface for single jobs and individual map-reduce calls. The <code>crew</code> package borrows the task queue design from the <a href="https://github.com/r-lib/callr/blob/811a02f604de2cf03264f6b35ce9ec8a412f2581/vignettes/Task-queue-with-callr.Rmd" class="external-link"><code>callr</code> package vignettes</a> and <a href="https://www.tidyverse.org/blog/2019/09/callr-task-q/" class="external-link uri">https://www.tidyverse.org/blog/2019/09/callr-task-q/</a>, enhances the core feature set (for example, crash detection), and establishes an extensible <a href="https://r6.r-lib.org/" class="external-link"><code>R6</code></a> class system to add more worker types as development continues (e.g. jobs on Amazon and Google cloud computing platforms). Multi-queue structures, such as the already-supported ’<a href="https://future.futureverse.org/" class="external-link"><code>future</code></a>-based task queue, increase efficiency in heavily parallel <a href="https://future.batchtools.futureverse.org/" class="external-link">cluster</a> workloads with an inner local asynchronous task queue to manage task submission, monitoring, and collection.</p>
 <div class="section level2">
 <h2 id="similar-work">Similar work<a class="anchor" aria-label="anchor" href="#similar-work"></a>
@@ -180,13 +180,13 @@
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a>To cite package <span class="st">'crew'</span> <span class="cf">in</span> publications use<span class="op">:</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span>Landau <span class="kw">WM</span> (????). _crew<span class="op">:</span><span class="st"> </span>Centralized Reusable Workers_.</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span>Landau <span class="kw">WM</span> (????). _crew<span class="op">:</span><span class="st"> </span>Centralized Workers_.</span>
 <span id="cb2-6"><a href="#cb2-6"></a>  https<span class="op">:</span><span class="er">//</span>wlandau.github.io<span class="op">/</span>crew<span class="op">/</span>, https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>wlandau<span class="op">/</span>crew.</span>
 <span id="cb2-7"><a href="#cb2-7"></a></span>
 <span id="cb2-8"><a href="#cb2-8"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
 <span id="cb2-9"><a href="#cb2-9"></a></span>
 <span id="cb2-10"><a href="#cb2-10"></a>  <span class="op">@</span>Manual{,</span>
-<span id="cb2-11"><a href="#cb2-11"></a>    title =<span class="st"> </span>{crew<span class="op">:</span><span class="st"> </span>Centralized Reusable Workers},</span>
+<span id="cb2-11"><a href="#cb2-11"></a>    title =<span class="st"> </span>{crew<span class="op">:</span><span class="st"> </span>Centralized Workers},</span>
 <span id="cb2-12"><a href="#cb2-12"></a>    author =<span class="st"> </span>{William Michael Landau},</span>
 <span id="cb2-13"><a href="#cb2-13"></a>    note =<span class="st"> </span>{https<span class="op">:</span><span class="er">//</span>wlandau.github.io<span class="op">/</span>crew<span class="op">/</span>, https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>wlandau<span class="op">/</span>crew},</span>
 <span id="cb2-14"><a href="#cb2-14"></a>  }</span></code></pre></div>
@@ -237,7 +237,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.repostatus.org/#wip" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="status"></a></li>
+<li><a href="https://www.repostatus.org/#Concept" class="external-link"><img src="https://www.repostatus.org/badges/latest/concept.svg" alt="status"></a></li>
 <li><a href="https://github.com/wlandau/crew/actions?query=workflow%3Acheck" class="external-link"><img src="https://github.com/wlandau/crew/workflows/check/badge.svg" alt="check"></a></li>
 <li><a href="https://app.codecov.io/gh/wlandau/crew" class="external-link"><img src="https://codecov.io/gh/wlandau/crew/branch/main/graph/badge.svg?token=3T5DlLwUVl" alt="codecov"></a></li>
 <li><a href="https://github.com/wlandau/crew/actions?query=workflow%3Alint" class="external-link"><img src="https://github.com/wlandau/crew/workflows/lint/badge.svg" alt="lint"></a></li>
@@ -255,7 +255,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer>
