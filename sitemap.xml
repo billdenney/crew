@@ -22,7 +22,10 @@
     <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/usage.html</loc>
+    <loc>/articles/mirai_callr.html</loc>
+  </url>
+  <url>
+    <loc>/articles/multi_controller.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
@@ -37,43 +40,37 @@
     <loc>/reference/crew-package.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_condition_false.html</loc>
+    <loc>/reference/crew_class_mirai_controller.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_condition_message.html</loc>
+    <loc>/reference/crew_class_mirai_launcher_callr.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_error.html</loc>
+    <loc>/reference/crew_class_mirai_router.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_queue.html</loc>
+    <loc>/reference/crew_class_multi_controller.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_queue_bg.html</loc>
+    <loc>/reference/crew_eval.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_queue_future.html</loc>
+    <loc>/reference/crew_mirai_controller.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_queue_session.html</loc>
+    <loc>/reference/crew_mirai_controller_callr.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_store.html</loc>
+    <loc>/reference/crew_mirai_launcher_callr.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_store_local.html</loc>
+    <loc>/reference/crew_mirai_router.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_task.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crew_true.html</loc>
+    <loc>/reference/crew_multi_controller.html</loc>
   </url>
   <url>
     <loc>/reference/crew_wait.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crew_worker.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
