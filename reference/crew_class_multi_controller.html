@@ -156,12 +156,12 @@
 <h3 id="method-connect-">Method <code>connect()</code><a class="anchor" aria-label="anchor" href="#method-connect-"></a></h3>
 <p>Connect one or more controllers.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">connect</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">connect</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>names</code></dt>
+<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
 <dd><p>Character vector of controller names.
 If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 
@@ -177,7 +177,7 @@ If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 <h3 id="method-launch-">Method <code>launch()</code><a class="anchor" aria-label="anchor" href="#method-launch-"></a></h3>
 <p>Launch one or more workers on one or more controllers.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1L</span>, names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1L</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -186,7 +186,7 @@ If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 <dd><p>Number of workers to launch in each controller selected.</p></dd>
 
 
-<dt><code>names</code></dt>
+<dt><code>controllers</code></dt>
 <dd><p>Character vector of controller names.
 If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 
@@ -203,12 +203,12 @@ If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 <p>Check for done tasks and move the results to
 the results list.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>names</code></dt>
+<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
 <dd><p>Character vector of controller names.
 If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 
@@ -226,12 +226,12 @@ list as applicable and moves them to the <code>results</code> list.</p>
 <p>Automatically scale up the number of workers if needed
 in one or more controller objects.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">scale</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">scale</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>names</code></dt>
+<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
 <dd><p>Character vector of controller names.
 If <code>NULL</code>, it defaults to all controllers in the list.</p></dd>
 
@@ -304,7 +304,7 @@ first controller in the list.</p></dd>
 <h3 id="method-pop-">Method <code>pop()</code><a class="anchor" aria-label="anchor" href="#method-pop-"></a></h3>
 <p>Pop a completed task from the results data frame.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span>collect <span class="op">=</span> <span class="cn">TRUE</span>, names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span>collect <span class="op">=</span> <span class="cn">TRUE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -314,7 +314,7 @@ first controller in the list.</p></dd>
 available results before calling <code>pop()</code>.</p></dd>
 
 
-<dt><code>names</code></dt>
+<dt><code>controllers</code></dt>
 <dd><p>Names of the controllers (in order) to look for
 completed tasks.</p></dd>
 
@@ -333,7 +333,7 @@ the return value is <code>NULL</code>.</p>
 <h3 id="method-wait-">Method <code>wait()</code><a class="anchor" aria-label="anchor" href="#method-wait-"></a></h3>
 <p>Wait for a result to be ready.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>timeout <span class="op">=</span> <span class="cn">Inf</span>, wait <span class="op">=</span> <span class="fl">0.1</span>, names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>timeout <span class="op">=</span> <span class="cn">Inf</span>, wait <span class="op">=</span> <span class="fl">0.1</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -348,9 +348,8 @@ results to become available.</p></dd>
 while checking for results.</p></dd>
 
 
-<dt><code>names</code></dt>
-<dd><p>Names of the controllers (in order) to look for
-completed tasks.</p></dd>
+<dt><code>controllers</code></dt>
+<dd><p>Names of the controllers to wait for.</p></dd>
 
 
 </dl><p></p></div>
@@ -365,14 +364,13 @@ completed tasks.</p></dd>
 <p>Terminate the workers and disconnect the router
 for one or more controllers.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>names <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_multi_controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>names</code></dt>
-<dd><p>Names of the controllers (in order) to look for
-completed tasks.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
+<dd><p>Names of the controllers to terminate.</p></dd>
 
 
 </dl><p></p></div>

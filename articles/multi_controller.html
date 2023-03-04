@@ -127,10 +127,10 @@ initialize both controllers.</p>
 <p>The multi-controller also supports global methods for
 <code>wait()</code>, <code>pop()</code>, and <code>terminate()</code>.
 These methods operate on all controllers at once by default, but the
-<code>names</code> argument allows you to select a subset of controllers
-to act on.</p>
+<code>controllers</code> argument allows you to select a subset of
+controllers to act on.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>controller <span class="op">=</span> <span class="st">"transient"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>controllers <span class="op">=</span> <span class="st">"transient"</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 7</span></span>
 <span><span class="co">#&gt;   name    command result    seconds error traceback warnings</span></span>
