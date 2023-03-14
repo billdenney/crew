@@ -95,6 +95,7 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div class="section level1">
 <div class="page-header"><h1 id="crew-a-distributed-worker-launcher-">crew: a distributed worker launcher <img src="reference/figures/logo-readme.png" align="right" height="139"><a class="anchor" aria-label="anchor" href="#crew-a-distributed-worker-launcher-"></a>
 </h1></div>
@@ -115,26 +116,7 @@
 <p>Please see <a href="https://wlandau.github.io/crew/" class="external-link uri">https://wlandau.github.io/crew/</a> for documentation, including a full function reference and usage tutorial vignettes.</p>
 </div>
 <div class="section level2">
-<h2 id="launchers">Launchers<a class="anchor" aria-label="anchor" href="#launchers"></a>
-</h2>
-<p>You can extend <code>crew</code> to distributed systems with workers that connect over the local network. To do this yourself, write an <a href="https://r6.r-lib.org" class="external-link"><code>R6</code></a> subclass that inherits from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>. An example is <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the local multi-process launcher, which is the one and only launcher inside the <code>crew</code> package itself. Using the <a href="https://github.com/wlandau/crew/blob/HEAD/R/crew_launcher_callr.R" class="external-link"><code>callr</code> launcher source code</a> as a reference, you can develop more ambitious launchers.</p>
-<p>The general requirements for a launcher are:</p>
-<ol style="list-style-type: decimal">
-<li>Inherit from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>.</li>
-<li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>. The method must:
-<ol style="list-style-type: decimal">
-<li>Accepts the arguments of <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
-<li>Launch a worker on the local network which calls <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a> on the arguments.</li>
-<li>Return a “handle”, an R object which allows the launcher to manually terminate the the worker later on. In the case of <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the handle is the <a href="https://callr.r-lib.org" class="external-link"><code>callr</code></a> handle to control a local R process. In other cases, such as SLURM or AWS Batch, the handle could be a job ID.</li>
-</ol>
-</li>
-<li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L129-L131" class="external-link"><code>terminate_worker()</code></a> which manually terminates the worker using the handle returned by <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>.</li>
-<li>Optional: a <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L48-L70" class="external-link">launcher helper</a> to create a launcher object using reasonable default arguments.</li>
-<li>Optional: a <a href="https://github.com/wlandau/crew/blob/main/R/crew_controller_callr.R" class="external-link">controller helper</a> to create a controller object with a launcher using default arguments.</li>
-</ol>
-</div>
-<div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="interface">Interface<a class="anchor" aria-label="anchor" href="#interface"></a>
 </h2>
 <p>First, start a <code>crew</code> session. The session reserves a TCP port to monitor the presence and absence of parallel workers. Call <code><a href="reference/crew_session_start.html">crew_session_start()</a></code> to start the session. Later on, when you are done using <code>crew</code>, call <code><a href="reference/crew_session_terminate.html">crew_session_terminate()</a></code> to release the port.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -164,8 +146,14 @@
 <p>When the result is available, you can retrieve it with <code>pop()</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The result is a <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" class="external-link">monad</a> with the result and its metadata. Even if the command of the task throws an error, it will still return the same kind of <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" class="external-link">monad</a>.</p>
+<p><code>crew</code> offers a smooth continuum between persistent workers that always stay running and transient workers that exit after doing little work.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> So if you submitted more tasks than workers and some of your workers timed out or exited, then you may need to call <code>pop()</code> iteratively so workers automatically scale back up to meet demand.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">while</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.001</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>The result is a <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" class="external-link">monad</a> with the result and its metadata. Even if the command of the task throws an error, it will still return the same kind of <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" class="external-link">monad</a>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 7</span></span>
 <span><span class="co">#&gt;   name                  command      result seconds error traceback warni…¹</span></span>
@@ -173,17 +161,36 @@
 <span><span class="co">#&gt; 1 get worker process ID ps::ps_pid() &lt;int&gt;        0 NA    NA        NA</span></span>
 <span><span class="co">#&gt; # … with abbreviated variable name ¹​warnings</span></span></code></pre></div>
 <p>The return value of the command is available in the <code>result</code> column. In our case, it is the process ID of the parallel worker that ran it, as reported by <code><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps::ps_pid()</a></code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="va">result</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># process ID of the parallel worker reported by the task</span></span>
 <span><span class="co">#&gt; [1] 69631</span></span></code></pre></div>
 <p>Since it ran on a parallel worker, it is different from the process ID of the local R session.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps_pid</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># local R session process ID</span></span>
 <span><span class="co">#&gt; [1] 69523</span></span></code></pre></div>
 <p>Continue the above process of asynchronously submitting and collecting tasks until your workflow is complete. When you are done, terminate the controller and the <code>crew</code> session to clean up the resources.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="launchers">Launchers<a class="anchor" aria-label="anchor" href="#launchers"></a>
+</h2>
+<p>You can extend <code>crew</code> to distributed systems with workers that connect over the local network. To do this yourself, write an <a href="https://r6.r-lib.org" class="external-link"><code>R6</code></a> subclass that inherits from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>. An example is <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the local multi-process launcher, which is the one and only launcher inside the <code>crew</code> package itself. Using the <a href="https://github.com/wlandau/crew/blob/HEAD/R/crew_launcher_callr.R" class="external-link"><code>callr</code> launcher source code</a> as a reference, you can develop more ambitious launchers.</p>
+<p>The general requirements for a launcher are:</p>
+<ol style="list-style-type: decimal">
+<li>Inherit from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>.</li>
+<li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>. The method must:
+<ol style="list-style-type: decimal">
+<li>Accepts the arguments of <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
+<li>Launch a worker on the local network which calls <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a> on the arguments.</li>
+<li>Return a “handle”, an R object which allows the launcher to manually terminate the the worker later on. In the case of <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the handle is the <a href="https://callr.r-lib.org" class="external-link"><code>callr</code></a> handle to control a local R process. In other cases, such as SLURM or AWS Batch, the handle could be a job ID.</li>
+</ol>
+</li>
+<li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L129-L131" class="external-link"><code>terminate_worker()</code></a> which manually terminates the worker using the handle returned by <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>.</li>
+<li>Optional: a <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L48-L70" class="external-link">launcher helper</a> to create a launcher object using reasonable default arguments.</li>
+<li>Optional: a <a href="https://github.com/wlandau/crew/blob/main/R/crew_controller_callr.R" class="external-link">controller helper</a> to create a controller object with a launcher using default arguments.</li>
+</ol>
 </div>
 <div class="section level2">
 <h2 id="similar-work">Similar work<a class="anchor" aria-label="anchor" href="#similar-work"></a>
@@ -248,10 +255,18 @@
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"crew"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
+<div class="footnotes footnotes-end-of-document">
+<hr>
+<ol>
+<li id="fn1"><p>See the <code>seconds_idle</code> and <code>tasks_max</code> arguments of <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>crew_controller_callr()</code></a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>See the <code>scale</code> argument of the <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-pop" class="external-link"><code>pop()</code></a> method.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
