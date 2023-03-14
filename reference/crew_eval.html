@@ -32,10 +32,7 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/mirai_callr.html">mirai task scheduler with callr workers</a>
-    </li>
-    <li>
-      <a href="../articles/multi_controller.html">Multi-controller workflows</a>
+      <a href="../articles/multi-controllers.html">Multi-controllers</a>
     </li>
   </ul></li>
 <li>
@@ -66,7 +63,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_eval</span><span class="op">(</span><span class="va">command</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_eval</span><span class="op">(</span></span>
+<span>  <span class="va">command</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  globals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000000000L</span>, size <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>,</span>
+<span>  garbage_collection <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  library <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -75,8 +80,34 @@
 <dd><p>Language object with R code to run.</p></dd>
 
 
-<dt>envir</dt>
-<dd><p>Environment to run <code>command</code>.</p></dd>
+<dt>data</dt>
+<dd><p>Named list of local data objects in the evaluation environment.</p></dd>
+
+
+<dt>globals</dt>
+<dd><p>Named list of objects to temporarily assign to the
+global environment for the task. At the end of the task,
+these values are reset to their previous values.</p></dd>
+
+
+<dt>seed</dt>
+<dd><p>Integer of length 1 with the pseudo-random number generator
+seed to temporarily set for the evaluation of the task.
+At the end of the task, the seed is restored.</p></dd>
+
+
+<dt>garbage_collection</dt>
+<dd><p>Logical, whether to run garbage collection
+with <code><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc()</a></code> before running the task.</p></dd>
+
+
+<dt>packages</dt>
+<dd><p>Character vector of packages to load for the task.</p></dd>
+
+
+<dt>library</dt>
+<dd><p>Library path to load the packages. See the <code>lib.loc</code>
+argument of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -85,19 +116,28 @@
 
 <p>A monad object with results and metadata.</p>
     </div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The <code>crew_eval()</code> function evaluates an R expression
+in an encapsulated environment and returns a monad with the results,
+including warnings and error messages if applicable.
+The random number generator seed, <code>globals</code>, and global options
+are restored to their original values on exit.</p>
+    </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other utilities: 
-<code><a href="crew_wait.html">crew_wait</a>()</code></p></div>
+<code><a href="crew_wait.html">crew_wait</a>()</code>,
+<code><a href="crew_worker.html">crew_worker</a>()</code></p></div>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">crew_eval</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html" class="external-link">quote</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   name  command result    seconds error traceback warnings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>    1 + 1   <span style="color: #949494;">&lt;dbl [1]&gt;</span>       0 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   name  command result    seconds      seed error traceback warnings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>    1 + 1   <span style="color: #949494;">&lt;dbl [1]&gt;</span>       0 764<span style="text-decoration: underline;">531</span>006 <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>      </span>
 </code></pre></div>
     </div>
   </div>
