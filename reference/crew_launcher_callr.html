@@ -66,6 +66,7 @@ callr workers for a controller."><meta property="og:image" content="/logo.svg"><
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_launcher_callr</span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_launch <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  seconds_idle <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  seconds_wall <span class="op">=</span> <span class="cn">Inf</span>,</span>
@@ -79,7 +80,11 @@ callr workers for a controller."><meta property="og:image" content="/logo.svg"><
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>seconds_launch</dt>
+    <dl><dt>name</dt>
+<dd><p>Name of the launcher.</p></dd>
+
+
+<dt>seconds_launch</dt>
 <dd><p>Seconds of startup time to allow.
 A worker is unconditionally assumed to be alive
 from the moment of its launch until <code>seconds_launch</code> seconds later.
