@@ -84,4 +84,7 @@
   <url>
     <loc>/reference/index.html</loc>
   </url>
+  <url>
+    <loc>/reference/reexports.html</loc>
+  </url>
 </urlset>

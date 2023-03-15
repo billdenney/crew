@@ -369,12 +369,21 @@ while checking for results.</p></dd>
 <h3 id="method-summary-">Method <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
 <p>Summarize the workers of one or more controllers.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span></span>
+<span>  columns <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
+<p></p><div class="arguments"><dl><dt><code>columns</code></dt>
+<dd><p>Tidyselect expression to select a subset of columns.
+Examples include <code>columns = contains("worker")</code> and
+<code>columns = starts_with("tasks")</code>.</p></dd>
+
+
+<dt><code>controllers</code></dt>
 <dd><p>Names of the controllers to summarize.</p></dd>
 
 
