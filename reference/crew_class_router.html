@@ -114,9 +114,12 @@
 <dd><p>See <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
 
 
-<dt><code>sockets</code></dt>
-<dd><p>Character vector of sockets listening for
-completed tasks.</p></dd>
+<dt><code>dispatcher</code></dt>
+<dd><p>Process ID of the <code>mirai</code> dispatcher</p></dd>
+
+
+<dt><code>daemons</code></dt>
+<dd><p>Data frame of information from <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.</p></dd>
 
 
 </dl><p></p></div>
@@ -128,6 +131,7 @@ completed tasks.</p></dd>
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-crew_class_router-new"><code>crew_class_router$new()</code></a></p></li>
+<li><p><a href="#method-crew_class_router-poll"><code>crew_class_router$poll()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-validate"><code>crew_class_router$validate()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-listening"><code>crew_class_router$listening()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-listen"><code>crew_class_router$listen()</code></a></p></li>
@@ -203,17 +207,27 @@ completed tasks.</p></dd>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">router</span><span class="op">$</span><span class="va">sockets</span> <span class="co"># "ws://xx.xx.xx:xxxxx/x"</span></span>
+<span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span></span>
 <span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-crew_class_router-validate"></a><div class="section">
-<h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
-<p>Validate the router.</p><div class="section">
+</div><p></p><hr><a id="method-crew_class_router-poll"></a><div class="section">
+<h3 id="method-poll-">Method <code>poll()</code><a class="anchor" aria-label="anchor" href="#method-poll-"></a></h3>
+<p>Update the <code>daemons</code> field with
+information on the <code>mirai</code> daemons.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">poll</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>Call <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> to get information about the workers.
+If the workers cannot be reached or the router has not started,
+then do not modify the <code>daemons</code> field. Otherwise, if the workers
+are reachable, populate the <code>daemons</code> field with a data frame
+of high-level worker-specific statistics.</p>
 </div>
 
 <div class="section">
@@ -221,16 +235,28 @@ completed tasks.</p></dd>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
+</div><p></p><hr><a id="method-crew_class_router-validate"></a><div class="section">
+<h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
+<p>Validate the router.</p><div class="section">
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
+
 </div><p></p><hr><a id="method-crew_class_router-listening"></a><div class="section">
 <h3 id="method-listening-">Method <code>listening()</code><a class="anchor" aria-label="anchor" href="#method-listening-"></a></h3>
 <p>Check if the <code>mirai</code> client is listening
 to worker websockets.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">listening</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
 <p>This method may stall and time out if there are
 tasks in the queue. Methods <code>listen()</code> and <code>terminate()</code>
 call <code>listening()</code> to manage the connection before
@@ -238,7 +264,7 @@ and after the entire workload, respectively.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code>TRUE</code> if successfully listening for dialed-in workers,
 <code>FALSE</code> otherwise.</p>
 </div>
@@ -246,12 +272,12 @@ and after the entire workload, respectively.</p>
 </div><p></p><hr><a id="method-crew_class_router-listen"></a><div class="section">
 <h3 id="method-listen-">Method <code>listen()</code><a class="anchor" aria-label="anchor" href="#method-listen-"></a></h3>
 <p>Start listening for workers on the available sockets.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
@@ -259,12 +285,12 @@ and after the entire workload, respectively.</p>
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
 <p>Stop the mirai client and disconnect from the
 worker websockets.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
@@ -277,7 +303,7 @@ worker websockets.</p><div class="section">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="va">sockets</span> <span class="co"># "ws://xx.xx.xx:xxxxx/x"</span></span></span>
+<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
@@ -288,7 +314,7 @@ worker websockets.</p><div class="section">
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="va">sockets</span> <span class="co"># "ws://xx.xx.xx:xxxxx/x"</span></span></span>
+<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

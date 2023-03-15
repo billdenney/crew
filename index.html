@@ -106,9 +106,7 @@
 </h2>
 <p><code>crew</code> is not yet available on CRAN, and it requires the development version of <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nanonext"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mirai"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"wlandau/crew"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"wlandau/crew"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
@@ -116,7 +114,17 @@
 <p>Please see <a href="https://wlandau.github.io/crew/" class="external-link uri">https://wlandau.github.io/crew/</a> for documentation, including a full function reference and usage tutorial vignettes.</p>
 </div>
 <div class="section level2">
-<h2 id="interface">Interface<a class="anchor" aria-label="anchor" href="#interface"></a>
+<h2 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
+</h2>
+<p>To the best of its ability, <code>crew</code> tries to only launch workers when needed, and it tries to manually monitor and clean up each worker it launches. However, the package is not perfect. Whether from a bug in the code or an egregious crash, it is still possible that too many workers will run concurrently, and it is still possible that either the workers or the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher will run too long or hang. In large-scale workflows, these accidents can have egregious consequences. Depending on the launcher type, these consequences can range from overburdening your local machine or cluster, to incurring unexpectedly high costs on <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a>.</p>
+<p>Please learn how to use the interface of the computing platform of your <code>crew</code> launcher, and please actively monitor the workers and <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher outside <code>crew</code> using that interface.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> For the <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>callr</code> launcher and controller</a>, use <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a> to inspect and manage the local R worker processes and <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher. For a <a href="https://slurm.schedmd.com/overview.html" class="external-link">SLURM</a> launcher, <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> and <a href="https://htop.dev/" class="external-link"><code>htop</code></a> can still manage the local R processes like the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher, but you will need to call <a href="https://slurm.schedmd.com/scancel.html" class="external-link"><code>scancel</code></a> to manually terminate workers as appropriate. For an <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a> launcher, please use the <a href="https://aws.amazon.com/console/" class="external-link">AWS web console</a> or <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a> to monitor, manage, and terminate workers.</p>
+<p>Finally, please note the final clause of the <a href="https://wlandau.github.io/crew/LICENSE.html" class="external-link">software license</a>:</p>
+<blockquote>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</blockquote>
+</div>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
 <p>First, start a <code>crew</code> session. The session reserves a TCP port to monitor the presence and absence of parallel workers. Call <code><a href="reference/crew_session_start.html">crew_session_start()</a></code> to start the session. Later on, when you are done using <code>crew</code>, call <code><a href="reference/crew_session_terminate.html">crew_session_terminate()</a></code> to release the port.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -146,7 +154,7 @@
 <p>When the result is available, you can retrieve it with <code>pop()</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><code>crew</code> offers a smooth continuum between persistent workers that always stay running and transient workers that exit after doing little work.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> So if you submitted more tasks than workers and some of your workers timed out or exited, then you may need to call <code>pop()</code> at frequent intervals so workers automatically scale back up to meet demand.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p><code>crew</code> offers a smooth continuum between persistent workers that always stay running and transient workers that exit after doing little work.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> So if you submitted more tasks than workers and some of your workers timed out or exited, then you may need to call <code>pop()</code> at frequent intervals so workers automatically scale back up to meet demand.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">while</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">out</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
@@ -262,8 +270,9 @@
 <div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
-<li id="fn1"><p>See the <code>seconds_idle</code> and <code>tasks_max</code> arguments of <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>crew_controller_callr()</code></a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>See the <code>scale</code> argument of the <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-pop" class="external-link"><code>pop()</code></a> method.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>The <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher is a local R process that runs <code><a href="https://shikokuchuo.net/mirai/reference/dispatcher.html" class="external-link">mirai::dispatcher()</a></code>. You can find it with <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a> <a href="https://htop.dev/" class="external-link"><code>htop</code></a>. Leave it running for as long as you use the <code>crew</code> controller. It should exit on its own when you terminate the controller, but if it keeps running indefinitely, then you will need to terminate it manually using <a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a>.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>See the <code>seconds_idle</code> and <code>tasks_max</code> arguments of <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>crew_controller_callr()</code></a>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>See the <code>scale</code> argument of the <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-pop" class="external-link"><code>pop()</code></a> method.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
