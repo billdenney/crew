@@ -297,7 +297,7 @@ properly assessed before scaling.</p></dd>
 
 
 <dt><code>controller</code></dt>
-<dd><p>Characte of length 1,
+<dd><p>Character of length 1,
 name of the controller to submit the task.
 If <code>NULL</code>, the controller defaults to the
 first controller in the list.</p></dd>
@@ -411,7 +411,11 @@ controllers. Examples include <code>columns = contains("con1")</code> and
 </div>
 <div class="section">
 <h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
-<p>A data frame of summary statistics on the workers and tasks.</p>
+<p>A data frame of aggregated worker summary statistics
+of all the selected controllers. It has one row per worker
+websocket, and the rows are grouped by controller.
+See the documentation of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method of the controller
+class for specific information about the columns in the output.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_controller_group-terminate"></a><div class="section">

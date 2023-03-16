@@ -403,8 +403,56 @@ Examples include <code>columns = contains("worker")</code> and
 </div>
 <div class="section">
 <h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
-<p>A data frame of summary statistics on the workers and tasks.</p>
-</div>
+<p>A data frame of summary statistics on the workers and tasks.
+It has one row per worker websocket and the following columns:</p><ul><li><p><code>controller</code>: name of the controller.</p></li>
+<li><p><code>worker_socket</code> full websocket address of the worker, including
+the protocol, IP address, TCP port, and path.
+To identify specific pieces of the websocket address,
+call <code><a href="https://shikokuchuo.net/nanonext/reference/parse_url.html" class="external-link">nanonext::parse_url()</a></code>.</p></li>
+<li><p><code>worker_connected</code>: <code>TRUE</code> if a worker is currently connected
+to the websocket, <code>FALSE</code> if not connected, or <code>NA</code>
+if the status cannot be determined because the <code>mirai</code>
+client is not running.</p></li>
+<li><p><code>worker_busy</code>: <code>TRUE</code> if a worker is currently busy running a
+task, <code>FALSE</code> if not busy, or <code>NA</code>
+if the status cannot be determined because the <code>mirai</code>
+client is not running.</p></li>
+<li><p><code>worker_launches</code>: number of attempts to launch a worker
+at the websocket since the controller started. If
+the number of launch attempts gets much higher than
+the number of tasks or worker instances, then this is a
+sign that something is wrong with the workers or platform,
+and it is recommended to quit the pipeline and troubleshoot.</p></li>
+<li><p><code>worker_instances</code>: number of different worker processes
+that have connected to the websocket since the <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code>
+of the controller object. For persistent workers that
+always stay running, <code>worker_instances</code> will be no more than 1.
+However, in the case of transient workers, e.g. <code>tasks_max = 1</code>
+or a small value of <code>seconds_idle</code>, worker processes may
+time out or exit when the task workload subsides. Then when the
+task workload surges again, different workers may be launch
+and connect to the available websockets, so <code>worker_instances</code>
+could be greater than 1.</p></li>
+<li><p><code>tasks_assigned</code>: number of pushed tasks assigned to the
+websocket since the controller started.</p></li>
+<li><p><code>tasks_complete</code>: number of tasks completed by a worker
+at the websocket since the controller started.</p></li>
+<li><p><code>popped_tasks</code>: number of tasks which were completed by
+a worker at the websocket and then returned by calling
+<code>pop()</code> on the controller object.</p></li>
+<li><p><code>popped_seconds</code>: total number of runtime and seconds of
+all the tasks that ran on a worker connected to this websocket
+and then were retrieved by calling <code>pop()</code> on the controller
+object.</p></li>
+<li><p><code>popped_errors</code>: total number of tasks which ran on a worker
+at the website, encountered an error in R, and then retrieved
+with <code>pop()</code>.</p></li>
+<li><p><code>popped_warnings</code>: total number of tasks which ran on a worker
+at the website, encountered one or more warnings in R,
+and then retrieved with <code>pop()</code>. Note: <code>popped_warnings</code>
+is actually the number of <em>tasks</em>, not the number of warnings.
+(A task could throw more than one warning.)</p></li>
+</ul></div>
 
 </div><p></p><hr><a id="method-crew_class_controller-terminate"></a><div class="section">
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
