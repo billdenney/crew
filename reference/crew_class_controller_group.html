@@ -349,18 +349,25 @@ the return value is <code>NULL</code>.</p>
 
 </div><p></p><hr><a id="method-crew_class_controller_group-wait"></a><div class="section">
 <h3 id="method-wait-">Method <code>wait()</code><a class="anchor" aria-label="anchor" href="#method-wait-"></a></h3>
-<p>Wait for a result to be ready.</p><div class="section">
+<p>Wait for tasks.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span></span>
+<span>  mode <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  timeout <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>  wait <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  wait <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>timeout</code></dt>
+<p></p><div class="arguments"><dl><dt><code>mode</code></dt>
+<dd><p>If <code>mode</code> is <code>"all"</code>,
+then the method waits for all tasks to complete. If <code>mode</code> is
+<code>"one"</code>, then it waits until a one task is complete.</p></dd>
+
+
+<dt><code>timeout</code></dt>
 <dd><p>Timeout length in seconds waiting for
 results to become available.</p></dd>
 
@@ -378,6 +385,16 @@ controllers. Examples include <code>columns = contains("con1")</code> and
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>The <code>wait()</code> method blocks the calling R session,
+repeatedly auto-scales workers for tasks
+that need them, and repeatedly collects results.
+The function runs until it either times out or one of the
+controllers reaches the stopping condition
+based on the <code>mode</code> argument.</p>
+</div>
+
 <div class="section">
 <h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code>NULL</code> (invisibly). Call <code>pop()</code> to get the result.</p>

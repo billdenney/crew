@@ -91,10 +91,10 @@ But if you think a task may always crash a worker
 this could be somewhat risky because <code>mirai</code> resubmits
 failed tasks behind the scenes and <code>crew</code> responds by
 re-launching workers. If you are worried about this scenario,
-choose <code>auto_scale = "single"</code> instead, which will only launch
+choose <code>auto_scale = "one"</code> instead, which will only launch
 up to one worker whenever a task is pushed.</p></li>
-<li><p><code>"single"</code>: just after pushing a new task in <code>push()</code>, launch
-a single worker if demand <code>min(n, max(0, t - w))</code> is greater than 0.</p></li>
+<li><p><code>"one"</code>: just after pushing a new task in <code>push()</code>, launch
+a one worker if demand <code>min(n, max(0, t - w))</code> is greater than 0.</p></li>
 <li><p><code>"none"</code>: do not auto-scale at all.</p></li>
 </ul></dd>
 
