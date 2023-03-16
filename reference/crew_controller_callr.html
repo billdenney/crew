@@ -18,7 +18,7 @@ launch callr workers."><meta property="og:image" content="/logo.svg"><!-- mathja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3</span>
       </span>
     </div>
 
@@ -152,7 +152,10 @@ considered alive if it is actively connected to its assign websocket.</p></dd>
 since the completion of the last task. If exceeded, the worker exits.
 But the timer does not launch until <code>tasks_timers</code> tasks
 have completed.
-See the <code>idletime</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
+See the <code>idletime</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>. <code>crew</code> does not
+excel with perfectly transient workers because it does not micromanage
+the assignment of tasks to workers, so please allow enough idle
+time for a new worker to be delegated a new task.</p></dd>
 
 
 <dt>seconds_wall</dt>
@@ -164,7 +167,11 @@ See the <code>walltime</code> argument of <code><a href="https://shikokuchuo.net
 
 <dt>tasks_max</dt>
 <dd><p>Maximum number of tasks that a worker will do before
-exiting. See the <code>maxtasks</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
+exiting. See the <code>maxtasks</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.
+<code>crew</code> does not
+excel with perfectly transient workers because it does not micromanage
+the assignment of tasks to workers, it is recommended to set
+<code>tasks_max</code> to a value greater than 1.</p></dd>
 
 
 <dt>tasks_timers</dt>

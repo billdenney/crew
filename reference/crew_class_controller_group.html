@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3</span>
       </span>
     </div>
 
@@ -158,15 +158,14 @@
 <h3 id="method-start-">Method <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code><a class="anchor" aria-label="anchor" href="#method-start-"></a></h3>
 <p>Start one or more controllers.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -180,10 +179,7 @@ controllers. Examples include <code>columns = contains("con1")</code> and
 <h3 id="method-launch-">Method <code>launch()</code><a class="anchor" aria-label="anchor" href="#method-launch-"></a></h3>
 <p>Launch one or more workers on one or more controllers.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span></span>
-<span>  n <span class="op">=</span> <span class="fl">1L</span>,</span>
-<span>  controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1L</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -193,9 +189,8 @@ controllers. Examples include <code>columns = contains("con1")</code> and
 
 
 <dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -210,15 +205,14 @@ controllers. Examples include <code>columns = contains("con1")</code> and
 <p>Check for done tasks and move the results to
 the results list.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -234,15 +228,14 @@ list as applicable and moves them to the <code>results</code> list.</p>
 <p>Automatically scale up the number of workers if needed
 in one or more controller objects.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">scale</span><span class="op">(</span>controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">scale</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -314,10 +307,7 @@ first controller in the list.</p></dd>
 <h3 id="method-pop-">Method <code>pop()</code><a class="anchor" aria-label="anchor" href="#method-pop-"></a></h3>
 <p>Pop a completed task from the results data frame.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span></span>
-<span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span>scale <span class="op">=</span> <span class="cn">TRUE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -332,9 +322,8 @@ quickly after doing little work.</p></dd>
 
 
 <dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -355,7 +344,7 @@ the return value is <code>NULL</code>.</p>
 <span>  mode <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  timeout <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  wait <span class="op">=</span> <span class="fl">0.001</span>,</span>
-<span>  controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -378,9 +367,8 @@ while checking for results.</p></dd>
 
 
 <dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -406,7 +394,7 @@ based on the <code>mode</code> argument.</p>
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span></span>
 <span>  columns <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -419,9 +407,8 @@ Examples include <code>columns = contains("worker")</code> and
 
 
 <dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
@@ -440,15 +427,14 @@ class for specific information about the columns in the output.</p>
 <p>Terminate the workers and disconnect the router
 for one or more controllers.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>controllers <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
-<dd><p>Tidyselect expression to select a subset of
-controllers. Examples include <code>columns = contains("con1")</code> and
-<code>columns = starts_with("con2")</code>.</p></dd>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
 
 
 </dl><p></p></div>
