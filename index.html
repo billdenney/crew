@@ -96,26 +96,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="crew-a-distributed-worker-launcher-">crew: a distributed worker launcher <img src="reference/figures/logo-readme.png" align="right" height="139"><a class="anchor" aria-label="anchor" href="#crew-a-distributed-worker-launcher-"></a>
-</h1></div>
-<p><a href="https://www.repostatus.org/#WIP" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="status"></a> <a href="https://github.com/wlandau/crew/actions?query=workflow%3Acheck" class="external-link"><img src="https://github.com/wlandau/crew/workflows/check/badge.svg" alt="check"></a> <a href="https://app.codecov.io/gh/wlandau/crew" class="external-link"><img src="https://codecov.io/gh/wlandau/crew/branch/main/graph/badge.svg?token=3T5DlLwUVl" alt="codecov"></a> <a href="https://github.com/wlandau/crew/actions?query=workflow%3Alint" class="external-link"><img src="https://github.com/wlandau/crew/workflows/lint/badge.svg" alt="lint"></a></p>
+
+
 <p>In computationally demanding analysis projects, statisticians and data scientists asynchronously deploy long-running tasks to distributed systems, ranging from traditional clusters to cloud services. The <a href="https://nng.nanomsg.org" class="external-link">NNG</a>-powered <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> R package is a sleek and sophisticated scheduler that efficiently processes these intense workloads. The <code>crew</code> package extends <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> with a unifying interface for third-party worker launchers. Inspiration also comes from packages <a href="https://future.futureverse.org/" class="external-link"><code>future</code></a>, <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a>, <a href="https://mschubert.github.io/clustermq/" class="external-link"><code>clustermq</code></a>, and <a href="https://mllg.github.io/batchtools/" class="external-link"><code>batchtools</code></a>.</p>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
+<div class="section level1">
+<div class="page-header"><h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1></div>
 <p><code>crew</code> is not yet available on CRAN, and it requires the development version of <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"wlandau/crew"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
-</h2>
+<div class="section level1">
+<h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h1>
 <p>Please see <a href="https://wlandau.github.io/crew/" class="external-link uri">https://wlandau.github.io/crew/</a> for documentation, including a full function reference and usage tutorial vignettes.</p>
 </div>
-<div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
-</h2>
+<div class="section level1">
+<h1 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h1>
 <p>First, start a <code>crew</code> session. The session reserves a TCP port to monitor the presence and absence of parallel workers. Call <code><a href="reference/crew_session_start.html">crew_session_start()</a></code> to start the session. Later on, when you are done using <code>crew</code>, call <code><a href="reference/crew_session_terminate.html">crew_session_terminate()</a></code> to release the port.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
@@ -189,11 +187,11 @@
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="launchers">Launchers<a class="anchor" aria-label="anchor" href="#launchers"></a>
-</h2>
+<div class="section level1">
+<h1 id="launchers">Launchers<a class="anchor" aria-label="anchor" href="#launchers"></a>
+</h1>
 <p>You can extend <code>crew</code> to distributed systems with workers that connect over the local network. To do this yourself, write an <a href="https://r6.r-lib.org" class="external-link"><code>R6</code></a> subclass that inherits from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>. An example is <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the local multi-process launcher, which is the one and only launcher inside the <code>crew</code> package itself. Using the <a href="https://github.com/wlandau/crew/blob/HEAD/R/crew_launcher_callr.R" class="external-link"><code>callr</code> launcher source code</a> as a reference, you can develop more ambitious launchers.</p>
-<p>The general requirements for a launcher are:</p>
+<p>The general requirements for a third-party launcher are:</p>
 <ol style="list-style-type: decimal">
 <li>Inherit from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>.</li>
 <li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>. The method must:
@@ -208,18 +206,23 @@
 <li>Optional: a <a href="https://github.com/wlandau/crew/blob/main/R/crew_controller_callr.R" class="external-link">controller helper</a> to create a controller object with a launcher using default arguments.</li>
 </ol>
 </div>
-<div class="section level2">
-<h2 id="risks">Risks<a class="anchor" aria-label="anchor" href="#risks"></a>
-</h2>
+<div class="section level1">
+<h1 id="risks">Risks<a class="anchor" aria-label="anchor" href="#risks"></a>
+</h1>
 <p>The <code>crew</code> package has unavoidable risk. It is your responsibility as the user to safely use <code>crew</code>. Please read the final clause of the <a href="https://wlandau.github.io/crew/LICENSE.html" class="external-link">software license</a>.</p>
-<div class="section level4">
-<h4 id="security">Security<a class="anchor" aria-label="anchor" href="#security"></a>
-</h4>
+<div class="section level3">
+<h3 id="security">Security<a class="anchor" aria-label="anchor" href="#security"></a>
+</h3>
 <p><code>crew</code> uses TCP connections for transactions with workers inside a trusted local network. In a compromised network, an attacker can potentially access and exploit sensitive resources. It is your responsibility to assess the sensitivity and vulnerabilities of your computing environment and make sure your network is secure.</p>
 </div>
-<div class="section level4">
-<h4 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
-</h4>
+<div class="section level3">
+<h3 id="ports">Ports<a class="anchor" aria-label="anchor" href="#ports"></a>
+</h3>
+<p><code>crew</code> may use more than one TCP port at a time. The number of ports used is the number of running controllers, plus one extra port that <code><a href="reference/crew_session_start.html">crew_session_start()</a></code> reserves for checking the status of workers. TCP ports range from 0 to 65535, and only around 16000 of these ports are considered ephemeral or dynamic, so please be careful not to run too many controllers if you are running R on a machine you share with other people (such as the login node of a computing cluster). If you are running a <a href="https://wlandau.github.io/crew/articles/controller_groups.html" class="external-link">controller group</a> please add only a small number of controllers to the group. The <code>terminate()</code> method of the controller and <code><a href="reference/crew_session_terminate.html">crew_session_terminate()</a></code> should free these ports again for other processes to use.</p>
+</div>
+<div class="section level3">
+<h3 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+</h3>
 <p>The <code>crew</code> package launches external R processes:</p>
 <ol style="list-style-type: decimal">
 <li>Worker processes to run tasks, possibly on different computers on the local network, and</li>
@@ -227,24 +230,24 @@
 </ol>
 <p>To the best of its ability, <code>crew</code> tries to only launch the processes it needs, and it tries to manually monitor and clean up these processes when the work is done. However, the package is not perfect. Whether from a bug in the code or an egregious crash, it is still possible that too many workers may run concurrently, and it is still possible that either the workers or the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher may run too long or hang. In large-scale workflows, these accidents can have egregious consequences. Depending on the launcher type, these consequences can range from overburdening your local machine or cluster, to incurring unexpectedly high costs on <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a>.</p>
 </div>
-<div class="section level4">
-<h4 id="dispatcher">Dispatcher<a class="anchor" aria-label="anchor" href="#dispatcher"></a>
-</h4>
+<div class="section level3">
+<h3 id="dispatcher">Dispatcher<a class="anchor" aria-label="anchor" href="#dispatcher"></a>
+</h3>
 <p>The <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher should gracefully exit when you call <code>terminate()</code> on the controller object. In most cases, it is best to let this exit process happen naturally because it gracefully shuts down the workers. However, in case of an ill-timed crash, you may need to shut down the dispatcher manually. You can find the process ID of the current dispatcher using the controller object, then use <code><a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link">ps::ps_kill()</a></code> to terminate the process.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">router</span><span class="op">$</span><span class="va">dispatcher</span></span>
 <span><span class="co">#&gt; [1] 86028</span></span>
 <span><span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link">ps_kill</a></span><span class="op">(</span><span class="fl">86028</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="workers">Workers<a class="anchor" aria-label="anchor" href="#workers"></a>
-</h4>
+<div class="section level3">
+<h3 id="workers">Workers<a class="anchor" aria-label="anchor" href="#workers"></a>
+</h3>
 <p>Workers may run on different computing platforms, depending on the type of launcher you choose. Each type of launcher connects to a different computing platform. Please learn the interface of that computing platform, particularly how to find and terminate jobs manually without using <code>crew</code>. For example, the <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>callr</code> launcher and controller</a> create R processes on your local machine, which you can find and terminate with <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a>. For a SLURM launcher, you need <a href="https://slurm.schedmd.com/squeue.html" class="external-link"><code>squeue</code></a> to find workers and <a href="https://slurm.schedmd.com/scancel.html" class="external-link"><code>scancel</code></a> to terminate them. For an <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a> launcher, please use the <a href="https://aws.amazon.com/console/" class="external-link">AWS web console</a> or <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a>.</p>
 </div>
 </div>
-<div class="section level2">
-<h2 id="similar-work">Similar work<a class="anchor" aria-label="anchor" href="#similar-work"></a>
-</h2>
+<div class="section level1">
+<h1 id="similar-work">Similar work<a class="anchor" aria-label="anchor" href="#similar-work"></a>
+</h1>
 <ul>
 <li>
 <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a>: a powerful R framework for asynchronous tasks built on <a href="https://nng.nanomsg.org" class="external-link">NNG</a>. The purpose of <code>crew</code> is to extend <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> to different computing platforms for distributed workers.</li>
@@ -270,9 +273,9 @@
 <a href="https://CRAN.R-project.org/view=HighPerformanceComputing" class="external-link">High-performance computing CRAN task view</a>.</li>
 </ul>
 </div>
-<div class="section level2">
-<h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>
-</h2>
+<div class="section level1">
+<h1 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>
+</h1>
 <p>The <code>crew</code> package incorporates insightful ideas from the following people.</p>
 <ul>
 <li>
@@ -296,7 +299,6 @@
 <li>
 <a href="https://github.com/MarkEdmondson1234/" class="external-link">Mark Edmondson</a>. Mark maintains several R packages to interface with Google Cloud Platform such as <a href="https://github.com/cloudyr/googleCloudStorageR" class="external-link"><code>googleCloudStorageR</code></a> and <a href="https://github.com/MarkEdmondson1234/googleCloudRunner" class="external-link"><code>googleCloudRunner</code></a>, and he <a href="https://github.com/ropensci/targets/issues/720" class="external-link">started the conversation</a> around helping <a href="https://github.com/ropensci/targets" class="external-link"><code>targets</code></a> submit jobs to Google Cloud Run.</li>
 </ul>
-</div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
@@ -309,6 +311,7 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"crew"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -351,7 +354,15 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://www.repostatus.org/#Active" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="status"></a></li>
+<li><a href="https://github.com/wlandau/crew/actions?query=workflow%3Acheck" class="external-link"><img src="https://github.com/wlandau/crew/workflows/check/badge.svg" alt="check"></a></li>
+<li><a href="https://app.codecov.io/gh/wlandau/crew" class="external-link"><img src="https://codecov.io/gh/wlandau/crew/branch/main/graph/badge.svg?token=3T5DlLwUVl" alt="codecov"></a></li>
+<li><a href="https://github.com/wlandau/crew/actions?query=workflow%3Alint" class="external-link"><img src="https://github.com/wlandau/crew/workflows/lint/badge.svg" alt="lint"></a></li>
+</ul>
+</div>
 
   </div>
 </div>
