@@ -342,8 +342,8 @@ the return value is <code>NULL</code>.</p>
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span></span>
 <span>  mode <span class="op">=</span> <span class="st">"all"</span>,</span>
-<span>  timeout <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>  wait <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  seconds_timeout <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -356,14 +356,14 @@ then the method waits for all tasks to complete. If <code>mode</code> is
 <code>"one"</code>, then it waits until a one task is complete.</p></dd>
 
 
-<dt><code>timeout</code></dt>
+<dt><code>seconds_interval</code></dt>
+<dd><p>Number of seconds to wait between
+polling intervals while checking for results.</p></dd>
+
+
+<dt><code>seconds_timeout</code></dt>
 <dd><p>Timeout length in seconds waiting for
 results to become available.</p></dd>
-
-
-<dt><code>wait</code></dt>
-<dd><p>Number of seconds to wait between polling intervals
-while checking for results.</p></dd>
 
 
 <dt><code>controllers</code></dt>

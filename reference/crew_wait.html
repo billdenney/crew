@@ -65,7 +65,13 @@ and exit the loop when it returns <code>TRUE</code></p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_wait</span><span class="op">(</span><span class="va">fun</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, timeout <span class="op">=</span> <span class="fl">60</span>, wait <span class="op">=</span> <span class="fl">1</span>, message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_wait</span><span class="op">(</span></span>
+<span>  <span class="va">fun</span>,</span>
+<span>  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  seconds_timeout <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,14 +85,14 @@ or <code>TRUE</code> to stop waiting.</p></dd>
 <dd><p>A named list of arguments to <code>fun</code>.</p></dd>
 
 
-<dt>timeout</dt>
-<dd><p>Nonnegative numeric of length 1,
-number of seconds to loop before timing out.</p></dd>
-
-
-<dt>wait</dt>
+<dt>seconds_interval</dt>
 <dd><p>Nonnegative numeric of length 1,
 number of seconds to wait between calls to <code>fun</code>.</p></dd>
+
+
+<dt>seconds_timeout</dt>
+<dd><p>Nonnegative numeric of length 1,
+number of seconds to loop before timing out.</p></dd>
 
 
 <dt>message</dt>
