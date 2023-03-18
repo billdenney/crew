@@ -71,12 +71,14 @@ launch <code>callr</code> workers.</p>
 <span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  port <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  seconds_router_timeout <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  seconds_router_wait <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  seconds_router_wait <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  seconds_launch <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  seconds_launcher_timeout <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  seconds_launcher_wait <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  seconds_exit <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  seconds_poll_high <span class="op">=</span> <span class="fl">0.001</span>,</span>
 <span>  seconds_poll_low <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  async_dial <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  seconds_launch <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  seconds_idle <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  seconds_wall <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  tasks_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
@@ -117,6 +119,26 @@ for the <code>mirai</code> client to (dis)connect.</p></dd>
 iterations checking if the <code>mirai</code> client is (dis)connected.</p></dd>
 
 
+<dt>seconds_launch</dt>
+<dd><p>Seconds of startup time to allow.
+A worker is unconditionally assumed to be alive
+from the moment of its launch until <code>seconds_launch</code> seconds later.
+After <code>seconds_launch</code> seconds, the worker is only
+considered alive if it is actively connected to its assign websocket.</p></dd>
+
+
+<dt>seconds_launcher_timeout</dt>
+<dd><p>Number of seconds to wait until timing
+out for synchronous launcher operations such as waiting for
+a worker to exit if applicable.</p></dd>
+
+
+<dt>seconds_launcher_wait</dt>
+<dd><p>Number of seconds between
+polling intervals waiting for synchronous launcher operations
+such as waiting for a worker to exit if applicable.</p></dd>
+
+
 <dt>seconds_exit</dt>
 <dd><p>Number of seconds to wait for NNG websockets
 to finish sending large data (in case an exit signal is received).</p></dd>
@@ -137,14 +159,6 @@ active queue. See the <code>pollfreql</code> argument of
 <dt>async_dial</dt>
 <dd><p>Logical, whether the <code>mirai</code> workers should dial in
 asynchronously. See the <code>asyncdial</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
-
-
-<dt>seconds_launch</dt>
-<dd><p>Seconds of startup time to allow.
-A worker is unconditionally assumed to be alive
-from the moment of its launch until <code>seconds_launch</code> seconds later.
-After <code>seconds_launch</code> seconds, the worker is only
-considered alive if it is actively connected to its assign websocket.</p></dd>
 
 
 <dt>seconds_idle</dt>
