@@ -103,12 +103,12 @@ third-party launcher subclasses from other packages, this mechanism will
 allow you to e.g. send some tasks to GPU-capable or high-memory workers
 while other tasks go to low-spec workers.</p>
 <p>We demonstrate with a controller of fully persistent workers which
-always stay running and a controller of semi-transient workers which
+always stay running and a controller of semi-persistent workers which
 terminate after completing four tasks. We create controller objects with
 names.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span>
-<span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"semi-transient"</span>, tasks_max <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"semi-persistent"</span>, tasks_max <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></code></pre></div>
 <p><code>crew</code> uses a different TCP port for each controller you
 run, so please do not create hundreds of controllers. Please see the
 subsection on ports in the <a href="https://wlandau.github.io/crew/index.html" class="external-link">README</a>.</p>
@@ -122,14 +122,14 @@ initialize both controllers.</p>
 <code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>You can choose which worker pool to receive tasks.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my task"</span>, command <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, controller <span class="op">=</span> <span class="st">"semi-transient"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my task"</span>, command <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, controller <span class="op">=</span> <span class="st">"semi-persistent"</span><span class="op">)</span></span></code></pre></div>
 <p>The controller group also supports global methods for
 <code>wait()</code>, <code>pop()</code>, and <code>terminate()</code>.
 These methods operate on all controllers at once by default, but the
 <code>controllers</code> argument allows you to select a subset of
 controllers to act on.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>controllers <span class="op">=</span> <span class="st">"semi-transient"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>controllers <span class="op">=</span> <span class="st">"semi-persistent"</span><span class="op">)</span></span>
 <span><span class="va">group</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 7</span></span>
 <span><span class="co">#&gt;   name    command result    seconds error traceback warnings</span></span>
@@ -143,7 +143,7 @@ aggregates all the information from the selected controllers.</p>
 <span><span class="co">#&gt;   controller     tasks_assigned tasks_complete</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;                   &lt;int&gt;          &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 persistent                  0              0</span></span>
-<span><span class="co">#&gt; 2 semi-transient              1              1</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 semi-persistent             1              1</span></span></code></pre></div>
 <p>When you are finished, please call <code>terminate()</code> with no
 arguments to terminate all controllers in the controller group.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
