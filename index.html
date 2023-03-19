@@ -202,7 +202,7 @@
 <ol style="list-style-type: decimal">
 <li>Inherit from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>.</li>
 <li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>. The method must:
-<ol style="list-style-type: lower-alpha">
+<ol style="list-style-type: decimal">
 <li>Accepts the arguments of <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
 <li>Launch a worker on the local network which calls <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a> on the arguments.</li>
 <li>Return a “handle”, an R object which allows the launcher to manually terminate the the worker later on. In the case of <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the handle is the <a href="https://callr.r-lib.org" class="external-link"><code>callr</code></a> handle to control a local R process. In other cases, such as SLURM or AWS Batch, the handle could be a job ID.</li>
@@ -228,7 +228,7 @@
 <p><code>crew</code> may use more than one TCP port at a time. The number of ports used is the number of running controllers, plus one extra port that <code><a href="reference/crew_session_start.html">crew_session_start()</a></code> reserves for checking the status of workers. TCP ports range from 0 to 65535, and only around 16000 of these ports are considered ephemeral or dynamic, so please be careful not to run too many controllers if you are running R on a machine you share with other people (such as the login node of a computing cluster). If you are running a <a href="https://wlandau.github.io/crew/articles/controller_groups.html" class="external-link">controller group</a> please add only a small number of controllers to the group. The <code>terminate()</code> method of the controller and <code><a href="reference/crew_session_terminate.html">crew_session_terminate()</a></code> should free these ports again for other processes to use.</p>
 </div>
 <div class="section level3">
-<h3 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+<h3 id="zombies">Zombies<a class="anchor" aria-label="anchor" href="#zombies"></a>
 </h3>
 <p>The <code>crew</code> package launches external R processes:</p>
 <ol style="list-style-type: decimal">
@@ -250,6 +250,11 @@
 <h3 id="workers">Workers<a class="anchor" aria-label="anchor" href="#workers"></a>
 </h3>
 <p>Workers may run on different computing platforms, depending on the type of launcher you choose. Each type of launcher connects to a different computing platform. Please learn the interface of that computing platform, particularly how to find and terminate jobs manually without using <code>crew</code>. For example, the <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>callr</code> launcher and controller</a> create R processes on your local machine, which you can find and terminate with <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a>. For a SLURM launcher, you need <a href="https://slurm.schedmd.com/squeue.html" class="external-link"><code>squeue</code></a> to find workers and <a href="https://slurm.schedmd.com/scancel.html" class="external-link"><code>scancel</code></a> to terminate them. For an <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a> launcher, please use the <a href="https://aws.amazon.com/console/" class="external-link">AWS web console</a> or <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="scheduling">Scheduling<a class="anchor" aria-label="anchor" href="#scheduling"></a>
+</h3>
+<p><code>crew</code> is designed to launch persistent workers that run one or more tasks. Depending on user settings, persistent workers may run for the entire length of the analysis pipeline, or they may exit if they idle too long or complete a certain number of tasks. <code>crew</code> re-launches persistent workers if there are more unfinished tasks in the queue than <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html#details" class="external-link">active workers</a> to run them at a given snapshot in time. This kind of auto-scaling does not dedicate any specific worker to any specific task, and it does not perform well when workers exit too quickly. If <code>seconds_idle</code> is too low, or if <code>tasks_max</code> is 1 and there is a large backlog of quick tasks, then workers may exit before doing any work.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Please configure arguments like <code>seconds_idle</code> and <code>tasks_max</code> so that your workers are likely to do a nontrivial amount of work before exiting.</p>
 </div>
 </div>
 <div class="section level1">
@@ -317,6 +322,12 @@
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"crew"</span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr>
+<ol>
+<li id="fn1"><p>See <a href="https://github.com/wlandau/crew/discussions/50" class="external-link uri">https://github.com/wlandau/crew/discussions/50</a> for an example.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
   </div>
