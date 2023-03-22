@@ -74,6 +74,9 @@
 <li>
       <a href="articles/controller_groups.html">Controller groups</a>
     </li>
+    <li>
+      <a href="articles/plugins.html">Launcher plugins</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -120,6 +123,11 @@
 <h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h1>
 <p>Please see <a href="https://wlandau.github.io/crew/" class="external-link uri">https://wlandau.github.io/crew/</a> for documentation, including a full function reference and usage tutorial vignettes.</p>
+</div>
+<div class="section level1">
+<h1 id="plugins">Plugins<a class="anchor" aria-label="anchor" href="#plugins"></a>
+</h1>
+<p><code>crew</code> lets you write custom <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launchers</a> for different types of workers that connect over the local network. This flexibility can extend <code>crew</code> to platforms like <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>, <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a>, and <a href="https://kubernetes.io/" class="external-link">Kubernetes</a>. See the <a href="https://wlandau.github.io/crew/articles/plugins.html" class="external-link">plugin vignette</a> for details.</p>
 </div>
 <div class="section level1">
 <h1 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -198,25 +206,6 @@
 <span><span class="fu"><a href="reference/crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
-<h1 id="launchers">Launchers<a class="anchor" aria-label="anchor" href="#launchers"></a>
-</h1>
-<p>You can extend <code>crew</code> to distributed systems with workers that connect over the local network. To do this yourself, write an <a href="https://r6.r-lib.org" class="external-link"><code>R6</code></a> subclass that inherits from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>. An example is <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the local multi-process launcher, which is the one and only launcher inside the <code>crew</code> package itself. Using the <a href="https://github.com/wlandau/crew/blob/HEAD/R/crew_launcher_callr.R" class="external-link"><code>callr</code> launcher source code</a> as a reference, you can develop more ambitious launchers.</p>
-<p>The general requirements for a third-party launcher are:</p>
-<ol style="list-style-type: decimal">
-<li>Inherit from <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>.</li>
-<li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>. The method must:
-<ol style="list-style-type: decimal">
-<li>Accepts the arguments of <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
-<li>Launch a worker on the local network which calls <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a> on the arguments.</li>
-<li>Return a “handle”, an R object which allows the launcher to manually terminate the the worker later on. In the case of <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>crew_class_launcher_callr</code></a>, the handle is the <a href="https://callr.r-lib.org" class="external-link"><code>callr</code></a> handle to control a local R process. In other cases, such as SLURM or AWS Batch, the handle could be a job ID.</li>
-</ol>
-</li>
-<li>A public method <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L129-L131" class="external-link"><code>terminate_worker()</code></a> which manually terminates the worker using the handle returned by <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L104-L124" class="external-link"><code>launch_worker()</code></a>.</li>
-<li>Optional: a <a href="https://github.com/wlandau/crew/blob/3066eaf3f7edc1a48c1dcd51419e299f955da8ab/R/crew_launcher_callr.R#L48-L70" class="external-link">launcher helper</a> to create a launcher object using reasonable default arguments.</li>
-<li>Optional: a <a href="https://github.com/wlandau/crew/blob/main/R/crew_controller_callr.R" class="external-link">controller helper</a> to create a controller object with a launcher using default arguments.</li>
-</ol>
-</div>
-<div class="section level1">
 <h1 id="risks">Risks<a class="anchor" aria-label="anchor" href="#risks"></a>
 </h1>
 <p>The <code>crew</code> package has unavoidable risk. It is your responsibility as the user to safely use <code>crew</code>. Please read the final clause of the <a href="https://wlandau.github.io/crew/LICENSE.html" class="external-link">software license</a>.</p>
@@ -238,7 +227,7 @@
 <li>Worker processes to run tasks, possibly on different computers on the local network, and</li>
 <li>A local <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher process to schedule the tasks.</li>
 </ol>
-<p>To the best of its ability, <code>crew</code> tries to only launch the processes it needs, and it tries to manually monitor and clean up these processes when the work is done. However, the package is not perfect. Whether from a bug in the code or an egregious crash, it is still possible that too many workers may run concurrently, and it is still possible that either the workers or the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher may run too long or hang. In large-scale workflows, these accidents can have egregious consequences. Depending on the launcher type, these consequences can range from overburdening your local machine or cluster, to incurring unexpectedly high costs on <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a>.</p>
+<p>To the best of its ability, <code>crew</code> tries to only launch the processes it needs, and it relies on <code>mirai</code> to clean up these processes when the work is done. However, sometimes it is still possible that too many workers may run concurrently, and it is still possible that either the workers or the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher may run too long or hang. In large-scale workflows, these accidents can have egregious consequences. Depending on the launcher type, these consequences can range from overburdening your local machine or cluster, to incurring unexpectedly high costs on <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="dispatcher">Dispatcher<a class="anchor" aria-label="anchor" href="#dispatcher"></a>
@@ -252,7 +241,8 @@
 <div class="section level3">
 <h3 id="workers">Workers<a class="anchor" aria-label="anchor" href="#workers"></a>
 </h3>
-<p>Workers may run on different computing platforms, depending on the type of launcher you choose. Each type of launcher connects to a different computing platform. Please learn the interface of that computing platform, particularly how to find and terminate jobs manually without using <code>crew</code>. For example, the <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>callr</code> launcher and controller</a> create R processes on your local machine, which you can find and terminate with <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a>. For a SLURM launcher, you need <a href="https://slurm.schedmd.com/squeue.html" class="external-link"><code>squeue</code></a> to find workers and <a href="https://slurm.schedmd.com/scancel.html" class="external-link"><code>scancel</code></a> to terminate them. For an <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a> launcher, please use the <a href="https://aws.amazon.com/console/" class="external-link">AWS web console</a> or <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a>.</p>
+<p><code>mirai</code> usually terminates workers when they are no longer needed, but sometimes it cannot reach a worker, e.g. when a worker comes online after its startup time from <code>seconds_start</code> elapses. To make sure workers do not run indefinitely if something goes wrong, it is always prudent to set arguments like <code>seconds_idle</code> in functions like <code><a href="reference/crew_controller_callr.html">crew_controller_callr()</a></code>. In addition, please learn how to find and terminate workers on the specific computing platform where they run. And if you are writing a custom launcher plugin, it is recommended (although not strictly required) to write a custom <code>terminate_worker()</code> method.</p>
+<p>Workers may run on different computing platforms, depending on the type of launcher you choose. Each type of launcher connects to a different computing platform, and each platform has a different way of terminating workers. For example, the <a href="https://wlandau.github.io/crew/reference/crew_launcher_callr.html" class="external-link"><code>callr</code> launcher</a> creates R processes on your local machine, which you can find and terminate with <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a>. For a SLURM launcher, you need <a href="https://slurm.schedmd.com/squeue.html" class="external-link"><code>squeue</code></a> to find workers and <a href="https://slurm.schedmd.com/scancel.html" class="external-link"><code>scancel</code></a> to terminate them. For an <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a> launcher, please use the <a href="https://aws.amazon.com/console/" class="external-link">AWS web console</a> or <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="scheduling">Scheduling<a class="anchor" aria-label="anchor" href="#scheduling"></a>
@@ -339,6 +329,7 @@
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=crew" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/wlandau/crew/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/wlandau/crew/issues" class="external-link">Report a bug</a></li>
 </ul>
