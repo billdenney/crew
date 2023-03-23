@@ -18,7 +18,7 @@ client."><meta property="og:image" content="/logo.svg"><!-- mathjax --><script s
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5</span>
       </span>
     </div>
 
@@ -72,13 +72,9 @@ client.</p>
 <span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  workers <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  port <span class="op">=</span> <span class="fl">0L</span>,</span>
+<span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">0.001</span>,</span>
-<span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  seconds_exit <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  seconds_poll_high <span class="op">=</span> <span class="fl">0.001</span>,</span>
-<span>  seconds_poll_low <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  async_dial <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -99,8 +95,10 @@ If <code>NULL</code>, the host defaults to the local IP address.</p></dd>
 
 
 <dt>port</dt>
-<dd><p>TCP port to listen for the workers. If <code>0</code>,
-then NNG automatically chooses an available ephemeral port.</p></dd>
+<dd><p>TCP port to listen for the workers. If <code>NULL</code>,
+then <code><a href="https://parallelly.futureverse.org/reference/freePort.html" class="external-link">parallelly::freePort()</a></code>
+automatically chooses an available ephemeral port between
+49152 and 65535.</p></dd>
 
 
 <dt>seconds_interval</dt>
@@ -112,28 +110,6 @@ synchronous operations to complete.</p></dd>
 <dt>seconds_timeout</dt>
 <dd><p>Number of seconds until timing
 out while waiting for certain synchronous operations to complete.</p></dd>
-
-
-<dt>seconds_exit</dt>
-<dd><p>Number of seconds to wait for NNG websockets
-to finish sending large data (in case an exit signal is received).</p></dd>
-
-
-<dt>seconds_poll_high</dt>
-<dd><p>High polling interval in seconds for the
-<code>mirai</code> active queue. See the <code>pollfreqh</code> argument of
-<code><a href="https://shikokuchuo.net/mirai/reference/dispatcher.html" class="external-link">mirai::dispatcher()</a></code>.</p></dd>
-
-
-<dt>seconds_poll_low</dt>
-<dd><p>Low polling interval in seconds for the <code>mirai</code>
-active queue. See the <code>pollfreql</code> argument of
-<code><a href="https://shikokuchuo.net/mirai/reference/dispatcher.html" class="external-link">mirai::dispatcher()</a></code>.</p></dd>
-
-
-<dt>async_dial</dt>
-<dd><p>Logical, whether the <code>mirai</code> workers should dial in
-asynchronously. See the <code>asyncdial</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
 
 </dl></div>
     <div id="see-also">
