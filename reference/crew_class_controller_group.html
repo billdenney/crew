@@ -321,7 +321,7 @@ if <code>NULL</code> or in conflict with an existing name in the task list.</p><
 
 <dt><code>scale</code></dt>
 <dd><p>Logical, whether to automatically scale workers to meet
-demand. If <code>TRUE</code>, then <code>clean()</code> and <code>collect()</code> run first
+demand. If <code>TRUE</code>, then <code>collect()</code> runs first
 so demand can be properly assessed before scaling and the number
 of workers is not too high.</p></dd>
 
@@ -351,7 +351,7 @@ first controller in the list.</p></dd>
 <h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>scale</code></dt>
 <dd><p>Logical, whether to automatically scale workers to meet
-demand. If <code>TRUE</code>, then <code>clean()</code> and <code>collect()</code> run first
+demand. If <code>TRUE</code>, then <code>collect()</code> runs first
 so demand can be properly assessed before scaling and the number
 of workers is not too high. Scaling up on <code>pop()</code> may be important
 for transient or nearly transient workers that tend to drop off
