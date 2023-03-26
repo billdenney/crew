@@ -98,11 +98,33 @@
 
     
     
+<div class="section level2">
+<h2 id="about">About<a class="anchor" aria-label="anchor" href="#about"></a>
+</h2>
 <p><code>crew</code> lets you write custom <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launchers</a>
 for different types of workers that connect over the local network. This
-flexibility can extend <code>crew</code> to platforms like <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>, <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a>, and <a href="https://kubernetes.io/" class="external-link">Kubernetes</a>. This vignette demonstrates
-how. It assumes prior familiarity with <a href="https://r6.r-lib.org/articles/Introduction.html" class="external-link"><code>R6</code>
+flexibility can extend <code>crew</code> to platforms like <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>, <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a>, and <a href="https://kubernetes.io/" class="external-link">Kubernetes</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="vision">Vision<a class="anchor" aria-label="anchor" href="#vision"></a>
+</h2>
+<p>These <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launcher</a>
+plugins need not become part of the <code>crew</code> package itself.
+You can write your plugin in a simple R script, or you write it in a
+custom R package that <a href="https://r-pkgs.org/dependencies-in-practice.html" class="external-link">depends on</a>
+<code>crew</code>. Published packages with <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launcher</a>
+plugins are powerful extensions that enhance <code>crew</code> for the
+entire open-source community. See <a href="https://r-pkgs.org/" class="external-link">R
+Packages</a> by <a href="https://hadley.nz/" class="external-link">Hadley Wickham</a> and <a href="https://jennybryan.org/" class="external-link">Jenny Bryan</a> for how to write an R
+package.</p>
+</div>
+<div class="section level2">
+<h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
+</h2>
+<p>This vignette demonstrates how to write a <code>crew</code> launcher
+plugin. It assumes prior familiarity with <a href="https://r6.r-lib.org/articles/Introduction.html" class="external-link"><code>R6</code>
 classes</a> and the computing platform of your plugin.</p>
+</div>
 <div class="section level2">
 <h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
 </h2>
@@ -173,16 +195,13 @@ local R processes.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Above <code>launch_worker()</code> begins by creating a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.
-Later on, this call will run inside the worker process, connect back to
-<code>crew</code> and <code>mirai</code> over the local network, and
-accept the tasks you push to the controller.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">call</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div>
-<p>The <code>call</code> object above a text string with R code. To see
+<p>In the <code>launch_worker()</code> method above, the
+<code>call &lt;- self$call(socket, host, port, token, name)</code>
+command creates a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.
+The <code>call</code> object is a simple text string with R code. To see
 what it looks like, you can try the method in a <code>callr</code>
 launcher object.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_launcher_callr.html">crew_launcher_callr</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span></span>
 <span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000"</span>,</span>
@@ -192,18 +211,18 @@ launcher object.</p>
 <span>  name <span class="op">=</span> <span class="st">"my_name"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "crew::crew_worker(token = \"my_token\", host = \"127.0.0.1\", port = \"5711\", settings = list(url = \"ws://127.0.0.1:5000\", asyncdial = TRUE, maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 100, cleanup = FALSE))"</span></span></code></pre></div>
-<p>To create an external process that runs a worker, our custom launcher
-creates a new <a href="https://processx.r-lib.org" class="external-link"><code>processx</code></a> process to
-start R and run the <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>
-call.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">processx</span><span class="fu">::</span><span class="va"><a href="http://processx.r-lib.org/reference/process.html" class="external-link">process</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>command <span class="op">=</span> <span class="st">"R"</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-e"</span>, <span class="va">call</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>The return value is a handle that <code>terminate_worker()</code>
-will use to terminate the process later on.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">terminate_worker</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">handle</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">handle</span><span class="op">$</span><span class="fu">kill</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<p>The
+<code>processx::process$new(command = "R", args = c("-e", call))</code>
+line runs the <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>
+call as an external R process. This process runs in the background,
+connects back to <code>crew</code> and <code>mirai</code> over the local
+network, and accept the tasks you push to the controller.
+<code>processx::process$new()</code> also returns a handle which the
+<code>terminate_worker()</code> method can use to force-terminate the
+process if appropriate. <code>mirai</code> has its own way to terminate
+workers, so a <code>terminate_worker()</code> method is not strictly
+required, but it is a useful safeguard in case of awkwardly timed
+crashes.</p>
 </div>
 <div class="section level2">
 <h2 id="helper">Helper<a class="anchor" aria-label="anchor" href="#helper"></a>
@@ -226,7 +245,7 @@ inherit the documentation of all the arguments instead of writing it by
 hand. You may want to adjust the default arguments based on the
 specifics of your platform, especially <code>seconds_launch</code> if
 workers take a long time to launch.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' @title Create a controller with the custom launcher.</span></span>
 <span><span class="co">#' @export</span></span>
 <span><span class="co">#' @description Create an `R6` object to submit tasks and</span></span>
@@ -294,24 +313,24 @@ dashboard, then view the AWS billing dashboard after testing.</p>
 <p>When you are ready to begin testing, try out the example in the <a href="https://wlandau.github.io/crew/index.html#usage" class="external-link">README</a>, but
 use your your custom controller helper instead of <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>crew_controller_callr()</code></a>.</p>
 <p>Next, start a new <code>crew</code> session.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Then, create and start a controller. You may wish to monitor local
 processes on your computer to make sure the <code>mirai</code>
 dispatcher starts.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew_controller_custom</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Try pushing a task that gets the local IP address and process ID of
 the worker instance.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"get worker IP address and process ID"</span>,</span>
 <span>  command <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu">getip</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/getip/man/getip.html" class="external-link">getip</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>, <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps_pid</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Wait for the task to complete and look at the result.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">out</span><span class="op">$</span><span class="va">result</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -322,7 +341,7 @@ handle. In addition, if the worker is running on a different computer,
 the worker IP address should be different than the local IP address.
 Since our custom launcher creates local processes, the IP addresses are
 the same in this case, but they should be different for a <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a> or <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a> launcher.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">getip</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/getip/man/getip.html" class="external-link">getip</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; "192.168.0.2"</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="va">launcher</span><span class="op">$</span><span class="va">workers</span><span class="op">$</span><span class="va">handle</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="fu">get_pid</span><span class="op">(</span><span class="op">)</span></span>
@@ -330,7 +349,7 @@ the same in this case, but they should be different for a <a href="https://slurm
 <p>If you did not set any timeouts or task limits, the worker that ran
 the task should still be running and connected. The other worker had no
 tasks, so it did not need to start an instance.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"worker"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 5</span></span>
 <span><span class="co">#&gt;   worker_socket         worker_connected worker_busy worker_launches worker_instances</span></span>
@@ -340,7 +359,7 @@ tasks, so it did not need to start an instance.</p>
 <p>When you are done, terminate the controller. This terminates the
 <code>mirai</code> dispatcher process and the <code>crew</code>
 workers.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, use the process monitoring interface of your computing
 platform or operating system to verify that all <code>mirai</code>
@@ -353,7 +372,7 @@ dispatchers and <code>crew</code> workers are terminated.</p>
 to more ambitious scenarios. As one example, you can test that your
 workers can auto-scale and quickly churn through a large number of
 tasks.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew_controller_custom</span><span class="op">(</span></span>
