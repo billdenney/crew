@@ -173,7 +173,7 @@ local R processes on Unix-like systems.<a href="#fn1" class="footnote-ref" id="f
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Inside <code>launch_worker()</code>, the
-<code>processx::process$new(command = "R", args = c("-e", call))</code>
+<code>processx::process$new(command = bin, args = c("-e", call))</code>
 line runs the <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>
 call in an external R process. This process runs in the background,
 connects back to <code>crew</code> and <code>mirai</code> over the local
