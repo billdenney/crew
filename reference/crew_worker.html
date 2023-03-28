@@ -66,7 +66,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_worker</span><span class="op">(</span><span class="va">settings</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_worker</span><span class="op">(</span><span class="va">settings</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">seconds_interval</span>, <span class="va">seconds_timeout</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -86,6 +86,12 @@
 <dt>token</dt>
 <dd><p>Character of length 1 to identify the instance of the
 process connected to the socket.</p></dd>
+
+
+<dt>seconds_interval</dt>
+<dd><p>Nonnegative numeric of length 1,
+number of seconds to loop before giving up trying to connect to the
+client over the local network.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -104,32 +104,23 @@
 <h3 id="method-launch-worker-">Method <code>launch_worker()</code><a class="anchor" aria-label="anchor" href="#method-launch-worker-"></a></h3>
 <p>Launch a <code>callr</code> worker to dial into a socket.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher_callr</span><span class="op">$</span><span class="fu">launch_worker</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher_callr</span><span class="op">$</span><span class="fu">launch_worker</span><span class="op">(</span><span class="va">call</span>, <span class="va">name</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>socket</code></dt>
-<dd><p>Socket where the worker will receive tasks.</p></dd>
-
-
-<dt><code>host</code></dt>
-<dd><p>IP address of the <code>mirai</code> client that sends tasks.</p></dd>
-
-
-<dt><code>port</code></dt>
-<dd><p>TCP port to register a successful connection
-to the host. Different from that of <code>socket</code>.</p></dd>
-
-
-<dt><code>token</code></dt>
-<dd><p>Character of length 1 to identify the instance
-of the <code>mirai</code> server process connected to the socket.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>call</code></dt>
+<dd><p>Text string with a namespaced call to <code><a href="crew_worker.html">crew_worker()</a></code>
+which will run in the worker and accept tasks.</p></dd>
 
 
 <dt><code>name</code></dt>
-<dd><p>User-supplied name of the launcher, useful for
-constructing informative job labels.</p></dd>
+<dd><p>Text string with the name of the launcher.</p></dd>
+
+
+<dt><code>token</code></dt>
+<dd><p>Text string to uniquely identify the new instance
+of the worker process.</p></dd>
 
 
 </dl><p></p></div>
@@ -173,7 +164,7 @@ returned by <code>launch_worker()</code>.</p></dd>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_callr.html">crew_launcher_callr</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">populate</span><span class="op">(</span>sockets <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">sockets</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>

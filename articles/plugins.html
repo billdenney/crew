@@ -154,29 +154,6 @@ A handle can be any kind of R object: a <code><a href="https://callr.r-lib.org/r
 handle, a process ID, a job name, etc.</p>
 </div>
 <div class="section level2">
-<h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
-</h2>
-<ul>
-<li>The <code>token</code> and <code>name</code> arguments of the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-launch-worker-" class="external-link"><code>launch_worker()</code>
-method</a> can help construct informative job names. <code>token</code>
-is a long text string that uniquely identifies the instance of the new
-worker, and <code>name</code> is the name of the current launcher
-object.</li>
-<li>For efficiency, every launch can happen asynchronously. There is no
-need to wait for the worker to start. When it starts, it will connect
-back to the <code>mirai</code> dispatcher over the local network and
-start accepting tasks.</li>
-<li>If you implement a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
-method, each worker termination may also happen asynchronously. In rare
-cases when you do not trust the platform to terminate the worker on the
-first request, you can use <a href="https://wlandau.github.io/crew/reference/crew_wait.html" class="external-link"><code>crew_wait()</code></a>
-to wait for the job to exit, but this may reduce efficiency.</li>
-<li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_callr.R" class="external-link">source
-code of the built-in <code>callr</code> launcher</a> is a helpful
-reference.</li>
-</ul>
-</div>
-<div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
 <p>The following is a custom custom launcher class whose workers are
@@ -186,8 +163,7 @@ local R processes on Unix-like systems.<a href="#fn1" class="footnote-ref" id="f
 <span>  classname <span class="op">=</span> <span class="st">"custom_launcher_class"</span>,</span>
 <span>  inherit <span class="op">=</span> <span class="fu">crew</span><span class="fu">::</span><span class="va"><a href="../reference/crew_class_launcher.html">crew_class_launcher</a></span>,</span>
 <span>  public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    launch_worker <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">name</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="va">call</span> <span class="op">&lt;-</span> <span class="va">self</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">name</span><span class="op">)</span></span>
+<span>    launch_worker <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span>, <span class="va">name</span>, <span class="va">token</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Rhome.html" class="external-link">R.home</a></span><span class="op">(</span><span class="st">"bin"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span>
 <span>      <span class="fu">processx</span><span class="fu">::</span><span class="va"><a href="http://processx.r-lib.org/reference/process.html" class="external-link">process</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>command <span class="op">=</span> <span class="va">bin</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"-e"</span>, <span class="va">call</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span>,</span>
@@ -196,12 +172,32 @@ local R processes on Unix-like systems.<a href="#fn1" class="footnote-ref" id="f
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>In the <code>launch_worker()</code> method above, the
-<code>call &lt;- self$call(socket, host, port, token, name)</code>
-command creates a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.
-The <code>call</code> object is a simple text string with R code. To see
-what it looks like, you can try the method in a <code>callr</code>
-launcher object.</p>
+<p>Inside <code>launch_worker()</code>, the
+<code>processx::process$new(command = "R", args = c("-e", call))</code>
+line runs the <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>
+call in an external R process. This process runs in the background,
+connects back to <code>crew</code> and <code>mirai</code> over the local
+network, and accept the tasks you push to the controller.
+<code>processx::process$new()</code> also returns a handle which the
+<code>terminate_worker()</code> method can use to force-terminate the
+process if appropriate. <code>mirai</code> has its own way to terminate
+workers, so a <code>terminate_worker()</code> method is not strictly
+required, but it is a useful safeguard in case of awkwardly timed
+crashes.</p>
+<p>The <code>launch_worker()</code> method must accept the following
+arguments.</p>
+<ul>
+<li>
+<code>call</code>: a text string with a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
+<li>
+<code>name</code>: the name of the launcher.</li>
+<li>
+<code>token</code>: a unique text string identifying the newly
+launched worker instance. Arguments <code>name</code> and
+<code>token</code> are useful for creating informative job names.</li>
+</ul>
+<p>To see what the <code>call</code> object looks like, create a new
+launcher and run the <code><a href="https://rdrr.io/r/base/call.html" class="external-link">call()</a></code> method.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_launcher_callr.html">crew_launcher_callr</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span></span>
@@ -212,18 +208,6 @@ launcher object.</p>
 <span>  name <span class="op">=</span> <span class="st">"my_name"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "crew::crew_worker(token = \"my_token\", host = \"127.0.0.1\", port = \"5711\", settings = list(url = \"ws://127.0.0.1:5000\", asyncdial = TRUE, maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 100, cleanup = FALSE))"</span></span></code></pre></div>
-<p>The
-<code>processx::process$new(command = "R", args = c("-e", call))</code>
-line runs the <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>
-call as an external R process. This process runs in the background,
-connects back to <code>crew</code> and <code>mirai</code> over the local
-network, and accept the tasks you push to the controller.
-<code>processx::process$new()</code> also returns a handle which the
-<code>terminate_worker()</code> method can use to force-terminate the
-process if appropriate. <code>mirai</code> has its own way to terminate
-workers, so a <code>terminate_worker()</code> method is not strictly
-required, but it is a useful safeguard in case of awkwardly timed
-crashes.</p>
 </div>
 <div class="section level2">
 <h2 id="helper">Helper<a class="anchor" aria-label="anchor" href="#helper"></a>
@@ -425,6 +409,26 @@ tasks.</p>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># Now outside crew, verify that the mirai dispatcher</span></span>
 <span><span class="co"># and crew workers successfully terminated.</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
+</h2>
+<ul>
+<li>The <code>name</code> and <code>token</code> arguments of the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-launch-worker-" class="external-link"><code>launch_worker()</code>
+method</a> can help construct informative job names.</li>
+<li>For efficiency, every launch can happen asynchronously. There is no
+need to wait for the worker to start. When it starts, it will connect
+back to the <code>mirai</code> dispatcher over the local network and
+start accepting tasks.</li>
+<li>If you implement a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
+method, each worker termination may also happen asynchronously. In rare
+cases when you do not trust the platform to terminate the worker on the
+first request, you can use <a href="https://wlandau.github.io/crew/reference/crew_wait.html" class="external-link"><code>crew_wait()</code></a>
+to wait for the job to exit, but this may reduce efficiency.</li>
+<li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_callr.R" class="external-link">source
+code of the built-in <code>callr</code> launcher</a> is a helpful
+reference.</li>
+</ul>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr>
