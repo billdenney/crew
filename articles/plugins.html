@@ -177,13 +177,13 @@ local R processes on Unix-like systems.<a href="#fn1" class="footnote-ref" id="f
 line runs the <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>
 call in an external R process. This process runs in the background,
 connects back to <code>crew</code> and <code>mirai</code> over the local
-network, and accept the tasks you push to the controller.
+network, and accepts the tasks you push to the controller.
 <code>processx::process$new()</code> also returns a handle which the
 <code>terminate_worker()</code> method can use to force-terminate the
 process if appropriate. <code>mirai</code> has its own way to terminate
 workers, so a <code>terminate_worker()</code> method is not strictly
-required, but it is a useful safeguard in case of awkwardly timed
-crashes.</p>
+required, but it is a useful safeguard in case a worker hangs in a
+crashed state before it establishes a connection.</p>
 <p>The <code>launch_worker()</code> method must accept the following
 arguments.</p>
 <ul>
