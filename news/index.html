@@ -67,8 +67,7 @@
 <li>Remove the superfluous <code>clean()</code> controller method.</li>
 <li>Clean up logic for <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> and <code>launch()</code> controller methods.</li>
 <li>Add a new <code>inactive()</code> launcher method to help with the above.</li>
-<li>Reduce superfluous worker launches using cleaner controller logic (<a href="https://github.com/wlandau/crew/issues/51" class="external-link">#51</a>).</li>
-<li>Eliminate the remaining superfluous worker launches with a last-minute check for an existing connection in the launcher (<a href="https://github.com/wlandau/crew/issues/51" class="external-link">#51</a>).</li>
+<li>Eliminate superfluous worker launches: clean up the controller logic, and check worker discoveries before worker connections (<a href="https://github.com/wlandau/crew/issues/51" class="external-link">#51</a>).</li>
 <li>Simplify the launcher plugin interface (<a href="https://github.com/wlandau/crew/issues/54" class="external-link">#54</a>).</li>
 </ul></div>
     <div class="section level2">

@@ -140,7 +140,7 @@ which launch and manage workers.</p>
 <li><p><a href="#method-crew_class_launcher-populate"><code>crew_class_launcher$populate()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-active"><code>crew_class_launcher$active()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-inactive"><code>crew_class_launcher$inactive()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-unreachable"><code>crew_class_launcher$unreachable()</code></a></p></li>
+<li><p><a href="#method-crew_class_launcher-lost"><code>crew_class_launcher$lost()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-clean"><code>crew_class_launcher$clean()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-launch"><code>crew_class_launcher$launch()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-terminate"><code>crew_class_launcher$terminate()</code></a></p></li>
@@ -384,16 +384,16 @@ if it has not ever connected to a websocket.</p>
 <p>Character vector of worker websockets.</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_launcher-unreachable"></a><div class="section">
-<h3 id="method-unreachable-">Method <code>unreachable()</code><a class="anchor" aria-label="anchor" href="#method-unreachable-"></a></h3>
-<p>Get the unreachable workers.</p><div class="section">
+</div><p></p><hr><a id="method-crew_class_launcher-lost"></a><div class="section">
+<h3 id="method-lost-">Method <code>lost()</code><a class="anchor" aria-label="anchor" href="#method-lost-"></a></h3>
+<p>Get the lost workers.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">unreachable</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">lost</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
-<p>A worker is unreachable if it was supposed to launch,
+<p>A worker is lost if it was supposed to launch,
 but it never connected to the client,
 and its startup window elapsed.</p>
 </div>
@@ -405,7 +405,7 @@ and its startup window elapsed.</p>
 
 </div><p></p><hr><a id="method-crew_class_launcher-clean"></a><div class="section">
 <h3 id="method-clean-">Method <code>clean()</code><a class="anchor" aria-label="anchor" href="#method-clean-"></a></h3>
-<p>Terminate unreachable workers.</p><div class="section">
+<p>Terminate lost workers.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">clean</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
