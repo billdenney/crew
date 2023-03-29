@@ -78,7 +78,6 @@ callr workers for a controller."><meta property="og:image" content="/logo.svg"><
 <span>  seconds_exit <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  tasks_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  tasks_timers <span class="op">=</span> <span class="fl">0L</span>,</span>
-<span>  async_dial <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cleanup <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -145,11 +144,6 @@ the assignment of tasks to workers, it is recommended to set
 <dd><p>Number of tasks to do before activating
 the timers for <code>seconds_idle</code> and <code>seconds_wall</code>.
 See the <code>timerlaunch</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
-
-
-<dt>async_dial</dt>
-<dd><p>Logical, whether the <code>mirai</code> workers should dial in
-asynchronously. See the <code>asyncdial</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
 
 
 <dt>cleanup</dt>

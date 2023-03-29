@@ -207,7 +207,7 @@ launcher and run the <code><a href="https://rdrr.io/r/base/call.html" class="ext
 <span>  token <span class="op">=</span> <span class="st">"my_token"</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"my_name"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "crew::crew_worker(token = \"my_token\", host = \"127.0.0.1\", port = \"5711\", settings = list(url = \"ws://127.0.0.1:5000\", asyncdial = TRUE, maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 100, cleanup = FALSE))"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "crew::crew_worker(token = \"my_token\", host = \"127.0.0.1\", port = \"5711\", settings = list(url = \"ws://127.0.0.1:5000\", maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 1000, cleanup = FALSE, asyncdial = FALSE), seconds_interval = 0.001, seconds_timeout = 10)"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="helper">Helper<a class="anchor" aria-label="anchor" href="#helper"></a>
@@ -249,7 +249,6 @@ workers take a long time to launch.</p>
 <span>  <span class="va">seconds_exit</span> <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">tasks_max</span> <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  <span class="va">tasks_timers</span> <span class="op">=</span> <span class="fl">0L</span>,</span>
-<span>  <span class="va">async_dial</span> <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">cleanup</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">auto_scale</span> <span class="op">=</span> <span class="st">"demand"</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
@@ -271,7 +270,6 @@ workers take a long time to launch.</p>
 <span>    seconds_exit <span class="op">=</span> <span class="va">seconds_exit</span>,</span>
 <span>    tasks_max <span class="op">=</span> <span class="va">tasks_max</span>,</span>
 <span>    tasks_timers <span class="op">=</span> <span class="va">tasks_timers</span>,</span>
-<span>    async_dial <span class="op">=</span> <span class="va">async_dial</span>,</span>
 <span>    cleanup <span class="op">=</span> <span class="va">cleanup</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span></span>
