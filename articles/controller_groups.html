@@ -110,8 +110,8 @@ always stay running and a controller of semi-persistent workers which
 terminate after completing four tasks. We create controller objects with
 names.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span>
-<span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"semi-persistent"</span>, tasks_max <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span>
+<span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"semi-persistent"</span>, tasks_max <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></code></pre></div>
 <p><code>crew</code> uses a different TCP port for each controller you
 run, so please do not create hundreds of controllers. Please see the
 subsection on ports in the <a href="https://wlandau.github.io/crew/index.html" class="external-link">README</a>.</p>

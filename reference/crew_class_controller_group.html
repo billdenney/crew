@@ -74,8 +74,8 @@
     <h2>See also</h2>
     <div class="dont-index"><p>Other controllers: 
 <code><a href="crew_class_controller.html">crew_class_controller</a></code>,
-<code><a href="crew_controller_callr.html">crew_controller_callr</a>()</code>,
 <code><a href="crew_controller_group.html">crew_controller_group</a>()</code>,
+<code><a href="crew_controller_local.html">crew_controller_local</a>()</code>,
 <code><a href="crew_controller.html">crew_controller</a>()</code></p></div>
     </div>
     <div id="public-fields">
@@ -127,8 +127,8 @@
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span><span class="fu"><a href="../reference/crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span>
-<span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span></span>
+<span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span>
+<span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"transient"</span>,</span>
 <span>  max_tasks <span class="op">=</span> <span class="fl">1L</span></span>
 <span><span class="op">)</span></span>
@@ -505,8 +505,8 @@ Set to <code>NULL</code> to select all controllers.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  name <span class="op">=</span> <span class="st">"transient"</span>,</span></span>
 <span class="r-in"><span>  max_tasks <span class="op">=</span> <span class="fl">1L</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -527,8 +527,8 @@ Set to <code>NULL</code> to select all controllers.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_callr.html">crew_controller_callr</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">persistent</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"persistent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">transient</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  name <span class="op">=</span> <span class="st">"transient"</span>,</span></span>
 <span class="r-in"><span>  max_tasks <span class="op">=</span> <span class="fl">1L</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

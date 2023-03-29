@@ -130,28 +130,28 @@ classes</a> and the computing platform of your plugin.</p>
 </h2>
 <p>To create your own launcher plugin, write an <a href="https://r6.r-lib.org/articles/Introduction.html" class="external-link"><code>R6</code></a>
 subclass of <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>
-with a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-launch-worker-" class="external-link"><code>launch_worker()</code></a>
-method analogous the one in the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html" class="external-link"><code>callr</code>
-launcher</a>. <code>launch_worker()</code> must accept the same
-arguments as the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-launch-worker-" class="external-link"><code>callr</code>
-<code>launch_worker()</code> method</a>, generate a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>,
+with a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-launch-worker-" class="external-link"><code>launch_worker()</code></a>
+method analogous the one in the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html" class="external-link">local
+process launcher</a>. <code>launch_worker()</code> must accept the same
+arguments as the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-launch-worker-" class="external-link">local
+process <code>launch_worker()</code> method</a>, generate a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>,
 and then submit a new job or process to run that call.</p>
 </div>
 <div class="section level2">
 <h2 id="safeguards">Safeguards<a class="anchor" aria-label="anchor" href="#safeguards"></a>
 </h2>
-<p>We recommend you implement an optional <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
+<p>We recommend you implement an optional <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
 method. Although <code>mirai</code> has its own way of terminating
 workers, it only works if the worker already connected, and it cannot
 reach workers that fail to connect and hang in a crashed state. An
-optional <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
+optional <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
 method in your <code>crew</code> launcher plugin is extra assurance that
 these workers will exit.</p>
-<p>If you implement <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>,
+<p>If you implement <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>,
 it must accept a handle that identifies the worker, and this handle must
-be the return value of the previous call to <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-launch-worker-" class="external-link"><code>launch_worker()</code></a>.
-A handle can be any kind of R object: a <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code>
-handle, a process ID, a job name, etc.</p>
+be the return value of the previous call to <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-launch-worker-" class="external-link"><code>launch_worker()</code></a>.
+A handle can be any kind of R object: a process ID, a job name, an
+<code>R6</code> object returned by <code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code>, etc.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -199,7 +199,7 @@ launched worker instance. Arguments <code>name</code> and
 <p>To see what the <code>call</code> object looks like, create a new
 launcher and run the <code><a href="https://rdrr.io/r/base/call.html" class="external-link">call()</a></code> method.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_launcher_callr.html">crew_launcher_callr</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span></span>
 <span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000"</span>,</span>
 <span>  host <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span>
@@ -215,7 +215,7 @@ launcher and run the <code><a href="https://rdrr.io/r/base/call.html" class="ext
 <p>It is useful to have a helper function that creates controllers with
 your custom launcher. It should:</p>
 <ol style="list-style-type: decimal">
-<li>Accept all the same arguments as <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>crew_controller_callr()</code></a>.</li>
+<li>Accept all the same arguments as <a href="https://wlandau.github.io/crew/reference/crew_controller_local.html" class="external-link"><code>crew_controller_local()</code></a>.</li>
 <li>Create a router object using <a href="https://wlandau.github.io/crew/reference/crew_router.html" class="external-link"><code>crew_router()</code></a>.</li>
 <li>Create a launcher object with the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html#method-crew_class_launcher-new" class="external-link"><code>new()</code>
 method</a> of your custom launcher class.</li>
@@ -223,7 +223,7 @@ method</a> of your custom launcher class.</li>
 <li>Scan the controller for obvious errors using the <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-validate" class="external-link"><code>validate()</code></a>
 method of the controller.</li>
 </ol>
-<p>Feel free to borrow from the <a href="https://github.com/wlandau/crew/blob/main/R/crew_controller_callr.R" class="external-link"><code>crew_controller_callr()</code>
+<p>Feel free to borrow from the <a href="https://github.com/wlandau/crew/blob/main/R/crew_controller_local.R" class="external-link"><code>crew_controller_local()</code>
 source code</a>. For packages, you can use the
 <code>@inheritParams</code> <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen2</code></a> tag to
 inherit the documentation of all the arguments instead of writing it by
@@ -235,7 +235,7 @@ workers take a long time to launch.</p>
 <span><span class="co">#' @export</span></span>
 <span><span class="co">#' @description Create an `R6` object to submit tasks and</span></span>
 <span><span class="co">#'   launch workers.</span></span>
-<span><span class="co">#' @inheritParams crew::crew_controller_callr</span></span>
+<span><span class="co">#' @inheritParams crew::crew_controller_local</span></span>
 <span><span class="va">crew_controller_custom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
 <span>  <span class="va">name</span> <span class="op">=</span> <span class="st">"custom controller name"</span>,</span>
 <span>  <span class="va">workers</span> <span class="op">=</span> <span class="fl">1L</span>,</span>
@@ -294,7 +294,7 @@ However, for more ambitious launchers that submit workers to e.g. <a href="http
 the <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a>
 dashboard, then view the AWS billing dashboard after testing.</p>
 <p>When you are ready to begin testing, try out the example in the <a href="https://wlandau.github.io/crew/index.html#usage" class="external-link">README</a>, but
-use your your custom controller helper instead of <a href="https://wlandau.github.io/crew/reference/crew_controller_callr.html" class="external-link"><code>crew_controller_callr()</code></a>.</p>
+use your your custom controller helper instead of <a href="https://wlandau.github.io/crew/reference/crew_controller_local.html" class="external-link"><code>crew_controller_local()</code></a>.</p>
 <p>Next, start a new <code>crew</code> session.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
@@ -412,19 +412,19 @@ tasks.</p>
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
 </h2>
 <ul>
-<li>The <code>name</code> and <code>token</code> arguments of the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-launch-worker-" class="external-link"><code>launch_worker()</code>
+<li>The <code>name</code> and <code>token</code> arguments of the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-launch-worker-" class="external-link"><code>launch_worker()</code>
 method</a> can help construct informative job names.</li>
 <li>For efficiency, every launch can happen asynchronously. There is no
 need to wait for the worker to start. When it starts, it will connect
 back to the <code>mirai</code> dispatcher over the local network and
 start accepting tasks.</li>
-<li>If you implement a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_callr.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
+<li>If you implement a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
 method, each worker termination may also happen asynchronously. In rare
 cases when you do not trust the platform to terminate the worker on the
 first request, you can use <a href="https://wlandau.github.io/crew/reference/crew_wait.html" class="external-link"><code>crew_wait()</code></a>
 to wait for the job to exit, but this may reduce efficiency.</li>
-<li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_callr.R" class="external-link">source
-code of the built-in <code>callr</code> launcher</a> is a helpful
+<li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_local.R" class="external-link">source
+code of the built-in local process launcher</a> is a helpful
 reference.</li>
 </ul>
 </div>
