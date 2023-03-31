@@ -35,7 +35,7 @@
       <a href="../articles/controller_groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="../articles/plugins.html">Launcher plugins</a>
+      <a href="../articles/launcher_plugins.html">Launcher plugins</a>
     </li>
   </ul></li>
 <li>
@@ -116,12 +116,16 @@ which will run in the worker and accept tasks.</p></dd>
 
 
 <dt><code>name</code></dt>
-<dd><p>Text string with the name of the launcher.</p></dd>
+<dd><p>User-supplied name of the launcher.
+Each worker launched from a given launcher will have the same
+<code>name</code> argument. Together with <code>token</code>, <code>name</code> is useful
+for constructing informative worker labels.</p></dd>
 
 
 <dt><code>token</code></dt>
-<dd><p>Text string to uniquely identify the new instance
-of the worker process.</p></dd>
+<dd><p>Character of length 1 that uniquely identifies the
+instance of the worker process. Useful for constructing
+informative worker labels.</p></dd>
 
 
 </dl><p></p></div>

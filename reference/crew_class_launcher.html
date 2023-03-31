@@ -36,7 +36,7 @@ which launch and manage workers."><meta property="og:image" content="/logo.svg">
       <a href="../articles/controller_groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="../articles/plugins.html">Launcher plugins</a>
+      <a href="../articles/launcher_plugins.html">Launcher plugins</a>
     </li>
   </ul></li>
 <li>
@@ -264,7 +264,7 @@ to launch.</p></dd>
 <p>Create a call to <code><a href="crew_worker.html">crew_worker()</a></code> to
 help create custom launchers.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -283,13 +283,16 @@ to the host. Different from that of <code>socket</code>.</p></dd>
 
 
 <dt><code>token</code></dt>
-<dd><p>Character of length 1 to identify the instance
-of the <code>mirai</code> server process connected to the socket.</p></dd>
+<dd><p>Character of length 1 that uniquely identifies the
+instance of the worker process. Useful for constructing
+informative worker labels.</p></dd>
 
 
 <dt><code>name</code></dt>
-<dd><p>User-supplied name of the launcher, useful for
-constructing informative job labels.</p></dd>
+<dd><p>User-supplied name of the launcher.
+Each worker launched from a given launcher will have the same
+<code>name</code> argument. Together with <code>token</code>, <code>name</code> is useful
+for constructing informative worker labels.</p></dd>
 
 
 </dl><p></p></div>
@@ -305,8 +308,7 @@ constructing informative job labels.</p></dd>
 <span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000"</span>,</span>
 <span>  host <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span>
 <span>  port <span class="op">=</span> <span class="st">"5711"</span>,</span>
-<span>  token <span class="op">=</span> <span class="st">"my_token"</span>,</span>
-<span>  name <span class="op">=</span> <span class="st">"my_name"</span></span>
+<span>  token <span class="op">=</span> <span class="st">"my_token"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -530,8 +532,7 @@ to be optional.</p>
 <span class="r-in"><span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000"</span>,</span></span>
 <span class="r-in"><span>  host <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span></span>
 <span class="r-in"><span>  port <span class="op">=</span> <span class="st">"5711"</span>,</span></span>
-<span class="r-in"><span>  token <span class="op">=</span> <span class="st">"my_token"</span>,</span></span>
-<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"my_name"</span></span></span>
+<span class="r-in"><span>  token <span class="op">=</span> <span class="st">"my_token"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "crew::crew_worker(token = \"my_token\", host = \"127.0.0.1\", port = \"5711\", settings = list(url = \"ws://127.0.0.1:5000\", maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 1000, cleanup = FALSE, asyncdial = FALSE), seconds_interval = 0.001, seconds_timeout = 10)"</span>
 </code></pre></div>
