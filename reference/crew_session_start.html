@@ -66,7 +66,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_session_start</span><span class="op">(</span>host <span class="op">=</span> <span class="cn">NULL</span>, port <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_session_start</span><span class="op">(</span></span>
+<span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -81,6 +86,17 @@ Defaults to the local IP address of the session.</p></dd>
 ports between 49152 and 65535 are recommended.
 If <code>port</code> is <code>NULL</code>, a port will be chosen from
 <code><a href="https://parallelly.futureverse.org/reference/freePort.html" class="external-link">parallelly::freePort()</a></code>.</p></dd>
+
+
+<dt>seconds_interval</dt>
+<dd><p>Nonnegative numeric of length 1,
+number of seconds to wait for the session connection to open.</p></dd>
+
+
+<dt>seconds_timeout</dt>
+<dd><p>Nonnegative numeric of length 1,
+number of seconds to loop before timing out waiting for the
+session connection to open.</p></dd>
 
 </dl></div>
     <div id="value">
