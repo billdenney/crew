@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9001</span>
       </span>
     </div>
 
@@ -305,6 +305,7 @@ list as applicable and moves them to the <code>results</code> list.</p>
 <span>  <span class="va">command</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  globals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000000000L</span>, size <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>,</span>
 <span>  garbage_collection <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
@@ -331,6 +332,19 @@ evaluation environment.</p></dd>
 <dd><p>Named list of objects to temporarily assign to the
 global environment for the task. At the end of the task,
 these values are reset to their previous values.</p></dd>
+
+
+<dt><code>substitute</code></dt>
+<dd><p>Logical of length 1, whether to call
+<code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">base::substitute()</a></code> on the supplied value of the
+<code>command</code> argument. If <code>TRUE</code> (default) then <code>command</code> is quoted
+literally as you write it, e.g.
+<code>push(command = your_function_call())</code>. If <code>FALSE</code>, then <code>crew</code>
+assumes <code>command</code> is a language object and you are passing its
+value, e.g. <code>push(command = quote(your_function_call()))</code>.
+<code>substitute = TRUE</code> is appropriate for interactive use,
+whereas <code>substitute = FALSE</code> is meant for automated R programs
+that invoke <code>crew</code> controllers.</p></dd>
 
 
 <dt><code>seed</code></dt>
