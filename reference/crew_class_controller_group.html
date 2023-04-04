@@ -267,8 +267,8 @@ list as applicable and moves them to the <code>results</code> list.</p>
 <span>  packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  library <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  controller <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -328,16 +328,16 @@ argument of <code><a href="https://rdrr.io/r/base/library.html" class="external-
 argument of <code><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai::mirai()</a></code> (after converting to milliseconds).</p></dd>
 
 
-<dt><code>name</code></dt>
-<dd><p>Optional name of the task. Replaced with a random name
-if <code>NULL</code> or in conflict with an existing name in the task list.</p></dd>
-
-
 <dt><code>scale</code></dt>
 <dd><p>Logical, whether to automatically scale workers to meet
 demand. If <code>TRUE</code>, then <code>collect()</code> runs first
 so demand can be properly assessed before scaling and the number
 of workers is not too high.</p></dd>
+
+
+<dt><code>name</code></dt>
+<dd><p>Optional name of the task. Replaced with a random name
+if <code>NULL</code> or in conflict with an existing name in the task list.</p></dd>
 
 
 <dt><code>controller</code></dt>
