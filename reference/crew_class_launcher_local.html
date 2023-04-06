@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9002</span>
       </span>
     </div>
 
@@ -89,15 +89,12 @@
 
 <ul><li><p><a href="#method-crew_class_launcher_local-launch_worker"><code>crew_class_launcher_local$launch_worker()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher_local-terminate_worker"><code>crew_class_launcher_local$terminate_worker()</code></a></p></li>
-</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="active"><a href="crew_class_launcher.html#method-active"><code>crew::crew_class_launcher$active()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="call"><a href="crew_class_launcher.html#method-call"><code>crew::crew_class_launcher$call()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="clean"><a href="crew_class_launcher.html#method-clean"><code>crew::crew_class_launcher$clean()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="inactive"><a href="crew_class_launcher.html#method-inactive"><code>crew::crew_class_launcher$inactive()</code></a></span></li>
+</ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="call"><a href="crew_class_launcher.html#method-call"><code>crew::crew_class_launcher$call()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="initialize"><a href="crew_class_launcher.html#method-initialize"><code>crew::crew_class_launcher$initialize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="launch"><a href="crew_class_launcher.html#method-launch"><code>crew::crew_class_launcher$launch()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="lost"><a href="crew_class_launcher.html#method-lost"><code>crew::crew_class_launcher$lost()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="populate"><a href="crew_class_launcher.html#method-populate"><code>crew::crew_class_launcher$populate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="launching"><a href="crew_class_launcher.html#method-launching"><code>crew::crew_class_launcher$launching()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="settings"><a href="crew_class_launcher.html#method-settings"><code>crew::crew_class_launcher$settings()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="start"><a href="crew_class_launcher.html#method-start"><code>crew::crew_class_launcher$start()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="terminate"><a href="crew_class_launcher.html#method-terminate"><code>crew::crew_class_launcher$terminate()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="crew" data-topic="crew_class_launcher" data-id="validate"><a href="crew_class_launcher.html#method-validate"><code>crew::crew_class_launcher$validate()</code></a></span></li>
 </ul></details></p><hr><a id="method-crew_class_launcher_local-launch_worker"></a><div class="section">
@@ -105,7 +102,7 @@
 <p>Launch a local process worker which will
 dial into a socket.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher_local</span><span class="op">$</span><span class="fu">launch_worker</span><span class="op">(</span><span class="va">call</span>, <span class="va">name</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher_local</span><span class="op">$</span><span class="fu">launch_worker</span><span class="op">(</span><span class="va">call</span>, <span class="va">launcher</span>, <span class="va">worker</span>, <span class="va">instance</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -115,25 +112,36 @@ dial into a socket.</p><div class="section">
 which will run in the worker and accept tasks.</p></dd>
 
 
-<dt><code>name</code></dt>
-<dd><p>User-supplied name of the launcher.
-Each worker launched from a given launcher will have the same
-<code>name</code> argument. Together with <code>token</code>, <code>name</code> is useful
-for constructing informative worker labels.</p></dd>
+<dt><code>launcher</code></dt>
+<dd><p>Character of length 1, name of the launcher.</p></dd>
 
 
-<dt><code>token</code></dt>
-<dd><p>Character of length 1 that uniquely identifies the
-instance of the worker process. Useful for constructing
-informative worker labels.</p></dd>
+<dt><code>worker</code></dt>
+<dd><p>Positive integer of length 1, index of the worker.
+This worker index remains the same even when the current instance
+of the worker exits and a new instance launches.
+It is always between 1 and the maximum number of concurrent workers.</p></dd>
+
+
+<dt><code>instance</code></dt>
+<dd><p>Character of length 1 to uniquely identify
+the current instance of the worker.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>The <code>call</code> argument is R code that will run to
+initiate the worker. Together, the <code>launcher</code>, <code>worker</code>,
+and <code>instance</code> arguments are useful for
+constructing informative job names.</p>
+</div>
+
+<div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>A handle object to allow the termination of the worker
-later on..</p>
+later on.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_launcher_local-terminate_worker"></a><div class="section">
@@ -164,7 +172,7 @@ returned by <code>launch_worker()</code>.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -174,7 +182,7 @@ returned by <code>launch_worker()</code>.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

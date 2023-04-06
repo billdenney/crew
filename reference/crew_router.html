@@ -18,7 +18,7 @@ client."><meta property="og:image" content="/logo.svg"><!-- mathjax --><script s
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9002</span>
       </span>
     </div>
 
@@ -73,7 +73,7 @@ client.</p>
 <span>  workers <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  seconds_interval <span class="op">=</span> <span class="fl">0.001</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -96,7 +96,7 @@ If <code>NULL</code>, the host defaults to the local IP address.</p></dd>
 
 <dt>port</dt>
 <dd><p>TCP port to listen for the workers. If <code>NULL</code>,
-then an ephemeral port is automatically chosen.</p></dd>
+then an available ephemeral port is automatically chosen.</p></dd>
 
 
 <dt>seconds_interval</dt>

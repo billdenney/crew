@@ -18,7 +18,7 @@ which launch and manage workers."><meta property="og:image" content="/logo.svg">
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9002</span>
       </span>
     </div>
 
@@ -133,12 +133,9 @@ which launch and manage workers.</p>
 <li><p><a href="#method-crew_class_launcher-validate"><code>crew_class_launcher$validate()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-settings"><code>crew_class_launcher$settings()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-call"><code>crew_class_launcher$call()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-populate"><code>crew_class_launcher$populate()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-active"><code>crew_class_launcher$active()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-inactive"><code>crew_class_launcher$inactive()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-lost"><code>crew_class_launcher$lost()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-clean"><code>crew_class_launcher$clean()</code></a></p></li>
+<li><p><a href="#method-crew_class_launcher-start"><code>crew_class_launcher$start()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-launch"><code>crew_class_launcher$launch()</code></a></p></li>
+<li><p><a href="#method-crew_class_launcher-launching"><code>crew_class_launcher$launching()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-terminate"><code>crew_class_launcher$terminate()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-terminate_worker"><code>crew_class_launcher$terminate_worker()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-crew_class_launcher-new"></a><div class="section">
@@ -211,7 +208,7 @@ See the <code>idletime</code> argument of <code><a href="https://shikokuchuo.net
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="fu"><a href="../reference/crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -221,7 +218,7 @@ See the <code>idletime</code> argument of <code><a href="https://shikokuchuo.net
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span>
 <span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span>
 <span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -264,7 +261,7 @@ to launch.</p></dd>
 <p>Create a call to <code><a href="crew_worker.html">crew_worker()</a></code> to
 help create custom launchers.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">socket</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span><span class="va">socket</span>, <span class="va">launcher</span>, <span class="va">worker</span>, <span class="va">instance</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -273,26 +270,19 @@ help create custom launchers.</p><div class="section">
 <dd><p>Socket where the worker will receive tasks.</p></dd>
 
 
-<dt><code>host</code></dt>
-<dd><p>IP address of the <code>mirai</code> client that sends tasks.</p></dd>
+<dt><code>launcher</code></dt>
+<dd><p>Character of length 1, name of the launcher.</p></dd>
 
 
-<dt><code>port</code></dt>
-<dd><p>TCP port to register a successful connection
-to the host. Different from that of <code>socket</code>.</p></dd>
+<dt><code>worker</code></dt>
+<dd><p>Positive integer of length 1, index of the worker.
+This worker index remains the same even when the current instance
+of the worker exits and a new instance launches.</p></dd>
 
 
-<dt><code>token</code></dt>
-<dd><p>Character of length 1 that uniquely identifies the
-instance of the worker process. Useful for constructing
-informative worker labels.</p></dd>
-
-
-<dt><code>name</code></dt>
-<dd><p>User-supplied name of the launcher.
-Each worker launched from a given launcher will have the same
-<code>name</code> argument. Together with <code>token</code>, <code>name</code> is useful
-for constructing informative worker labels.</p></dd>
+<dt><code>instance</code></dt>
+<dd><p>Character of length 1 to uniquely identify
+the instance of the worker.</p></dd>
 
 
 </dl><p></p></div>
@@ -305,161 +295,110 @@ for constructing informative worker labels.</p></dd>
 <h4 id="examples-1">Examples<a class="anchor" aria-label="anchor" href="#examples-1"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span></span>
-<span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000"</span>,</span>
-<span>  host <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span>
-<span>  port <span class="op">=</span> <span class="st">"5711"</span>,</span>
-<span>  token <span class="op">=</span> <span class="st">"my_token"</span></span>
+<span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000/3/cba033e58"</span>,</span>
+<span>  launcher <span class="op">=</span> <span class="st">"launcher_a"</span>,</span>
+<span>  worker <span class="op">=</span> <span class="fl">3L</span>,</span>
+<span>  instance <span class="op">=</span> <span class="st">"cba033e58"</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-crew_class_launcher-populate"></a><div class="section">
-<h3 id="method-populate-">Method <code>populate()</code><a class="anchor" aria-label="anchor" href="#method-populate-"></a></h3>
-<p>Populate the workers data frame.</p><div class="section">
+</div><p></p><hr><a id="method-crew_class_launcher-start"></a><div class="section">
+<h3 id="method-start-">Method <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code><a class="anchor" aria-label="anchor" href="#method-start-"></a></h3>
+<p>Start the launcher.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">populate</span><span class="op">(</span><span class="va">sockets</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>sockets</code></dt>
-<dd><p>Character vector of worker websockets.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>workers</code></dt>
+<dd><p>Positive integer of length 1,
+number of workers to allow.</p></dd>
 
 
 </dl><p></p></div>
 </div>
+<div class="section">
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
+<p>Creates the workers data frame.
+Meant to be called once at the beginning of the launcher
+life cycle.</p>
+</div>
+
 <div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_launcher-active"></a><div class="section">
-<h3 id="method-active-">Method <code>active()</code><a class="anchor" aria-label="anchor" href="#method-active-"></a></h3>
-<p>Get the active workers.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">active</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
-<p>An active worker is a worker that should be given the chance
-to run tasks. To determine if the worker is active,
-<code>crew</code> monitors seconds past launch time, and it listens
-to a special non-<code>mirai</code> NNG websocket that the worker
-is supposed to dial into on launch.
-If the worker is currently connected to the websocket,
-then it is active. Otherwise, if the worker is not connected
-and the startup window has expired, the worker is inactive.
-Otherwise, if the worker is not connected and the startup
-window has not yet expired, then the worker is active
-if it has not ever connected to a websocket.</p>
-</div>
-
-<div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
-<p>Character vector of worker websockets.</p>
-</div>
-
-</div><p></p><hr><a id="method-crew_class_launcher-inactive"></a><div class="section">
-<h3 id="method-inactive-">Method <code>inactive()</code><a class="anchor" aria-label="anchor" href="#method-inactive-"></a></h3>
-<p>Get the inactive workers.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">inactive</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
-<p>See the <code>active()</code> method for details.</p>
-</div>
-
-<div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
-<p>Character vector of worker websockets.</p>
-</div>
-
-</div><p></p><hr><a id="method-crew_class_launcher-lost"></a><div class="section">
-<h3 id="method-lost-">Method <code>lost()</code><a class="anchor" aria-label="anchor" href="#method-lost-"></a></h3>
-<p>Get the lost workers.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">lost</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
-<p>A worker is lost if it was supposed to launch,
-but it never connected to the client,
-and its startup window elapsed.</p>
-</div>
-
-<div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
-<p>Character vector of worker websockets.</p>
-</div>
-
-</div><p></p><hr><a id="method-crew_class_launcher-clean"></a><div class="section">
-<h3 id="method-clean-">Method <code>clean()</code><a class="anchor" aria-label="anchor" href="#method-clean-"></a></h3>
-<p>Terminate lost workers.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">clean</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
-<p><code>NULL</code> (invisibly)</p>
-</div>
-
 </div><p></p><hr><a id="method-crew_class_launcher-launch"></a><div class="section">
 <h3 id="method-launch-">Method <code>launch()</code><a class="anchor" aria-label="anchor" href="#method-launch-"></a></h3>
-<p>Launch one or more workers.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>sockets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p>Launch a worker.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span><span class="va">index</span>, socket <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>sockets</code></dt>
-<dd><p>Sockets where the workers will dial in.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>index</code></dt>
+<dd><p>Positive integer of length 1, index of the worker
+to launch.</p></dd>
+
+
+<dt><code>socket</code></dt>
+<dd><p>Character of length 1, sockets of the worker to launch.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
-<p>If a worker is already assigned to a socket,
-the previous worker is terminated before the next
-one is launched.</p>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p><code>NULL</code> (invisibly).</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_launcher-launching"></a><div class="section">
+<h3 id="method-launching-">Method <code>launching()</code><a class="anchor" aria-label="anchor" href="#method-launching-"></a></h3>
+<p>Show whether each worker is launching.</p><div class="section">
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">launching</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
-<p><code>NULL</code> (invisibly).</p>
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>A worker is considered "launching" if it was started
+recently (<code>seconds_launch</code> seconds ago or sooner).</p>
+</div>
+
+<div class="section">
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<p>A logical vector indicating which workers are launching.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_launcher-terminate"></a><div class="section">
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
 <p>Terminate one or more workers.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>sockets <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>indexes <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>sockets</code></dt>
-<dd><p>Character vector of sockets of the workers
+<p></p><div class="arguments"><dl><dt><code>indexes</code></dt>
+<dd><p>Integer vector of the indexes of the workers
 to terminate. If <code>NULL</code>, all current workers are terminated.</p></dd>
 
 
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_launcher-terminate_worker"></a><div class="section">
 <h3 id="method-terminate-worker-">Method <code>terminate_worker()</code><a class="anchor" aria-label="anchor" href="#method-terminate-worker-"></a></h3>
 <p>Abstract method.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">terminate_worker</span><span class="op">(</span><span class="va">handle</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -474,14 +413,14 @@ of the worker.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>Does not actually terminate a worker. This method is a
 placeholder, and its presence allows manual worker termination
 to be optional.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
@@ -492,7 +431,7 @@ to be optional.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -502,7 +441,7 @@ to be optional.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -510,7 +449,7 @@ to be optional.</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="crew_session_start.html">crew_session_start</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">listen</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -520,7 +459,7 @@ to be optional.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
 <span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="crew_session_terminate.html">crew_session_terminate</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -529,12 +468,12 @@ to be optional.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">call</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000"</span>,</span></span>
-<span class="r-in"><span>  host <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span></span>
-<span class="r-in"><span>  port <span class="op">=</span> <span class="st">"5711"</span>,</span></span>
-<span class="r-in"><span>  token <span class="op">=</span> <span class="st">"my_token"</span></span></span>
+<span class="r-in"><span>  socket <span class="op">=</span> <span class="st">"ws://127.0.0.1:5000/3/cba033e58"</span>,</span></span>
+<span class="r-in"><span>  launcher <span class="op">=</span> <span class="st">"launcher_a"</span>,</span></span>
+<span class="r-in"><span>  worker <span class="op">=</span> <span class="fl">3L</span>,</span></span>
+<span class="r-in"><span>  instance <span class="op">=</span> <span class="st">"cba033e58"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "crew::crew_worker(token = \"my_token\", host = \"127.0.0.1\", port = \"5711\", settings = list(url = \"ws://127.0.0.1:5000\", maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 1000, cleanup = FALSE, asyncdial = FALSE), seconds_interval = 0.001, seconds_timeout = 10)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "crew::crew_worker(settings = list(url = \"ws://127.0.0.1:5000/3/cba033e58\", maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 1000, cleanup = FALSE, asyncdial = FALSE), launcher = \"launcher_a\", worker = 3L, instance = \"cba033e58\")"</span>
 </code></pre></div>
     </div>
   </div>

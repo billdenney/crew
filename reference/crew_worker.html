@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9002</span>
       </span>
     </div>
 
@@ -66,7 +66,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_worker</span><span class="op">(</span><span class="va">settings</span>, <span class="va">host</span>, <span class="va">port</span>, <span class="va">token</span>, <span class="va">seconds_interval</span>, <span class="va">seconds_timeout</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_worker</span><span class="op">(</span><span class="va">settings</span>, <span class="va">launcher</span>, <span class="va">worker</span>, <span class="va">instance</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -75,29 +75,19 @@
 <dd><p>Named list of arguments to <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
 
 
-<dt>host</dt>
-<dd><p>IP address of the host to connect to.</p></dd>
+<dt>launcher</dt>
+<dd><p>Character of length 1, name of the launcher.</p></dd>
 
 
-<dt>port</dt>
-<dd><p>TCP port to register a successful connection to the host.</p></dd>
+<dt>worker</dt>
+<dd><p>Positive integer of length 1, index of the worker.
+This worker index remains the same even when the current instance
+of the worker exits and a new instance launches.</p></dd>
 
 
-<dt>token</dt>
-<dd><p>Character of length 1 to identify the instance of the
-process connected to the socket.</p></dd>
-
-
-<dt>seconds_interval</dt>
-<dd><p>Nonnegative numeric of length 1,
-number of seconds to wait between checks that the worker can connect
-to the client over the local network.</p></dd>
-
-
-<dt>seconds_timeout</dt>
-<dd><p>Nonnegative numeric of length 1,
-number of seconds to loop before giving up trying to connect to the
-client over the local network.</p></dd>
+<dt>instance</dt>
+<dd><p>Character of length 1 to uniquely identify
+the current instance of the worker.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9002</span>
       </span>
     </div>
 
@@ -109,6 +109,11 @@
 <dd><p>Data frame of information from <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.</p></dd>
 
 
+<dt><code>rotations</code></dt>
+<dd><p>Logical vector to keep track of rotated
+worker websockets.</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div id="methods">
@@ -121,7 +126,10 @@
 <li><p><a href="#method-crew_class_router-validate"><code>crew_class_router$validate()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-listening"><code>crew_class_router$listening()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-listen"><code>crew_class_router$listen()</code></a></p></li>
+<li><p><a href="#method-crew_class_router-sockets"><code>crew_class_router$sockets()</code></a></p></li>
+<li><p><a href="#method-crew_class_router-route"><code>crew_class_router$route()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-poll"><code>crew_class_router$poll()</code></a></p></li>
+<li><p><a href="#method-crew_class_router-log"><code>crew_class_router$log()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-terminate"><code>crew_class_router$terminate()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-crew_class_router-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -226,16 +234,57 @@ and after the entire workload, respectively.</p>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
+</div><p></p><hr><a id="method-crew_class_router-sockets"></a><div class="section">
+<h3 id="method-sockets-">Method <code>sockets()</code><a class="anchor" aria-label="anchor" href="#method-sockets-"></a></h3>
+<p>Get the current socket addresses.</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">sockets</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<p>A character vector of socket addresses.</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_router-route"></a><div class="section">
+<h3 id="method-route-">Method <code>route()</code><a class="anchor" aria-label="anchor" href="#method-route-"></a></h3>
+<p>Choose the websocket path for the next instance
+of the worker at a given index.</p><div class="section">
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">route</span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>index</code></dt>
+<dd><p>Integer of length 1, worker index.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<p>The first call to <code>route()</code> at a given index
+uses the original websocket path provided by <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.
+Subsequent calls to <code>route()</code> at the same index rotate
+the websocket path for robustness.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>Character of length 1, new websocket path of the worker.</p>
+</div>
+
 </div><p></p><hr><a id="method-crew_class_router-poll"></a><div class="section">
 <h3 id="method-poll-">Method <code>poll()</code><a class="anchor" aria-label="anchor" href="#method-poll-"></a></h3>
 <p>Update the <code>daemons</code> field with
 information on the <code>mirai</code> daemons.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">poll</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>Call <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> to get information about the workers.
 If the workers cannot be reached or the router has not started,
 then do not modify the <code>daemons</code> field. Otherwise, if the workers
@@ -244,20 +293,32 @@ of high-level worker-specific statistics.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_router-log"></a><div class="section">
+<h3 id="method-log-">Method <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code><a class="anchor" aria-label="anchor" href="#method-log-"></a></h3>
+<p>Show an informative worker log.</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p>A <code>tibble</code> with information on the workers.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_router-terminate"></a><div class="section">
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
 <p>Stop the mirai client and disconnect from the
 worker websockets.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
