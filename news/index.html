@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9004</span>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.0.5.9001" id="crew-0059001">crew 0.0.5.9001<a class="anchor" aria-label="anchor" href="#crew-0059001"></a></h2>
+<h2 class="page-header" data-toc-text="0.0.5.9004" id="crew-0059004">crew 0.0.5.9004<a class="anchor" aria-label="anchor" href="#crew-0059004"></a></h2>
 <ul><li>Remove <code>asyncdial</code> from call to <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.</li>
 <li>Explain vision in the launcher plugin vignette.</li>
 <li>Remove the superfluous <code>clean()</code> controller method.</li>
@@ -79,6 +79,7 @@
 <li>Remove dependency on custom NNG bus sockets, which significantly simplifies the internals, improves robustness, and smooths the integration with <code>mirai</code> (<a href="https://github.com/wlandau/crew/issues/61" class="external-link">#61</a>).</li>
 <li>Use <code>processx</code> instead of <code>callr</code> for the local process launcher (<a href="https://github.com/wlandau/crew/issues/64" class="external-link">#64</a>”).</li>
 <li>Speed up <code><a href="../reference/crew_eval.html">crew_eval()</a></code> by e.g. relying on <code><a href="https://shikokuchuo.net/nanonext/reference/mclock.html" class="external-link">nanonext::mclock()</a></code> for the time.</li>
+<li>Add an <code>empty()</code> method to check if the controller or controller group is empty.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5" id="crew-005">crew 0.0.5<small>2023-03-23</small><a class="anchor" aria-label="anchor" href="#crew-005"></a></h2>
