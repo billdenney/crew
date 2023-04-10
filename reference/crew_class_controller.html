@@ -311,7 +311,6 @@ number of workers.</p>
 <span>  globals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000000000L</span>, size <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>,</span>
-<span>  garbage_collection <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  library <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -334,8 +333,8 @@ evaluation environment.</p></dd>
 
 <dt><code>globals</code></dt>
 <dd><p>Named list of objects to temporarily assign to the
-global environment for the task. At the end of the task,
-these values are reset to their previous values.</p></dd>
+global environment for the task. See the <code>reset_globals</code> argument
+of <code><a href="crew_controller_local.html">crew_controller_local()</a></code>.</p></dd>
 
 
 <dt><code>substitute</code></dt>
@@ -355,11 +354,6 @@ that invoke <code>crew</code> controllers.</p></dd>
 <dd><p>Integer of length 1 with the pseudo-random number generator
 seed to temporarily set for the evaluation of the task.
 At the end of the task, the seed is restored.</p></dd>
-
-
-<dt><code>garbage_collection</code></dt>
-<dd><p>Logical, whether to run garbage collection
-with <code><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc()</a></code> before running the task.</p></dd>
 
 
 <dt><code>packages</code></dt>

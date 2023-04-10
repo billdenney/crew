@@ -117,7 +117,19 @@ which launch and manage workers.</p>
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
 
-<dt><code>cleanup</code></dt>
+<dt><code>reset_globals</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>reset_packages</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>reset_options</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>garbage_collection</code></dt>
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
 
@@ -152,7 +164,10 @@ which launch and manage workers.</p>
 <span>  seconds_exit <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tasks_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tasks_timers <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cleanup <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  reset_globals <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  reset_packages <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  reset_options <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  garbage_collection <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -195,7 +210,19 @@ See the <code>idletime</code> argument of <code><a href="https://shikokuchuo.net
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
 
-<dt><code>cleanup</code></dt>
+<dt><code>reset_globals</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>reset_packages</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>reset_options</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>garbage_collection</code></dt>
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
 
@@ -473,7 +500,7 @@ to be optional.</p>
 <span class="r-in"><span>  worker <span class="op">=</span> <span class="fl">3L</span>,</span></span>
 <span class="r-in"><span>  instance <span class="op">=</span> <span class="st">"cba033e58"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "crew::crew_worker(settings = list(url = \"ws://127.0.0.1:5000/3/cba033e58\", maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 1000, cleanup = FALSE, asyncdial = FALSE), launcher = \"launcher_a\", worker = 3L, instance = \"cba033e58\")"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "crew::crew_worker(settings = list(url = \"ws://127.0.0.1:5000/3/cba033e58\", maxtasks = Inf, idletime = Inf, walltime = Inf, timerstart = 0L, exitlinger = 1000, cleanup = 1L, asyncdial = FALSE), launcher = \"launcher_a\", worker = 3L, instance = \"cba033e58\")"</span>
 </code></pre></div>
     </div>
   </div>

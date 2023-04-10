@@ -78,7 +78,10 @@ local process workers for a controller.</p>
 <span>  seconds_exit <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  tasks_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  tasks_timers <span class="op">=</span> <span class="fl">0L</span>,</span>
-<span>  cleanup <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  reset_globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  reset_packages <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  reset_options <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  garbage_collection <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -146,10 +149,26 @@ the timers for <code>seconds_idle</code> and <code>seconds_wall</code>.
 See the <code>timerlaunch</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
 
 
-<dt>cleanup</dt>
-<dd><p>Logical, whether to clean up global options and the
-global environment after every task.
-See the <code>cleanup</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
+<dt>reset_globals</dt>
+<dd><p><code>TRUE</code> to reset global environment
+variables between tasks, <code>FALSE</code> to leave them alone.</p></dd>
+
+
+<dt>reset_packages</dt>
+<dd><p><code>TRUE</code> to unload any packages loaded during
+a task (runs between each task), <code>FALSE</code> to leave packages alone.</p></dd>
+
+
+<dt>reset_options</dt>
+<dd><p><code>TRUE</code> to reset global options to their original
+state between each task, <code>FALSE</code> otherwise. It is recommended to
+only set <code>reset_options = TRUE</code> if <code>reset_packages</code> is also <code>TRUE</code>
+because packages sometimes rely on options they set at loading time.</p></dd>
+
+
+<dt>garbage_collection</dt>
+<dd><p><code>TRUE</code> to run garbage collection between
+tasks, <code>FALSE</code> to skip.</p></dd>
 
 </dl></div>
     <div id="see-also">
