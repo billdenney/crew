@@ -55,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9006</span>
       </span>
     </div>
 
@@ -191,10 +191,10 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 11</span></span>
-<span><span class="co">#&gt;   name         command result seconds   seed error trace…¹ warni…² launc…³ worker insta…⁴</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
-<span><span class="co">#&gt; 1 get worker … ps::ps… &lt;int&gt;        0 1.56e8 NA    NA      NA      79e71c…      1 7686b2…</span></span>
-<span><span class="co">#&gt; # … with abbreviated variable names ¹​traceback, ²​warnings, ³​launcher, ⁴​instance</span></span></code></pre></div>
+<span><span class="co">#&gt;   name         command result seconds   seed error trace warni…¹ launc…² worker insta…³</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1 get worker … ps::ps… &lt;int&gt;        0 1.56e8 NA    NA    NA      79e71c…      1 7686b2…</span></span>
+<span><span class="co">#&gt; # … with abbreviated variable names ¹​warnings, ²​launcher, ³​instance</span></span></code></pre></div>
 <p>The return value of the command is available in the <code>result</code> column. In our case, it is the process ID of the parallel worker that ran it, as reported by <code><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps::ps_pid()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="va">result</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># process ID of the parallel worker reported by the task</span></span>

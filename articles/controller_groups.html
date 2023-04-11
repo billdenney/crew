@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9006</span>
       </span>
     </div>
 
@@ -138,11 +138,11 @@ ran the task.</p>
 <code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>controllers <span class="op">=</span> <span class="st">"semi-persistent"</span><span class="op">)</span></span>
 <span><span class="va">group</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 11</span></span>
-<span><span class="co">#&gt;   name    command result seconds   seed error trace…¹ warni…² launc…³ worker</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 my task sqrt(4) &lt;dbl&gt;        0 5.11e8 NA    NA      NA      semi-p…      1</span></span>
+<span><span class="co">#&gt;   name    command result seconds   seed error trace warni…¹ launc…² worker</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 my task sqrt(4) &lt;dbl&gt;        0 5.11e8 NA    NA    NA      semi-p…      1</span></span>
 <span><span class="co">#&gt; # … with 1 more variable: instance &lt;chr&gt;, and abbreviated variable names</span></span>
-<span><span class="co">#&gt; #   ¹​traceback, ²​warnings, ³​launcher</span></span></code></pre></div>
+<span><span class="co">#&gt; #   ¹​warnings, ²​launcher</span></span></code></pre></div>
 <p>The controller group has a <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method which
 aggregates all the information from the selected controllers.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
