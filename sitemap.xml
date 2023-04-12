@@ -73,10 +73,10 @@
     <loc>/reference/crew_launcher_local.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_router.html</loc>
+    <loc>/reference/crew_retry.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_wait.html</loc>
+    <loc>/reference/crew_router.html</loc>
   </url>
   <url>
     <loc>/reference/crew_worker.html</loc>

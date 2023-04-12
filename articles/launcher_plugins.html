@@ -383,7 +383,7 @@ tasks.</p>
 <span><span class="co"># Wait for the tasks to complete.</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># Wait for the workers to idle out and exit on their own.</span></span>
-<span><span class="fu"><a href="../reference/crew_wait.html">crew_wait</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/crew_retry.html">crew_retry</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">worker_connected</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="fl">60</span></span>
@@ -395,7 +395,7 @@ tasks.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"push"</span>, <span class="va">name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/crew_wait.html">crew_wait</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/crew_retry.html">crew_retry</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">worker_connected</span> <span class="op">==</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="fl">60</span></span>
@@ -432,7 +432,7 @@ start accepting tasks.</li>
 <li>If you implement a <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
 method, each worker termination may also happen asynchronously. In rare
 cases when you do not trust the platform to terminate the worker on the
-first request, you can use <a href="https://wlandau.github.io/crew/reference/crew_wait.html" class="external-link"><code>crew_wait()</code></a>
+first request, you can use <a href="https://wlandau.github.io/crew/reference/crew_retry.html" class="external-link"><code>crew_retry()</code></a>
 to wait for the job to exit, but this may reduce efficiency.</li>
 <li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_local.R" class="external-link">source
 code of the built-in local process launcher</a> is a helpful
