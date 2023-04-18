@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9022</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9024</span>
       </span>
     </div>
 
@@ -89,6 +89,7 @@
 <li>The <code>poll()</code> method now retries <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> for robustness.</li>
 <li>
 <code><a href="../reference/crew_retry.html">crew_retry()</a></code> gains a <code>max_tries</code> argument.</li>
+<li>Bugfix: stop setting <code>router$daemons</code> to <code>NULL</code> in <code>poll()</code> when the connection has a momentary problem.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5" id="crew-005">crew 0.0.5<small>2023-03-23</small><a class="anchor" aria-label="anchor" href="#crew-005"></a></h2>
