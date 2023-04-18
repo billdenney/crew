@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.5.9025</span>
       </span>
     </div>
 
@@ -216,7 +216,10 @@ to worker websockets.</p><div class="section">
 <p>This method may stall and time out if there are
 tasks in the queue. Methods <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code> and <code>terminate()</code>
 call <code>listening()</code> to manage the connection before
-and after the entire workload, respectively.</p>
+and after the entire workload, respectively.
+In addition, a false negative result is possible
+if there is a momentary connection issue. (<code>listening()</code>
+does not retry the connection.)</p>
 </div>
 
 <div class="section">
