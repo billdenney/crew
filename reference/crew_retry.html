@@ -73,6 +73,8 @@ and exit the loop when it returns <code>TRUE</code></p>
 <span>  args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="fl">60</span>,</span>
+<span>  max_tries <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  error <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  message <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -97,6 +99,15 @@ number of seconds to wait between calls to <code>fun</code>.</p></dd>
 <dt>seconds_timeout</dt>
 <dd><p>Nonnegative numeric of length 1,
 number of seconds to loop before timing out.</p></dd>
+
+
+<dt>max_tries</dt>
+<dd><p>Maximum number of calls to <code>fun</code> to try
+before giving up.</p></dd>
+
+
+<dt>error</dt>
+<dd><p>Whether to throw an error on a timeout or max tries.</p></dd>
 
 
 <dt>message</dt>
