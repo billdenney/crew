@@ -334,10 +334,14 @@ the worker instance.</p>
 <span><span class="co">#&gt; [1] "192.168.0.2 27336"</span></span></code></pre></div>
 <p>Please use the result to verify that the task really ran on a worker
 as intended. The process ID above should agree with the one from the
-handle. In addition, if the worker is running on a different computer,
-the worker IP address should be different than the local IP address.
-Since our custom launcher creates local processes, the IP addresses are
-the same in this case, but they should be different for a <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a> or <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a> launcher.</p>
+handle (<a href="https://github.com/r-lib/processx/issues/364" class="external-link">except on
+Windows</a> because the actual R process may be different from the
+<code>R.exe</code> process created first). In addition, if the worker is
+running on a different computer, the worker IP address should be
+different than the local IP address. Since our custom launcher creates
+local processes, the IP addresses are the same in this case, but they
+should be different for a <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>
+or <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a> launcher.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">getip</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/getip/man/getip.html" class="external-link">getip</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; "192.168.0.2"</span></span>
