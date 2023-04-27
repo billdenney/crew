@@ -93,8 +93,9 @@ global environment for the task.</p></dd>
 
 <dt>seed</dt>
 <dd><p>Integer of length 1 with the pseudo-random number generator
-seed to temporarily set for the evaluation of the task.
-At the end of the task, the seed is restored.</p></dd>
+seed to set for the evaluation of the task. Does not restore
+the original seed, but this is okay because <code>crew_eval()</code>
+should only run in a non-interactive worker process.</p></dd>
 
 
 <dt>packages</dt>
@@ -137,7 +138,7 @@ are restored to their original values on exit.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   command: 1 + 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   result: list(2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seconds: 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   seed: 546080232</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   seed: 536429901</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   error: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   trace: NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   warnings: NA</span>
