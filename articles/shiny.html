@@ -127,50 +127,32 @@ asynchronously manages all the tasks from a single convenient place.
 This vignette demonstrates scalable asynchronous programming with
 <code>crew</code> in Shiny.</p>
 </div>
-<div class="section level2 tabset">
-<h2 class="tabset" id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h2>
-<p>Our example app opens like this:</p>
-<p><img src="figures/open.png"></p>
-</div>
 <div class="section level2">
-<h2 id="submission">Submission<a class="anchor" aria-label="anchor" href="#submission"></a>
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>When you click the “Run a task (5 seconds)” button, <code>crew</code>
-runs a long task in the background. In this case, each task is an R
-function call that sleeps for 5 seconds and then produces a <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
+<p>Our example app looks like this when it launches:</p>
+<p><img src="figures/open.png"></p>
+<p>When you click the “Submit a task (5 seconds)” button,
+<code>crew</code> runs a long task in the background. In this case, each
+task is an R function call that sleeps for 5 seconds and then produces a
+<a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
 low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> using
 the <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRtsy</code></a>
 package. The app continuously refreshes the current time and the number
 of tasks in progress.</p>
 <p><img src="figures/submitted.png"></p>
-</div>
-<div class="section level2">
-<h2 id="completion">Completion<a class="anchor" aria-label="anchor" href="#completion"></a>
-</h2>
 <p>As soon as a task completes, the app retrieves the result from the
 <code>crew</code> workers and plots the output.</p>
 <p><img src="figures/completed1.png"></p>
-</div>
-<div class="section level2">
-<h2 id="load">Load<a class="anchor" aria-label="anchor" href="#load"></a>
-</h2>
 <p>You can submit many more tasks than there are workers currently
 running. In the following screenshot, the app is only running 2 workers,
-but there are 13 tasks in the queue.</p>
+but the queue has 6 tasks left.</p>
 <p><img src="figures/progress.png"></p>
-</div>
-<div class="section level2">
-<h2 id="end">End<a class="anchor" aria-label="anchor" href="#end"></a>
-</h2>
 <p>Thanks to the efficient scheduling of <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> in
-the backend, <code>crew</code> workers successfully complete all 13
-tasks. Because the app runs 2 workers, as many as 2 plots may show in
-quick succession.</p>
+the backend, <code>crew</code> workers successfully complete all
+remaining 6 tasks. Because the app runs 2 workers, different plots may
+appear less than 5 seconds apart.</p>
 <p><img src="figures/completed2.png"></p>
-</div>
-<div class="section level2 unnumbered">
-<h2 class="unnumbered" id="section"></h2>
 </div>
 <div class="section level2">
 <h2 id="tutorial">Tutorial<a class="anchor" aria-label="anchor" href="#tutorial"></a>
@@ -215,8 +197,7 @@ status, and a plot with the result of the most recently completed
 task.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span></span>
-<span>  <span class="fu">titlePanel</span><span class="op">(</span><span class="st">"Shiny app with crew"</span><span class="op">)</span>,</span>
-<span>  <span class="fu">actionButton</span><span class="op">(</span><span class="st">"task"</span>, <span class="st">"Run a task (5 seconds)"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">actionButton</span><span class="op">(</span><span class="st">"task"</span>, <span class="st">"Submit a task (5 seconds)"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">textOutput</span><span class="op">(</span><span class="st">"status"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">plotOutput</span><span class="op">(</span><span class="st">"figure"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -225,7 +206,7 @@ with reactive values and outputs for the <a href="https://en.wikipedia.org/wiki/
 and the status.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  figure <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="fu">ggplot</span>())</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  status <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="st">"Not started."</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  status <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="st">"No task submitted yet."</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>figure <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>(<span class="fu">figure</span>(), <span class="at">height =</span> <span class="dv">600</span>, <span class="at">width =</span> <span class="dv">600</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">status</span>())</span></code></pre></div>
 <p>Next, we start a <code>crew</code> controller with up to 2 workers
@@ -234,10 +215,10 @@ and an idle time of 10 seconds.</p>
 <code class="sourceCode R"><span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span>, seconds_idle <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="fu">onStop</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Every time the user presses the “Run a task (5 seconds)” button, the
-app pushes a new task to the <code>crew</code> controller. If there are
-other tasks already running on the workers, the task may not actually
-start for several seconds.</p>
+<p>Every time the user presses the “Submit a task (5 seconds)” button,
+the app pushes a new task to the <code>crew</code> controller. If there
+are other tasks already running on the workers, the task may not
+actually start for several seconds.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="fu">observeEvent</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">task</span>, <span class="op">{</span></span>
 <span>    <span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span></span>
@@ -303,8 +284,7 @@ defined above.</p>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span></span>
-<span>  <span class="fu">titlePanel</span><span class="op">(</span><span class="st">"Shiny app with crew"</span><span class="op">)</span>,</span>
-<span>  <span class="fu">actionButton</span><span class="op">(</span><span class="st">"task"</span>, <span class="st">"Run a task (5 seconds)"</span><span class="op">)</span>,</span>
+<span>  <span class="fu">actionButton</span><span class="op">(</span><span class="st">"task"</span>, <span class="st">"Submit a task (5 seconds)"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">textOutput</span><span class="op">(</span><span class="st">"status"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">plotOutput</span><span class="op">(</span><span class="st">"figure"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -312,7 +292,7 @@ defined above.</p>
 <span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># reactive values and outputs</span></span>
 <span>  <span class="va">figure</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="st">"Not started."</span><span class="op">)</span></span>
+<span>  <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="st">"No task submitted yet."</span><span class="op">)</span></span>
 <span>  <span class="va">output</span><span class="op">$</span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="fu">renderPlot</span><span class="op">(</span><span class="fu">figure</span><span class="op">(</span><span class="op">)</span>, height <span class="op">=</span> <span class="fl">600</span>, width <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
 <span>  <span class="va">output</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="fu">status</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
