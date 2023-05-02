@@ -127,11 +127,18 @@ asynchronously manages all the tasks from a single convenient place.
 This vignette demonstrates scalable asynchronous programming with
 <code>crew</code> in Shiny.</p>
 </div>
-<div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<div class="section level2 tabset">
+<h2 class="tabset" id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
+<div class="section level3 active">
+<h3 class="active" id="open">Open<a class="anchor" aria-label="anchor" href="#open"></a>
+</h3>
 <p>Our example app opens like this:</p>
 <p><img src="figures/open.png"></p>
+</div>
+<div class="section level3">
+<h3 id="submission">Submission<a class="anchor" aria-label="anchor" href="#submission"></a>
+</h3>
 <p>When you click the “Run a task (5 seconds)” button, <code>crew</code>
 runs a long task in the background. In this case, each task is an R
 function call that sleeps for 5 seconds and then produces a <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
@@ -140,18 +147,34 @@ the <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRt
 package. The app continuously refreshes the current time and the number
 of tasks in progress.</p>
 <p><img src="figures/submitted.png"></p>
+</div>
+<div class="section level3">
+<h3 id="completion">Completion<a class="anchor" aria-label="anchor" href="#completion"></a>
+</h3>
 <p>As soon as a task completes, the app retrieves the result from the
 <code>crew</code> workers and plots the output.</p>
 <p><img src="figures/completed1.png"></p>
+</div>
+<div class="section level3">
+<h3 id="load">Load<a class="anchor" aria-label="anchor" href="#load"></a>
+</h3>
 <p>You can submit many more tasks than there are workers currently
 running. In the following screenshot, the app is only running 2 workers,
 but there are 13 tasks in the queue.</p>
 <p><img src="figures/progress.png"></p>
+</div>
+<div class="section level3">
+<h3 id="end">End<a class="anchor" aria-label="anchor" href="#end"></a>
+</h3>
 <p>Thanks to the efficient scheduling of <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> in
 the backend, <code>crew</code> workers successfully complete all 13
 tasks. Because the app runs 2 workers, as many as 2 plots may show in
 quick succession.</p>
 <p><img src="figures/completed2.png"></p>
+</div>
+</div>
+<div class="section level2 unnumbered">
+<h2 class="unnumbered" id="section"></h2>
 </div>
 <div class="section level2">
 <h2 id="tutorial">Tutorial<a class="anchor" aria-label="anchor" href="#tutorial"></a>
