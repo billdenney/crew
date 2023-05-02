@@ -210,7 +210,14 @@ and the status.</p>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>figure <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>(<span class="fu">figure</span>(), <span class="at">height =</span> <span class="dv">600</span>, <span class="at">width =</span> <span class="dv">600</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">status</span>())</span></code></pre></div>
 <p>Next, we start a <code>crew</code> controller with up to 2 workers
-and an idle time of 10 seconds.</p>
+and an idle time of 10 seconds. We choose the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html" class="external-link">local
+process launcher</a> below for this app, but we could have chosen the <a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine" class="external-link">Sun Grid
+Engine</a> launcher from <a href="https://wlandau.github.io/crew.cluster/" class="external-link"><code>crew.cluster</code></a>,
+a <a href="https://wlandau.github.io/crew/articles/controller_groups.html" class="external-link">controller
+group</a> with multiple launchers, or a <a href="https://wlandau.github.io/crew/articles/launcher_plugins.html" class="external-link">custom
+launcher</a> for e.g. <a href="https://kubernetes.io" class="external-link">Kubernetes</a>.
+With <code>crew</code>, anyone can write a <a href="https://wlandau.github.io/crew/articles/launcher_plugins.html" class="external-link">custom
+launcher plugins</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span>, seconds_idle <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
