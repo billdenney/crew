@@ -136,7 +136,7 @@ This vignette demonstrates scalable asynchronous programming with
 <code>crew</code> runs a long task in the background. In this case, each
 task is an R function call that sleeps for 5 seconds and then produces a
 <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
-low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> using
+random low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> using
 the <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRtsy</code></a>
 package. The app continuously refreshes the current time and the number
 of tasks in progress.</p>
@@ -158,7 +158,7 @@ appear less than 5 seconds apart.</p>
 <h2 id="tutorial">Tutorial<a class="anchor" aria-label="anchor" href="#tutorial"></a>
 </h2>
 <p>Each plot in the app is a <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
-low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> from
+random low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> from
 the <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRtsy</code></a>
 package. <a href="https://koenderks.github.io/aRtsy/reference/canvas_phyllotaxis.html" class="external-link"><code>canvas_phyllotaxis()</code></a>
 is actually quite fast, so we make the task noticeably long with an
@@ -202,7 +202,7 @@ task.</p>
 <span>  <span class="fu">plotOutput</span><span class="op">(</span><span class="st">"figure"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The <a href="https://shiny.rstudio.com/articles/basics.html" class="external-link">server</a> begins
-with reactive values and outputs for the <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> figure
+with reactive values and outputs for the random <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> figure
 and the status.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  figure <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="fu">ggplot</span>())</span>
