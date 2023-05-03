@@ -133,13 +133,12 @@ This vignette demonstrates scalable asynchronous programming with
 <p>Our example app looks like this when it launches:</p>
 <p><img src="figures/open.png"></p>
 <p>When you click the “Submit a task (5 seconds)” button,
-<code>crew</code> runs a long task in the background. In this case, each
-task is an R function call that sleeps for 5 seconds and then produces a
-<a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
-random low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> using
+<code>crew</code> runs a long task in the background. Here, the task is
+to wait 5 seconds and then generate a random <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> using
 the <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRtsy</code></a>
-package. The app continuously refreshes the current time and the number
-of tasks in progress.</p>
+package.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+The app continuously refreshes the current time and the number of tasks
+in progress.</p>
 <p><img src="figures/submitted.png"></p>
 <p>As soon as a task completes, the app retrieves the result from the
 <code>crew</code> workers and plots the output.</p>
@@ -157,31 +156,36 @@ appear less than 5 seconds apart.</p>
 <div class="section level2">
 <h2 id="tutorial">Tutorial<a class="anchor" aria-label="anchor" href="#tutorial"></a>
 </h2>
-<p>Each plot in the app is a <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of a
-random low-resolution <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> from
-the <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRtsy</code></a>
-package. <a href="https://koenderks.github.io/aRtsy/reference/canvas_phyllotaxis.html" class="external-link"><code>canvas_phyllotaxis()</code></a>
-is actually quite fast, so we make the task noticeably long with an
-artificial 5-second delay.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>The app depends on the following packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/aRtsy/" class="external-link">aRtsy</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">create_figure</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/aRtsy/" class="external-link">aRtsy</a></span><span class="op">)</span></span></code></pre></div>
+<p>Each task waits 5 seconds and then generates a random set of
+parameters of a <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">run_task</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span>  <span class="fu">canvas_phyllotaxis</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    colors <span class="op">=</span> <span class="fu">colorPalette</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"random"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>    iterations <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>    angle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="fl">90</span>, max <span class="op">=</span> <span class="fl">270</span><span class="op">)</span>,</span>
-<span>    size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="fl">2</span>, max <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>    p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    angle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span>, max <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    p <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Next, we have a function that accepts the number of tasks in progress
-and returns a text string with the status message.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>The <a href="https://koenderks.github.io/aRtsy/reference/canvas_phyllotaxis.html" class="external-link"><code>canvas_phyllotaxis()</code></a>
+function from <a href="https://koenderks.github.io/aRtsy/" class="external-link"><code>aRtsy</code></a>
+generates a <a href="https://ggplot2.tidyverse.org/" class="external-link"><code>ggplot</code></a> of the <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a>. Below,
+the <code>result</code> argument is a random set of parameters from
+<code>run_task()</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">plot_result</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">result</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="va">canvas_phyllotaxis</span>, args <span class="op">=</span> <span class="va">result</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>A separate function generates status messages based on the number of
+tasks in progress.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">status_message</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">number_tasks</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">number_tasks</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="st">"All tasks completed."</span></span>
@@ -195,20 +199,20 @@ and returns a text string with the status message.</p>
 interface</a> has a button to submit a task, a text output with the
 status, and a plot with the result of the most recently completed
 task.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span></span>
 <span>  <span class="fu">actionButton</span><span class="op">(</span><span class="st">"task"</span>, <span class="st">"Submit a task (5 seconds)"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">textOutput</span><span class="op">(</span><span class="st">"status"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">plotOutput</span><span class="op">(</span><span class="st">"figure"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The <a href="https://shiny.rstudio.com/articles/basics.html" class="external-link">server</a> begins
-with reactive values and outputs for the random <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a> figure
-and the status.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  figure <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="fu">ggplot</span>())</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  status <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="st">"No task submitted yet."</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>figure <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>(<span class="fu">figure</span>(), <span class="at">height =</span> <span class="dv">600</span>, <span class="at">width =</span> <span class="dv">600</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">status</span>())</span></code></pre></div>
+with reactive values and outputs for the random <a href="https://en.wikipedia.org/wiki/Phyllotaxis" class="external-link">phyllotaxis</a>
+parameters and the task status.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  reactive_result <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="fu">ggplot</span>())</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  reactive_status <span class="ot">&lt;-</span> <span class="fu">reactiveVal</span>(<span class="st">"No task submitted yet."</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>result <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>(<span class="fu">reactive_result</span>(), <span class="at">height =</span> <span class="dv">600</span>, <span class="at">width =</span> <span class="dv">600</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">reactive_status</span>())</span></code></pre></div>
 <p>Next, we start a <code>crew</code> controller with up to 2 workers
 and an idle time of 10 seconds. We choose the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html" class="external-link">local
 process launcher</a> below for this app, but we could have chosen the <a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine" class="external-link">Sun Grid
@@ -218,7 +222,7 @@ group</a> with multiple launchers, or a <a href="https://wlandau.github.io/crew/
 launcher</a> for e.g. <a href="https://kubernetes.io" class="external-link">Kubernetes</a>.
 With <code>crew</code>, anyone can write a <a href="https://wlandau.github.io/crew/articles/launcher_plugins.html" class="external-link">custom
 launcher plugin</a>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span>, seconds_idle <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="fu">onStop</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -226,11 +230,11 @@ launcher plugin</a>.</p>
 the app pushes a new task to the <code>crew</code> controller. If there
 are other tasks already running on the workers, the task may not
 actually start for several seconds.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span>  <span class="fu">observeEvent</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">task</span>, <span class="op">{</span></span>
 <span>    <span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span></span>
-<span>      command <span class="op">=</span> <span class="fu">create_figure</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>create_figure <span class="op">=</span> <span class="va">create_figure</span><span class="op">)</span>,</span>
+<span>      command <span class="op">=</span> <span class="fu">run_task</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>run_task <span class="op">=</span> <span class="va">run_task</span><span class="op">)</span>,</span>
 <span>      packages <span class="op">=</span> <span class="st">"aRtsy"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span></code></pre></div>
@@ -243,41 +247,44 @@ any unfinished tasks or available results.
 <code>result &lt;- controller$pop()$result</code> not only tries to
 collect the latest result, but also relaunches any workers that
 previously idled out but now need to run the backlog of tasks.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observe</span>({</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invalidateLater</span>(<span class="at">millis =</span> <span class="dv">250</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">isFALSE</span>(controller<span class="sc">$</span><span class="fu">empty</span>())) {</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>      result <span class="ot">&lt;-</span> controller<span class="sc">$</span><span class="fu">pop</span>()<span class="sc">$</span>result</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(result)) {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">figure</span>(result)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">status</span>(<span class="fu">status_message</span>(<span class="at">number_tasks =</span> <span class="fu">length</span>(controller<span class="sc">$</span>queue)))</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observe</span>({</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invalidateLater</span>(<span class="at">millis =</span> <span class="dv">250</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">isFALSE</span>(controller<span class="sc">$</span><span class="fu">empty</span>())) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      result <span class="ot">&lt;-</span> controller<span class="sc">$</span><span class="fu">pop</span>()<span class="sc">$</span>result</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(result)) {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">reactive_result</span>(<span class="fu">plot_result</span>(result[[1L]]))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">reactive_status</span>(<span class="fu">status_message</span>(<span class="at">number_tasks =</span> <span class="fu">length</span>(controller<span class="sc">$</span>queue)))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
 <p>Finally, <code>shinyApp()</code> runs the app with the UI and server
 defined above.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">shinyApp</span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
 </h2>
 <p>See below for the complete <code>app.R</code> file.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/aRtsy/" class="external-link">aRtsy</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">create_figure</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">run_task</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
-<span>  <span class="fu">canvas_phyllotaxis</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    colors <span class="op">=</span> <span class="fu">colorPalette</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"random"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>    iterations <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>    angle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="fl">90</span>, max <span class="op">=</span> <span class="fl">270</span><span class="op">)</span>,</span>
-<span>    size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="fl">2</span>, max <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>    p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    angle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1</span>, min <span class="op">=</span> <span class="op">-</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span>, max <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span>,</span>
+<span>    size <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    p <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">plot_result</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">result</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span>what <span class="op">=</span> <span class="va">canvas_phyllotaxis</span>, args <span class="op">=</span> <span class="va">result</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="va">status_message</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">number_tasks</span><span class="op">)</span> <span class="op">{</span></span>
@@ -293,15 +300,15 @@ defined above.</p>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu">fluidPage</span><span class="op">(</span></span>
 <span>  <span class="fu">actionButton</span><span class="op">(</span><span class="st">"task"</span>, <span class="st">"Submit a task (5 seconds)"</span><span class="op">)</span>,</span>
 <span>  <span class="fu">textOutput</span><span class="op">(</span><span class="st">"status"</span><span class="op">)</span>,</span>
-<span>  <span class="fu">plotOutput</span><span class="op">(</span><span class="st">"figure"</span><span class="op">)</span></span>
+<span>  <span class="fu">plotOutput</span><span class="op">(</span><span class="st">"result"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># reactive values and outputs</span></span>
-<span>  <span class="va">figure</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="st">"No task submitted yet."</span><span class="op">)</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">figure</span> <span class="op">&lt;-</span> <span class="fu">renderPlot</span><span class="op">(</span><span class="fu">figure</span><span class="op">(</span><span class="op">)</span>, height <span class="op">=</span> <span class="fl">600</span>, width <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="fu">status</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">reactive_result</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">reactive_status</span> <span class="op">&lt;-</span> <span class="fu">reactiveVal</span><span class="op">(</span><span class="st">"No task submitted yet."</span><span class="op">)</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">renderPlot</span><span class="op">(</span><span class="fu">reactive_result</span><span class="op">(</span><span class="op">)</span>, height <span class="op">=</span> <span class="fl">600</span>, width <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">status</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="fu">reactive_status</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># crew controller</span></span>
 <span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">2</span>, seconds_idle <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -311,8 +318,8 @@ defined above.</p>
 <span>  <span class="co"># button to submit a task</span></span>
 <span>  <span class="fu">observeEvent</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">task</span>, <span class="op">{</span></span>
 <span>    <span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span></span>
-<span>      command <span class="op">=</span> <span class="fu">create_figure</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>create_figure <span class="op">=</span> <span class="va">create_figure</span><span class="op">)</span>,</span>
+<span>      command <span class="op">=</span> <span class="fu">run_task</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>      data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>run_task <span class="op">=</span> <span class="va">run_task</span><span class="op">)</span>,</span>
 <span>      packages <span class="op">=</span> <span class="st">"aRtsy"</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
@@ -323,9 +330,9 @@ defined above.</p>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isFALSE</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="fu">empty</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">result</span></span>
 <span>      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>        <span class="fu">figure</span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span>        <span class="fu">reactive_result</span><span class="op">(</span><span class="fu">plot_result</span><span class="op">(</span><span class="va">result</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>      <span class="op">}</span></span>
-<span>      <span class="fu">status</span><span class="op">(</span><span class="fu">status_message</span><span class="op">(</span>number_tasks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="va">queue</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu">reactive_status</span><span class="op">(</span><span class="fu">status_message</span><span class="op">(</span>number_tasks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="va">queue</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -336,7 +343,7 @@ defined above.</p>
 <hr>
 <ol>
 <li id="fn1"><p>Machine learning and Bayesian data analysis have plenty
-of examples of long-running tasks in data science and statistics.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+of serious examples of long-running tasks.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p><code>controller$pop()</code> is inexpensive, especially
 when there are no workers to relaunch or results to collect. In
 practice, the polling interval is a balance between responsiveness and
