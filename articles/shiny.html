@@ -328,11 +328,11 @@ defined above.</p>
 <span>  <span class="co"># event loop to collect finished tasks</span></span>
 <span>  <span class="fu">observe</span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu">req</span><span class="op">(</span><span class="fu">reactive_poll</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu">reactive_poll</span><span class="op">(</span><span class="op">!</span><span class="va">controller</span><span class="op">$</span><span class="fu">empty</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu">invalidateLater</span><span class="op">(</span>millis <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
 <span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">result</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu">reactive_result</span><span class="op">(</span><span class="fu">plot_result</span><span class="op">(</span><span class="va">result</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu">reactive_status</span><span class="op">(</span><span class="fu">status_message</span><span class="op">(</span>number_tasks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="va">queue</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">reactive_poll</span><span class="op">(</span><span class="op">!</span><span class="va">controller</span><span class="op">$</span><span class="fu">empty</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
