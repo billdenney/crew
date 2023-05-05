@@ -242,21 +242,21 @@ scan for results in the <code>observe()</code> block covered next.</p>
 <span>    <span class="fu">reactive_poll</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>At the bottom of <code>server()</code> is the crux of the app: the
-event loop that watches for results. Below,
-<code>req(reactive_poll())</code> ensures the loop only runs when it is
-time to scan for results, and
-<code>reactive_poll(!controller$empty())</code> turns off polling when
-everything is all done. <code>invalidateLater(millis = 250)</code> says
-to poll every 0.25 seconds when polling is activated.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The subsequent three
-lines collect a result, plot it if available, and update the status
-message.</p>
+event loop that scans for results. The leading
+<code>req(reactive_poll())</code> ensures the loop only runs when
+results could come in, and the
+<code>reactive_poll(!controller$empty())</code> at the end turns off
+polling when everything is all done.
+<code>invalidateLater(millis = 250)</code> says to poll every 0.25
+seconds when polling is activated.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The subsequent three lines collect a
+result, plot it if available, and update the status message.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observe</span>({</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(<span class="fu">reactive_poll</span>())</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_poll</span>(<span class="sc">!</span>controller<span class="sc">$</span><span class="fu">empty</span>())</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invalidateLater</span>(<span class="at">millis =</span> <span class="dv">1000</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> controller<span class="sc">$</span><span class="fu">pop</span>()<span class="sc">$</span>result</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(result)) <span class="fu">reactive_result</span>(<span class="fu">plot_result</span>(result[[1L]]))</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_status</span>(<span class="fu">status_message</span>(<span class="at">number_tasks =</span> <span class="fu">length</span>(controller<span class="sc">$</span>queue)))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invalidateLater</span>(<span class="at">millis =</span> <span class="dv">250</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> controller<span class="sc">$</span><span class="fu">pop</span>()<span class="sc">$</span>result</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(result)) <span class="fu">reactive_result</span>(<span class="fu">plot_result</span>(result[[1L]]))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_status</span>(<span class="fu">status_message</span>(<span class="at">number_tasks =</span> <span class="fu">length</span>(controller<span class="sc">$</span>queue)))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_poll</span>(<span class="sc">!</span>controller<span class="sc">$</span><span class="fu">empty</span>())</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
 <p>Finally, <code>shinyApp()</code> runs the app with the UI and server
@@ -329,7 +329,7 @@ defined above.</p>
 <span>  <span class="fu">observe</span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu">req</span><span class="op">(</span><span class="fu">reactive_poll</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu">reactive_poll</span><span class="op">(</span><span class="op">!</span><span class="va">controller</span><span class="op">$</span><span class="fu">empty</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu">invalidateLater</span><span class="op">(</span>millis <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span>    <span class="fu">invalidateLater</span><span class="op">(</span>millis <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
 <span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">result</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu">reactive_result</span><span class="op">(</span><span class="fu">plot_result</span><span class="op">(</span><span class="va">result</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu">reactive_status</span><span class="op">(</span><span class="fu">status_message</span><span class="op">(</span>number_tasks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="va">queue</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
