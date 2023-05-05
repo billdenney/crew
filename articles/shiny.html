@@ -248,8 +248,8 @@ results could come in, and the
 <code>reactive_poll(!controller$empty())</code> at the end turns off
 polling when everything is all done.
 <code>invalidateLater(millis = 250)</code> says to poll every 0.25
-seconds when polling is activated.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The subsequent three lines collect a
-result, plot it if available, and update the status message.</p>
+seconds when polling is activated.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The other three lines collect a result,
+plot it if available, and update the status message.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">observe</span>({</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">req</span>(<span class="fu">reactive_poll</span>())</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invalidateLater</span>(<span class="at">millis =</span> <span class="dv">250</span>)</span>
