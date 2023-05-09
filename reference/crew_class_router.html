@@ -104,6 +104,10 @@
 <dd><p>See <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
 
 
+<dt><code>spaced_poll</code></dt>
+<dd><p>See <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
+
+
 <dt><code>started</code></dt>
 <dd><p>Whether the router is started.</p></dd>
 
@@ -119,6 +123,11 @@
 <dt><code>rotations</code></dt>
 <dd><p>Logical vector to keep track of rotated
 worker websockets.</p></dd>
+
+
+<dt><code>polled</code></dt>
+<dd><p>Numeric to keep track of when <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>
+was last called to check worker status.</p></dd>
 
 
 </dl><p></p></div>
@@ -147,7 +156,8 @@ worker websockets.</p></dd>
 <span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  spaced_poll <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -174,6 +184,10 @@ worker websockets.</p></dd>
 
 
 <dt><code>seconds_timeout</code></dt>
+<dd><p>Argument passed from <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
+
+
+<dt><code>spaced_poll</code></dt>
 <dd><p>Argument passed from <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
 
 

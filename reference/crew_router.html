@@ -77,7 +77,8 @@ client.</p>
 <span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span></span>
+<span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  spaced_poll <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -105,12 +106,25 @@ then an available ephemeral port is automatically chosen.</p></dd>
 <dt>seconds_interval</dt>
 <dd><p>Number of seconds between
 polling intervals waiting for certain internal
-synchronous operations to complete.</p></dd>
+synchronous operations to complete. If <code>space_polls</code> is <code>TRUE</code>, then
+this is also the minimum number of seconds between calls to
+<code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> for the purposes of checking worker status.</p></dd>
 
 
 <dt>seconds_timeout</dt>
 <dd><p>Number of seconds until timing
 out while waiting for certain synchronous operations to complete.</p></dd>
+
+
+<dt>spaced_poll</dt>
+<dd><p>Logical of length 1, whether to enforce
+a minimum <code>seconds_interval</code> time interval between calls to
+<code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> to check worker status.
+Set to <code>FALSE</code> to boost efficiency on robust systems
+or <code>TRUE</code> to safeguard against issues on finicky systems.
+If the most recent call to <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> is too soon,
+the router object will block with <code><a href="https://shikokuchuo.net/nanonext/reference/msleep.html" class="external-link">nanonext::msleep()</a></code> for the remainder
+of the interval.</p></dd>
 
 </dl></div>
     <div id="see-also">
