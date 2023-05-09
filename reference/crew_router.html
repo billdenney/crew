@@ -78,7 +78,7 @@ client.</p>
 <span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  spaced_poll <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  pad_daemons <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -106,7 +106,7 @@ then an available ephemeral port is automatically chosen.</p></dd>
 <dt>seconds_interval</dt>
 <dd><p>Number of seconds between
 polling intervals waiting for certain internal
-synchronous operations to complete. If <code>space_polls</code> is <code>TRUE</code>, then
+synchronous operations to complete. If <code>space_poll</code> is <code>TRUE</code>, then
 this is also the minimum number of seconds between calls to
 <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> for the purposes of checking worker status.</p></dd>
 
@@ -116,7 +116,7 @@ this is also the minimum number of seconds between calls to
 out while waiting for certain synchronous operations to complete.</p></dd>
 
 
-<dt>spaced_poll</dt>
+<dt>pad_daemons</dt>
 <dd><p>Logical of length 1, whether to enforce
 a minimum <code>seconds_interval</code> time interval between calls to
 <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> to check worker status.

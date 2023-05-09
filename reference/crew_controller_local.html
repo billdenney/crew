@@ -82,7 +82,7 @@ launch workers on local processes.</p>
 <span>  seconds_idle <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  seconds_wall <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  seconds_exit <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  spaced_poll <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  pad_daemons <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  tasks_max <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  tasks_timers <span class="op">=</span> <span class="fl">0L</span>,</span>
 <span>  reset_globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -125,7 +125,7 @@ considered alive if it is actively connected to its assign websocket.</p></dd>
 <dt>seconds_interval</dt>
 <dd><p>Number of seconds between
 polling intervals waiting for certain internal
-synchronous operations to complete. If <code>space_polls</code> is <code>TRUE</code>, then
+synchronous operations to complete. If <code>space_poll</code> is <code>TRUE</code>, then
 this is also the minimum number of seconds between calls to
 <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> for the purposes of checking worker status.</p></dd>
 
@@ -160,7 +160,7 @@ timeout or having completed a certain number of tasks).
 See the <code>exitlinger</code> argument of <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>.</p></dd>
 
 
-<dt>spaced_poll</dt>
+<dt>pad_daemons</dt>
 <dd><p>Logical of length 1, whether to enforce
 a minimum <code>seconds_interval</code> time interval between calls to
 <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> to check worker status.
