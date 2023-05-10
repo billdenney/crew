@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.9005</span>
       </span>
     </div>
 
@@ -104,10 +104,6 @@
 <dd><p>See <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
 
 
-<dt><code>pad_daemons</code></dt>
-<dd><p>See <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
-
-
 <dt><code>started</code></dt>
 <dd><p>Whether the router is started.</p></dd>
 
@@ -125,11 +121,6 @@
 worker websockets.</p></dd>
 
 
-<dt><code>polled</code></dt>
-<dd><p>Numeric to keep track of when <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>
-was last called to check worker status.</p></dd>
-
-
 </dl><p></p></div>
     </div>
     <div id="methods">
@@ -140,7 +131,6 @@ was last called to check worker status.</p></dd>
 
 <ul><li><p><a href="#method-crew_class_router-new"><code>crew_class_router$new()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-validate"><code>crew_class_router$validate()</code></a></p></li>
-<li><p><a href="#method-crew_class_router-listening"><code>crew_class_router$listening()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-start"><code>crew_class_router$start()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-route"><code>crew_class_router$route()</code></a></p></li>
 <li><p><a href="#method-crew_class_router-poll"><code>crew_class_router$poll()</code></a></p></li>
@@ -156,8 +146,7 @@ was last called to check worker status.</p></dd>
 <span>  host <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pad_daemons <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -184,10 +173,6 @@ was last called to check worker status.</p></dd>
 
 
 <dt><code>seconds_timeout</code></dt>
-<dd><p>Argument passed from <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
-
-
-<dt><code>pad_daemons</code></dt>
 <dd><p>Argument passed from <code><a href="crew_router.html">crew_router()</a></code>.</p></dd>
 
 
@@ -220,40 +205,15 @@ was last called to check worker status.</p></dd>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_router-listening"></a><div class="section">
-<h3 id="method-listening-">Method <code>listening()</code><a class="anchor" aria-label="anchor" href="#method-listening-"></a></h3>
-<p>Check if the <code>mirai</code> client is listening
-to worker websockets.</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">listening</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
-<p>This method may stall and time out if there are
-tasks in the queue. Methods <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code> and <code>terminate()</code>
-call <code>listening()</code> to manage the connection before
-and after the entire workload, respectively.
-In addition, a false negative result is possible
-if there is a momentary connection issue. (<code>listening()</code>
-does not retry the connection.)</p>
-</div>
-
-<div class="section">
-<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
-<p><code>TRUE</code> if successfully listening for dialed-in workers,
-<code>FALSE</code> otherwise.</p>
-</div>
-
 </div><p></p><hr><a id="method-crew_class_router-start"></a><div class="section">
 <h3 id="method-start-">Method <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code><a class="anchor" aria-label="anchor" href="#method-start-"></a></h3>
 <p>Start listening for workers on the available sockets.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
@@ -261,7 +221,7 @@ does not retry the connection.)</p>
 <h3 id="method-route-">Method <code>route()</code><a class="anchor" aria-label="anchor" href="#method-route-"></a></h3>
 <p>Choose the websocket path for the next instance
 of the worker at a given index.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">route</span><span class="op">(</span><span class="va">index</span>, force <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -279,7 +239,7 @@ of the worker at a given index.</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h4>
 <p>The first call to <code>route()</code> at a given index
 uses the original websocket path provided by <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.
 Subsequent calls to <code>route()</code> at the same index rotate
@@ -287,7 +247,7 @@ the websocket path for robustness.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p>Character of length 1, new websocket path of the worker.</p>
 </div>
 
@@ -295,73 +255,40 @@ the websocket path for robustness.</p>
 <h3 id="method-poll-">Method <code>poll()</code><a class="anchor" aria-label="anchor" href="#method-poll-"></a></h3>
 <p>Update the <code>daemons</code> field with
 information on the <code>mirai</code> daemons.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">poll</span><span class="op">(</span></span>
-<span>  seconds_interval <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  max_tries <span class="op">=</span> <span class="cn">Inf</span>,</span>
-<span>  error <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">poll</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>seconds_interval</code></dt>
-<dd><p>Number of seconds to wait between retries
-polling the <code>mirai</code> dispatcher for worker information.
-Defaults to the <code>seconds_interval</code> field of the router object.</p></dd>
-
-
-<dt><code>seconds_timeout</code></dt>
-<dd><p>Number of seconds to time out
-polling the <code>mirai</code> dispatcher for worker information.
-Defaults to the <code>seconds_timeout</code> field of the router object.</p></dd>
-
-
-<dt><code>max_tries</code></dt>
-<dd><p>Maximum number of attempts to poll the
-mirai dispatcher.</p></dd>
-
-
-<dt><code>error</code></dt>
-<dd><p><code>TRUE</code> to throw an error if the <code>mirai</code> dispatcher
-cannot be reached, <code>FALSE</code> otherwise.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
 <p>Call <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> to get information about the workers.
 If the workers cannot be reached or the router has not started,
 then do not modify the <code>daemons</code> field. Otherwise, if the workers
-are reachable, populate the <code>daemons</code> field with a data frame
-of high-level worker-specific statistics. <code>poll()</code> retries
-and times out with <code><a href="crew_retry.html">crew_retry()</a></code> using the values in arguments
-<code>seconds_interval</code> and <code>seconds_timeout</code>.</p>
+are reachable, populate the <code>daemons</code> field with a matrix
+of high-level worker-specific statistics.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_router-log"></a><div class="section">
 <h3 id="method-log-">Method <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code><a class="anchor" aria-label="anchor" href="#method-log-"></a></h3>
 <p>Show an informative worker log.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
+<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>This method tries once to update the worker information
 using <code>poll()</code>. If unsuccessful the first time, it just uses
 the existing information in the <code>daemons</code> field.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p>A <code>tibble</code> with information on the workers.</p>
 </div>
 
@@ -369,12 +296,12 @@ the existing information in the <code>daemons</code> field.</p>
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
 <p>Stop the mirai client and disconnect from the
 worker websockets.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
