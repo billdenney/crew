@@ -604,6 +604,7 @@ every time a new worker instance starts.
 So in the case of transient
 workers, this number may be much smaller than the number of
 popped tasks.</p></li>
+<li><p><code>worker_index</code>: Numeric index of the worker within the controller.</p></li>
 <li><p><code>worker_connected</code>: <code>TRUE</code> if a worker is currently connected
 to the websocket, <code>FALSE</code> if not connected, or <code>NA</code>
 if the status cannot be determined because the <code>mirai</code>
