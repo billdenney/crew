@@ -215,12 +215,17 @@ or completed tasks waiting to be retrieved with <code>push()</code>.</p>
 <h3 id="method-saturated-">Method <code>saturated()</code><a class="anchor" aria-label="anchor" href="#method-saturated-"></a></h3>
 <p>Check if the controller is saturated.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">saturated</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">saturated</span><span class="op">(</span>collect <span class="op">=</span> <span class="cn">TRUE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
+<p></p><div class="arguments"><dl><dt><code>collect</code></dt>
+<dd><p>Logical of length 1, whether to collect the results
+of any newly resolved tasks before determining saturation.</p></dd>
+
+
+<dt><code>controllers</code></dt>
 <dd><p>Not used. Included to ensure the signature is
 compatible with the analogous method of controller groups.</p></dd>
 
