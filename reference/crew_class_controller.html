@@ -220,7 +220,7 @@ or completed tasks waiting to be retrieved with <code>push()</code>.</p>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">saturated</span><span class="op">(</span></span>
 <span>  collect <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  throttle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  controller <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -240,7 +240,7 @@ accumulate a backlog of requests. The technique improves robustness
 and efficiency.</p></dd>
 
 
-<dt><code>controllers</code></dt>
+<dt><code>controller</code></dt>
 <dd><p>Not used. Included to ensure the signature is
 compatible with the analogous method of controller groups.</p></dd>
 
@@ -254,8 +254,7 @@ is greater than or equal to the maximum number of workers.
 In other words, in a saturated controller, every available worker
 has a task.
 You can still push tasks to a saturated controller, but
-in the case of transient workers, you may have to call <code>wait()</code>
-or <code>pop()</code> until the backlog clears.</p>
+tools that use <code>crew</code> such as <code>targets</code> may choose not to.</p>
 </div>
 
 <div class="section">
