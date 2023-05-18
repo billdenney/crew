@@ -177,14 +177,19 @@
 <span><span class="co">#&gt;          &lt;int&gt;          &lt;dbl&gt;         &lt;int&gt;           &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1            0              0             0               0</span></span>
 <span><span class="co">#&gt; 2            0              0             0               0</span></span></code></pre></div>
-<p>Use the <code>push()</code> method to submit a task. When you do, <code>crew</code> automatically scales up the number of workers to meet demand, within the constraints of the <code>auto_scale</code> and <code>workers</code> arguments of <code><a href="reference/crew_controller_local.html">crew_controller_local()</a></code>, as well as the <code>throttle</code> argument of <code>push()</code>.</p>
+<p>Use the <code>push()</code> method to submit a task.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"get worker process ID"</span>, command <span class="op">=</span> <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps_pid</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>You can retrieve the results of a completed task, if available, with <code>pop()</code>. Like <code>push()</code>, <code>pop()</code> also tries to launch workers for pending tasks that need them. The return value is <code>NULL</code> if no new tasks are complete.</p>
+<p>Use <code>pop()</code> to get the result of a completed task. <code>pop()</code> returns <code>NULL</code> if there is no result yet.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; NULL</span></span></code></pre></div>
-<p>If you expect a result but see <code>NULL</code>, then <code>mirai</code> may not have assigned the task to a worker yet. This can happen if all workers self-terminate early according to the <code>tasks_max</code> and <code>seconds_idle</code> arguments of <code><a href="reference/crew_controller_local.html">crew_controller_local()</a></code>. Unless you configured the workers to run indefinitely, the controller will need ongoing attention to work through the backlog of tasks. To promptly re-scale workers to meet demand, you can manually repeat calls to <code>pop()</code>, or you can call <code>wait()</code>. The <code>wait()</code> method blocks the R session, repeatedly scales workers, and collects completed tasks.</p>
+<p>Even if you submitted a task, <code>crew</code> may not have launched a worker yet. This is because <code>crew</code> uses its own version of throttling for robustness and efficiency. In other words, <code>push()</code> and <code>pop()</code> defer auto-scaling for a short window after the original request. For best results, either</p>
+<ol style="list-style-type: decimal">
+<li>Continue to loop over frequent calls to <code>push()</code> and <code>pop()</code>, or</li>
+<li>Call <code>wait()</code>.</li>
+</ol>
+<p>The <code>wait()</code> method blocks the R session, repeatedly scales workers, and collects completed tasks.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
 <p>When a result is available, <code>pop()</code> will retrieve it.</p>

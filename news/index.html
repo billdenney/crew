@@ -73,6 +73,8 @@
 <li>Implement a <code>saturated()</code> controller method to support <code>targets</code>.</li>
 <li>Add a <code>worker_index</code> column to controller summaries.</li>
 <li>When relaunching workers, prioritize those with unresolved tasks stuck at the NNG level (<a href="https://github.com/wlandau/crew/issues/75" class="external-link">#75</a>, <a href="https://github.com/shikokuchuo" class="external-link">@shikokuchuo</a>).</li>
+<li>Always relaunch backlogged inactive workers (<a href="https://github.com/wlandau/crew/issues/79" class="external-link">#79</a>).</li>
+<li>Deprecate the <code>auto_scale</code> argument/field of controllers in favor of the <code>scale</code> argument of <code>push()</code>, <code>pop()</code>, and <code>wait()</code>.</li>
 <li>Throttle auto-scaling with interval <code>self$router$seconds_interval</code> (<a href="https://github.com/wlandau/crew/issues/76" class="external-link">#76</a>).</li>
 </ul></div>
     <div class="section level2">

@@ -91,10 +91,6 @@
 <dd><p>Launcher object.</p></dd>
 
 
-<dt><code>auto_scale</code></dt>
-<dd><p>Scaling method. See <code><a href="crew_controller.html">crew_controller()</a></code>.</p></dd>
-
-
 <dt><code>queue</code></dt>
 <dd><p>List of tasks in the queue.</p></dd>
 
@@ -107,13 +103,14 @@
 <dd><p>Data frame task log of the workers.</p></dd>
 
 
-<dt><code>scaled</code></dt>
-<dd><p>Numeric of length 1, time point at which
-workers were last auto-scaled. This field ensures auto-scaling
-is skipped if the last auto-scaling was done too recently.
-This improves efficiency because auto-scaling is complicated,
-and it improves robustness by avoiding to many successive calls to
-<code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.</p></dd>
+<dt><code>until_collect</code></dt>
+<dd><p>Numeric of length 1, time point when
+throttled task collection unlocks.</p></dd>
+
+
+<dt><code>until_scale</code></dt>
+<dd><p>Numeric of length 1, time point when
+throttled auto-scaling unlocks.</p></dd>
 
 
 </dl><p></p></div>
@@ -141,7 +138,7 @@ and it improves robustness by avoiding to many successive calls to
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p><code>mirai</code> controller constructor.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/crew_class_controller.html">crew_class_controller</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>router <span class="op">=</span> <span class="cn">NULL</span>, launcher <span class="op">=</span> <span class="cn">NULL</span>, auto_scale <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/crew_class_controller.html">crew_class_controller</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>router <span class="op">=</span> <span class="cn">NULL</span>, launcher <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -152,10 +149,6 @@ and it improves robustness by avoiding to many successive calls to
 
 <dt><code>launcher</code></dt>
 <dd><p>Launcher object. See <code><a href="crew_controller.html">crew_controller()</a></code>.</p></dd>
-
-
-<dt><code>auto_scale</code></dt>
-<dd><p>Scaling method. See <code><a href="crew_controller.html">crew_controller()</a></code>.</p></dd>
 
 
 </dl><p></p></div>
@@ -224,7 +217,11 @@ or completed tasks waiting to be retrieved with <code>push()</code>.</p>
 <h3 id="method-saturated-">Method <code>saturated()</code><a class="anchor" aria-label="anchor" href="#method-saturated-"></a></h3>
 <p>Check if the controller is saturated.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">saturated</span><span class="op">(</span>collect <span class="op">=</span> <span class="cn">TRUE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">saturated</span><span class="op">(</span></span>
+<span>  collect <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  throttle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -232,6 +229,15 @@ or completed tasks waiting to be retrieved with <code>push()</code>.</p>
 <p></p><div class="arguments"><dl><dt><code>collect</code></dt>
 <dd><p>Logical of length 1, whether to collect the results
 of any newly resolved tasks before determining saturation.</p></dd>
+
+
+<dt><code>throttle</code></dt>
+<dd><p>Logical of length 1, whether to delay task collection
+until the next request at least <code>self$router$seconds_interval</code>
+seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.</p></dd>
 
 
 <dt><code>controllers</code></dt>
@@ -328,8 +334,12 @@ compatible with the analogous method of controller groups.</p></dd>
 <div class="section">
 <h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>throttle</code></dt>
-<dd><p>Whether to skip auto-scaling if it was already done
-recently (within the last <code>self$router$seconds_interval</code> seconds).</p></dd>
+<dd><p>Logical of length 1, whether to delay auto-scaling
+until the next auto-scaling request at least
+<code>self$router$seconds_interval</code> seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.</p></dd>
 
 
 <dt><code>controllers</code></dt>
@@ -341,11 +351,10 @@ compatible with the analogous method of controller groups.</p></dd>
 </div>
 <div class="section">
 <h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
-<p>This method is called during <code>push()</code>, and the method for
-scaling up workers is governed by the <code>auto_scale</code>
-argument of <code><a href="crew_controller.html">crew_controller()</a></code>. It is not meant to be called
-manually. If called manually, it is recommended to call <code>collect()</code>
-first so <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> can accurately assess the demand.
+<p>Methods <code>push()</code>, <code>pop()</code>, and <code>wait()</code> already invoke
+<code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> if the <code>scale</code> argument is <code>TRUE</code>.
+If you call <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> manually, it is recommended to call <code>collect()</code>
+first so <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> can accurately assess the task load.
 For finer control of the number of workers launched,
 call <code>launch()</code> on the controller with the exact desired
 number of workers.</p>
@@ -427,17 +436,22 @@ argument of <code><a href="https://shikokuchuo.net/mirai/reference/mirai.html" c
 
 
 <dt><code>scale</code></dt>
-<dd><p>Logical, whether to automatically scale workers to meet
-demand, depending on the <code>throttle</code> argument.
-If <code>TRUE</code>, then <code>collect()</code> runs first
+<dd><p>Logical, whether to automatically call <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code>
+to auto-scale workers to meet the demand of the task load.
+By design, auto-scaling might not actually happen
+if <code>throttle = TRUE</code>.
+If <code>scale</code> is <code>TRUE</code>, then <code>collect()</code> runs first
 so demand can be properly assessed before scaling and the number
 of workers is not too high.</p></dd>
 
 
 <dt><code>throttle</code></dt>
-<dd><p>Whether to skip auto-scaling if auto-scaling
-has already occurred recently
-(within the last <code>self$router$seconds_interval</code> seconds).</p></dd>
+<dd><p>If <code>scale</code> is <code>TRUE</code>, whether to defer auto-scaling
+until the next request at least
+<code>self$router$seconds_interval</code> seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.</p></dd>
 
 
 <dt><code>name</code></dt>
@@ -462,12 +476,21 @@ compatible with the analogous method of controller groups.</p></dd>
 <p>Check for done tasks and move the results to
 the results list.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>throttle <span class="op">=</span> <span class="cn">FALSE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
+<p></p><div class="arguments"><dl><dt><code>throttle</code></dt>
+<dd><p>whether to defer task collection
+until the next task collection request at least
+<code>self$router$seconds_interval</code> seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.</p></dd>
+
+
+<dt><code>controllers</code></dt>
 <dd><p>Not used. Included to ensure the signature is
 compatible with the analogous method of controller groups.</p></dd>
 
@@ -490,8 +513,9 @@ list as applicable and moves them to the <code>results</code> list.</p>
 <div class="section">
 <h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>scale</code></dt>
-<dd><p>Logical, whether to automatically scale workers to meet
-demand, depending on the <code>throttle</code> argument.
+<dd><p>Logical, whether to automatically call <code>scale_later()</code>
+to auto-scale workers to meet the demand of the task load.
+Auto-scaling might not actually happen if <code>throttle</code> is <code>TRUE</code>.
 If <code>TRUE</code>, then <code>collect()</code> runs first
 so demand can be properly assessed before scaling and the number
 of workers is not too high. Scaling up on <code>pop()</code> may be important
@@ -500,9 +524,12 @@ quickly after doing little work.</p></dd>
 
 
 <dt><code>throttle</code></dt>
-<dd><p>Whether to skip auto-scaling if auto-scaling
-has already occurred recently
-(within the last <code>self$router$seconds_interval</code> seconds).</p></dd>
+<dd><p>Whether to defer auto-scaling and task collection
+until the next request at least
+<code>self$router$seconds_interval</code> seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.</p></dd>
 
 
 <dt><code>controllers</code></dt>
@@ -535,6 +562,8 @@ the return value is <code>NULL</code>.</p>
 <span>  mode <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  throttle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -554,6 +583,25 @@ intervals waiting for tasks.</p></dd>
 
 <dt><code>seconds_timeout</code></dt>
 <dd><p>Timeout length in seconds waiting for tasks.</p></dd>
+
+
+<dt><code>scale</code></dt>
+<dd><p>Logical, whether to automatically call <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code>
+to auto-scale workers to meet the demand of the task load.
+Might not actually auto-scale on every iteration if <code>throttle</code>
+is <code>TRUE</code>.</p></dd>
+
+
+<dt><code>throttle</code></dt>
+<dd><p>Whether to defer auto-scaling
+and task collection until the next request at least
+<code>self$router$seconds_interval</code> seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.
+Highly recommended
+to keep <code>throttle = TRUE</code> in <code>wait()</code> to ensure efficiency
+and robustness.</p></dd>
 
 
 <dt><code>controllers</code></dt>

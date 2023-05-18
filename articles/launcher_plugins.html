@@ -259,9 +259,9 @@ workers take a long time to launch.</p>
 <span>  <span class="va">workers</span> <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  <span class="va">host</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">port</span> <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">seconds_launch</span> <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  <span class="va">seconds_interval</span> <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  <span class="va">seconds_timeout</span> <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  <span class="va">seconds_launch</span> <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  <span class="va">seconds_idle</span> <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  <span class="va">seconds_wall</span> <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  <span class="va">seconds_exit</span> <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -270,8 +270,7 @@ workers take a long time to launch.</p>
 <span>  <span class="va">reset_globals</span> <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">reset_packages</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">reset_options</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">garbage_collection</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">auto_scale</span> <span class="op">=</span> <span class="st">"demand"</span></span>
+<span>  <span class="va">garbage_collection</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">router</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="va">name</span>,</span>
@@ -294,11 +293,7 @@ workers take a long time to launch.</p>
 <span>    reset_options <span class="op">=</span> <span class="va">reset_options</span>,</span>
 <span>    garbage_collection <span class="op">=</span> <span class="va">garbage_collection</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span></span>
-<span>    router <span class="op">=</span> <span class="va">router</span>,</span>
-<span>    launcher <span class="op">=</span> <span class="va">launcher</span>,</span>
-<span>    auto_scale <span class="op">=</span> <span class="va">auto_scale</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span></span>
 <span><span class="op">}</span></span></code></pre></div>
