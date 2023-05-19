@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.9011</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.9012</span>
       </span>
     </div>
 
@@ -160,7 +160,6 @@ throttled auto-scaling unlocks.</p></dd>
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
@@ -169,7 +168,6 @@ throttled auto-scaling unlocks.</p></dd>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -732,7 +730,6 @@ compatible with the analogous method of controller groups.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span></span>
@@ -741,7 +738,6 @@ compatible with the analogous method of controller groups.</p></dd>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -749,7 +745,6 @@ compatible with the analogous method of controller groups.</p></dd>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="fu">crew_session_start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span></span>
@@ -758,7 +753,6 @@ compatible with the analogous method of controller groups.</p></dd>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">crew_session_terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
