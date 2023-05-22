@@ -462,6 +462,7 @@ list as applicable and moves them to the <code>results</code> list.</p>
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span></span>
 <span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  collect <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  throttle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
@@ -477,6 +478,13 @@ so demand can be properly assessed before scaling and the number
 of workers is not too high. Scaling up on <code>pop()</code> may be important
 for transient or nearly transient workers that tend to drop off
 quickly after doing little work.</p></dd>
+
+
+<dt><code>collect</code></dt>
+<dd><p>Logical of length 1. If <code>scale</code> is <code>FALSE</code>,
+whether to call <code>collect()</code>
+to pick up the results of completed tasks. This task collection
+step always happens (with throttling) when <code>scale</code> is <code>TRUE</code>.</p></dd>
 
 
 <dt><code>throttle</code></dt>
