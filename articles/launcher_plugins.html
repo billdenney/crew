@@ -141,6 +141,21 @@ process <code>launch_worker()</code> method</a>, generate a call to <a href="htt
 and then submit a new job or process to run that call.</p>
 </div>
 <div class="section level2">
+<h2 id="network">Network<a class="anchor" aria-label="anchor" href="#network"></a>
+</h2>
+<p>Each worker that launches must be able to dial into the client over
+the local network. The <code>host</code> argument of
+<code><a href="../reference/crew_router.html">crew_router()</a></code> provides the local IP address, and the
+<code>port</code> argument provides the TCP port. The controller helper
+function (see below) should expose arguments <code>host</code> and
+<code>port</code> in order to solve potential network problems like <a href="https://github.com/wlandau/crew.cluster/issues/1#issuecomment-1546024163" class="external-link">this
+one</a>.</p>
+<p>By default, <code>host</code> is the local IP address.
+<code>crew</code> assumes the local network is secure. Please take the
+time to assess the network security risks of your computing environment.
+Use at your own risk.</p>
+</div>
+<div class="section level2">
 <h2 id="termination">Termination<a class="anchor" aria-label="anchor" href="#termination"></a>
 </h2>
 <p>We recommend you implement an optional <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-terminate-worker-" class="external-link"><code>terminate_worker()</code></a>
