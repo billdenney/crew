@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9001</span>
       </span>
     </div>
 
@@ -386,7 +386,8 @@ number of workers.</p>
 <span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  throttle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"task"</span>,</span>
-<span>  controller <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  controller <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_command <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -467,6 +468,13 @@ if <code>NULL</code> or in conflict with an existing name in the task list.</p><
 <dt><code>controller</code></dt>
 <dd><p>Not used. Included to ensure the signature is
 compatible with the analogous method of controller groups.</p></dd>
+
+
+<dt><code>save_command</code></dt>
+<dd><p>Logical of length 1. If <code>TRUE</code>, the controller
+deparses the command and returns it with the output on <code>pop()</code>.
+If <code>FALSE</code> (default), the controller skips this step to
+increase speed.</p></dd>
 
 
 </dl><p></p></div>
