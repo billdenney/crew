@@ -209,8 +209,8 @@ when the app scans for results.</p>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  output<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="fu">renderText</span>(<span class="fu">reactive_status</span>())</span></code></pre></div>
 <p>Next, we start a <code>crew</code> controller with up to 4 workers
 and an idle time of 10 seconds. We choose the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html" class="external-link">local
-process launcher</a> below for this app, but we could have chosen the <a href="https://en.wikipedia.org/wiki/Oracle_Grid_Engine" class="external-link">Sun Grid
-Engine</a> launcher from <a href="https://wlandau.github.io/crew.cluster/" class="external-link"><code>crew.cluster</code></a>,
+process launcher</a> below for this app, but we could have chosen the
+Sun Grid Engine (SGE) launcher from <a href="https://wlandau.github.io/crew.cluster/" class="external-link"><code>crew.cluster</code></a>,
 a <a href="https://wlandau.github.io/crew/articles/controller_groups.html" class="external-link">controller
 group</a> with multiple launchers, or a <a href="https://wlandau.github.io/crew/articles/launcher_plugins.html" class="external-link">custom
 launcher</a> for e.g. <a href="https://kubernetes.io" class="external-link">Kubernetes</a>.
