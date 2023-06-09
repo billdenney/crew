@@ -61,6 +61,9 @@
     <loc>/reference/crew_class_router.html</loc>
   </url>
   <url>
+    <loc>/reference/crew_class_schedule.html</loc>
+  </url>
+  <url>
     <loc>/reference/crew_controller.html</loc>
   </url>
   <url>
@@ -89,6 +92,9 @@
   </url>
   <url>
     <loc>/reference/crew_router.html</loc>
+  </url>
+  <url>
+    <loc>/reference/crew_schedule.html</loc>
   </url>
   <url>
     <loc>/reference/crew_worker.html</loc>
