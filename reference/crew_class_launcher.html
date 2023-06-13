@@ -18,7 +18,7 @@ which launch and manage workers."><meta property="og:image" content="/logo.svg">
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -88,6 +88,10 @@ which launch and manage workers.</p>
 <dd><p>Name of the launcher.</p></dd>
 
 
+<dt><code>seconds_interval</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
 <dt><code>seconds_launch</code></dt>
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
@@ -128,6 +132,10 @@ which launch and manage workers.</p>
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
 
+<dt><code>until</code></dt>
+<dd><p>Numeric of length 1, time point when throttled unlocks.</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div id="methods">
@@ -141,8 +149,10 @@ which launch and manage workers.</p>
 <li><p><a href="#method-crew_class_launcher-settings"><code>crew_class_launcher$settings()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-call"><code>crew_class_launcher$call()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-start"><code>crew_class_launcher$start()</code></a></p></li>
+<li><p><a href="#method-crew_class_launcher-poll"><code>crew_class_launcher$poll()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-launch"><code>crew_class_launcher$launch()</code></a></p></li>
-<li><p><a href="#method-crew_class_launcher-launching"><code>crew_class_launcher$launching()</code></a></p></li>
+<li><p><a href="#method-crew_class_launcher-throttle"><code>crew_class_launcher$throttle()</code></a></p></li>
+<li><p><a href="#method-crew_class_launcher-scale"><code>crew_class_launcher$scale()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-terminate"><code>crew_class_launcher$terminate()</code></a></p></li>
 <li><p><a href="#method-crew_class_launcher-terminate_worker"><code>crew_class_launcher$terminate_worker()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-crew_class_launcher-new"></a><div class="section">
@@ -151,6 +161,7 @@ which launch and manage workers.</p>
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/crew_class_launcher.html">crew_class_launcher</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_launch <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_idle <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_wall <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -167,6 +178,10 @@ which launch and manage workers.</p>
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>name</code></dt>
+<dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
+
+
+<dt><code>seconds_interval</code></dt>
 <dd><p>See <code><a href="crew_launcher.html">crew_launcher()</a></code>.</p></dd>
 
 
@@ -219,15 +234,15 @@ which launch and manage workers.</p>
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">router</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span>
-<span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span>, socket <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
+<span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">client</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
+<span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span>
+<span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span>
 <span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span>
-<span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">client</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -340,22 +355,18 @@ life cycle.</p>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_launcher-launch"></a><div class="section">
-<h3 id="method-launch-">Method <code>launch()</code><a class="anchor" aria-label="anchor" href="#method-launch-"></a></h3>
-<p>Launch a worker.</p><div class="section">
+</div><p></p><hr><a id="method-crew_class_launcher-poll"></a><div class="section">
+<h3 id="method-poll-">Method <code>poll()</code><a class="anchor" aria-label="anchor" href="#method-poll-"></a></h3>
+<p>Update internal info about worker activity and task load.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span><span class="va">index</span>, socket <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">poll</span><span class="op">(</span>daemons <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>index</code></dt>
-<dd><p>Positive integer of length 1, index of the worker
-to launch.</p></dd>
-
-
-<dt><code>socket</code></dt>
-<dd><p>Character of length 1, sockets of the worker to launch.</p></dd>
+<p></p><div class="arguments"><dl><dt><code>daemons</code></dt>
+<dd><p><code>mirai</code> daemons matrix. For testing only. Users
+should not set this.</p></dd>
 
 
 </dl><p></p></div>
@@ -365,34 +376,78 @@ to launch.</p></dd>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_launcher-launching"></a><div class="section">
-<h3 id="method-launching-">Method <code>launching()</code><a class="anchor" aria-label="anchor" href="#method-launching-"></a></h3>
-<p>Show whether each worker is launching.</p><div class="section">
+</div><p></p><hr><a id="method-crew_class_launcher-launch"></a><div class="section">
+<h3 id="method-launch-">Method <code>launch()</code><a class="anchor" aria-label="anchor" href="#method-launch-"></a></h3>
+<p>Launch a worker.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">launching</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
-<p>A worker is considered "launching" if it was started
-recently (<code>seconds_launch</code> seconds ago or sooner).</p>
-</div>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>index</code></dt>
+<dd><p>Positive integer of length 1, index of the worker
+to launch.</p></dd>
 
+
+</dl><p></p></div>
+</div>
 <div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
-<p>A logical vector indicating which workers are launching.</p>
+<p><code>NULL</code> (invisibly).</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_launcher-throttle"></a><div class="section">
+<h3 id="method-throttle-">Method <code>throttle()</code><a class="anchor" aria-label="anchor" href="#method-throttle-"></a></h3>
+<p>Throttle repeated calls.</p><div class="section">
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">throttle</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<p><code>TRUE</code> to throttle, <code>FALSE</code> to continue.</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_launcher-scale"></a><div class="section">
+<h3 id="method-scale-">Method <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code><a class="anchor" aria-label="anchor" href="#method-scale-"></a></h3>
+<p>Auto-scale workers out to meet the demand of tasks.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">scale</span><span class="op">(</span><span class="va">demand</span>, throttle <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>demand</code></dt>
+<dd><p>Number of tasks without workers to launch them yet.</p></dd>
+
+
+<dt><code>throttle</code></dt>
+<dd><p>Logical of length 1, whether to delay auto-scaling
+until the next auto-scaling request at least
+<code>self$client$seconds_interval</code> seconds from the original request.
+The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
+accumulate a backlog of requests. The technique improves robustness
+and efficiency.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>Number of workers launched.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_launcher-terminate"></a><div class="section">
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
 <p>Terminate one or more workers.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>indexes <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>index <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>indexes</code></dt>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>index</code></dt>
 <dd><p>Integer vector of the indexes of the workers
 to terminate. If <code>NULL</code>, all current workers are terminated.</p></dd>
 
@@ -400,19 +455,19 @@ to terminate. If <code>NULL</code>, all current workers are terminated.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_launcher-terminate_worker"></a><div class="section">
 <h3 id="method-terminate-worker-">Method <code>terminate_worker()</code><a class="anchor" aria-label="anchor" href="#method-terminate-worker-"></a></h3>
 <p>Abstract method.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_launcher</span><span class="op">$</span><span class="fu">terminate_worker</span><span class="op">(</span><span class="va">handle</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>handle</code></dt>
 <dd><p>A handle object previously
 returned by <code>launch_worker()</code> which allows the termination
@@ -422,14 +477,14 @@ of the worker.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a></h4>
 <p>Does not actually terminate a worker. This method is a
 placeholder, and its presence allows manual worker termination
 to be optional.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
@@ -440,15 +495,15 @@ to be optional.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span>, socket <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
@@ -456,15 +511,15 @@ to be optional.</p>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span>, socket <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>

@@ -46,6 +46,9 @@
     <loc>/reference/crew_assert.html</loc>
   </url>
   <url>
+    <loc>/reference/crew_class_client.html</loc>
+  </url>
+  <url>
     <loc>/reference/crew_class_controller.html</loc>
   </url>
   <url>
@@ -58,10 +61,10 @@
     <loc>/reference/crew_class_launcher_local.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_class_router.html</loc>
+    <loc>/reference/crew_class_schedule.html</loc>
   </url>
   <url>
-    <loc>/reference/crew_class_schedule.html</loc>
+    <loc>/reference/crew_client.html</loc>
   </url>
   <url>
     <loc>/reference/crew_controller.html</loc>
@@ -89,9 +92,6 @@
   </url>
   <url>
     <loc>/reference/crew_retry.html</loc>
-  </url>
-  <url>
-    <loc>/reference/crew_router.html</loc>
   </url>
   <url>
     <loc>/reference/crew_schedule.html</loc>

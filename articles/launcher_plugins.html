@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -145,7 +145,7 @@ and then submit a new job or process to run that call.</p>
 </h2>
 <p>Each worker that launches must be able to dial into the client over
 the local network. The <code>host</code> argument of
-<code><a href="../reference/crew_router.html">crew_router()</a></code> provides the local IP address, and the
+<code><a href="../reference/crew_client.html">crew_client()</a></code> provides the local IP address, and the
 <code>port</code> argument provides the TCP port. The controller helper
 function (see below) should expose arguments <code>host</code> and
 <code>port</code> in order to solve potential network problems like <a href="https://github.com/wlandau/crew.cluster/issues/1#issuecomment-1546024163" class="external-link">this
@@ -183,7 +183,7 @@ local R processes on Unix-like systems.<a href="#fn1" class="footnote-ref" id="f
 <span>  classname <span class="op">=</span> <span class="st">"custom_launcher_class"</span>,</span>
 <span>  inherit <span class="op">=</span> <span class="fu">crew</span><span class="fu">::</span><span class="va"><a href="../reference/crew_class_launcher.html">crew_class_launcher</a></span>,</span>
 <span>  public <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    launch_worker <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span>, <span class="va">launcher</span>, <span class="va">worker</span>, <span class="va">instance</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    launch_worker <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">call</span>, <span class="va">name</span>, <span class="va">launcher</span>, <span class="va">worker</span>, <span class="va">instance</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Rhome.html" class="external-link">R.home</a></span><span class="op">(</span><span class="st">"bin"</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span></span>
 <span>      <span class="fu">processx</span><span class="fu">::</span><span class="va"><a href="http://processx.r-lib.org/reference/process.html" class="external-link">process</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>        command <span class="op">=</span> <span class="va">bin</span>,</span>
@@ -214,20 +214,20 @@ crashed state before it establishes a connection.</p>
 these arguments, but they must be present in the function signature.</p>
 <ul>
 <li>
-<code>call</code>: a text string with a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
+<code>call</code>: text string with a call to <a href="https://wlandau.github.io/crew/reference/crew_worker.html" class="external-link"><code>crew_worker()</code></a>.</li>
 <li>
-<code>launcher</code>: the name of the launcher. Each worker
-instance launched with the launcher will receive the same
-<code>launcher</code> argument in <code>launch_worker()</code>.</li>
+<code>name</code>: text string with an informative name for the
+worker instance.</li>
 <li>
-<code>worker</code>: integer index of the worker in the current list
-of workers, always between 1 and the maximum number of concurrent
-workers.</li>
+<code>launcher</code>: text string with the name of the
+launcher.</li>
 <li>
-<code>instance</code>: a text string that uniquely identifies each
-worker instance. The value of <code>instance</code> can be used to set
-informative job names, and the values of <code>launcher</code> and
-<code>worker</code> can provide additional context.</li>
+<code>worker</code>: positive integer index of the worker. Ranges
+from 1 to the maximum number of simultaneous workers configured for the
+controller.</li>
+<li>
+<code>instance</code>: text string with the instance of the worker
+in the launcher at the given worker index.</li>
 </ul>
 <p>To see what the <code>call</code> object looks like, create a new
 launcher and run the <code><a href="https://rdrr.io/r/base/call.html" class="external-link">call()</a></code> method.</p>
@@ -249,7 +249,7 @@ launcher and run the <code><a href="https://rdrr.io/r/base/call.html" class="ext
 your custom launcher. It should:</p>
 <ol style="list-style-type: decimal">
 <li>Accept all the same arguments as <a href="https://wlandau.github.io/crew/reference/crew_controller_local.html" class="external-link"><code>crew_controller_local()</code></a>.</li>
-<li>Create a router object using <a href="https://wlandau.github.io/crew/reference/crew_router.html" class="external-link"><code>crew_router()</code></a>.</li>
+<li>Create a client object using <a href="https://wlandau.github.io/crew/reference/crew_client.html" class="external-link"><code>crew_client()</code></a>.</li>
 <li>Create a launcher object with the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html#method-crew_class_launcher-new" class="external-link"><code>new()</code>
 method</a> of your custom launcher class.</li>
 <li>Create a new controller using <a href="https://wlandau.github.io/crew/reference/crew_controller.html" class="external-link"><code>crew_controller()</code></a>.</li>
@@ -287,7 +287,7 @@ workers take a long time to launch.</p>
 <span>  <span class="va">reset_options</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">garbage_collection</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">router</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span></span>
+<span>  <span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_client.html">crew_client</a></span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="va">name</span>,</span>
 <span>    workers <span class="op">=</span> <span class="va">workers</span>,</span>
 <span>    host <span class="op">=</span> <span class="va">host</span>,</span>
@@ -297,6 +297,7 @@ workers take a long time to launch.</p>
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">launcher</span> <span class="op">&lt;-</span> <span class="va">custom_launcher_class</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="va">name</span>,</span>
+<span>    seconds_interval <span class="op">=</span> <span class="va">seconds_interval</span>,</span>
 <span>    seconds_launch <span class="op">=</span> <span class="va">seconds_launch</span>,</span>
 <span>    seconds_idle <span class="op">=</span> <span class="va">seconds_idle</span>,</span>
 <span>    seconds_wall <span class="op">=</span> <span class="va">seconds_wall</span>,</span>
@@ -308,7 +309,7 @@ workers take a long time to launch.</p>
 <span>    reset_options <span class="op">=</span> <span class="va">reset_options</span>,</span>
 <span>    garbage_collection <span class="op">=</span> <span class="va">garbage_collection</span></span>
 <span>  <span class="op">)</span></span>
-<span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
+<span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>client <span class="op">=</span> <span class="va">client</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span></span>
 <span><span class="op">}</span></span></code></pre></div>
@@ -444,8 +445,9 @@ tasks.</p>
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
 </h2>
 <ul>
-<li>The <code>name</code> and <code>token</code> arguments of the <a href="https://wlandau.github.io/crew/reference/crew_class_launcher_local.html#method-launch-worker-" class="external-link"><code>launch_worker()</code>
-method</a> can help construct informative job names.</li>
+<li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_local.R" class="external-link">source
+code of the built-in local process launcher</a> is a helpful reference
+for writing your own launcher plugins.</li>
 <li>For efficiency, every launch can happen asynchronously. There is no
 need to wait for the worker to start. When it starts, it will connect
 back to the <code>mirai</code> dispatcher over the local network and
@@ -455,9 +457,6 @@ method, each worker termination may also happen asynchronously. In rare
 cases when you do not trust the platform to terminate the worker on the
 first request, you can use <a href="https://wlandau.github.io/crew/reference/crew_retry.html" class="external-link"><code>crew_retry()</code></a>
 to wait for the job to exit, but this may reduce efficiency.</li>
-<li>The <a href="https://github.com/wlandau/crew/blob/main/R/crew_launcher_local.R" class="external-link">source
-code of the built-in local process launcher</a> is a helpful
-reference.</li>
 </ul>
 </div>
 <div class="footnotes footnotes-end-of-document">

@@ -18,7 +18,7 @@ local process workers."><meta property="og:image" content="/logo.svg"><!-- mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -73,6 +73,7 @@ local process workers.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crew_launcher_local</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  seconds_launch <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  seconds_idle <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  seconds_wall <span class="op">=</span> <span class="cn">Inf</span>,</span>
@@ -90,6 +91,10 @@ local process workers.</p>
     <h2>Arguments</h2>
     <dl><dt>name</dt>
 <dd><p>Name of the launcher.</p></dd>
+
+
+<dt>seconds_interval</dt>
+<dd><p>Seconds to wait between asynchronous operations.</p></dd>
 
 
 <dt>seconds_launch</dt>
@@ -173,15 +178,15 @@ tasks, <code>FALSE</code> to skip.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu">crew_launcher_local</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span>, socket <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">router</span><span class="op">$</span><span class="va">daemons</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">router</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu">crew_launcher_local</span><span class="op">(</span>name <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>workers <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">workers</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">launcher</span><span class="op">$</span><span class="fu">launch</span><span class="op">(</span>index <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">mirai</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai</a></span><span class="op">(</span><span class="st">"result"</span>, .compute <span class="op">=</span> <span class="va">client</span><span class="op">$</span><span class="va">name</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">0.25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m</span><span class="op">$</span><span class="va">data</span></span></span>
-<span class="r-in"><span><span class="va">router</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

@@ -55,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -317,7 +317,7 @@
 </h3>
 <p>The <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher is designed to gracefully exit when you call <code>terminate()</code> on the controller object or when you restart your R session. However, if you ever need to shut down the dispatcher manually, you can find the process ID using the controller object, then use <code><a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link">ps::ps_kill()</a></code> to terminate the process.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">router</span><span class="op">$</span><span class="va">dispatcher</span></span>
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">client</span><span class="op">$</span><span class="va">dispatcher</span></span>
 <span><span class="co">#&gt; [1] 86028</span></span>
 <span><span class="va">handle</span> <span class="op">&lt;-</span> <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_handle.html" class="external-link">ps_handle</a></span><span class="op">(</span>pid <span class="op">=</span> <span class="fl">86028L</span><span class="op">)</span></span>
 <span><span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_is_running.html" class="external-link">ps_is_running</a></span><span class="op">(</span><span class="va">handle</span><span class="op">)</span></span>

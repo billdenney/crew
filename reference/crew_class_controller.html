@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
     </div>
     <div id="public-fields">
     <h2>Public fields</h2>
-    <p></p><div class="r6-fields"><dl><dt><code>router</code></dt>
+    <p></p><div class="r6-fields"><dl><dt><code>client</code></dt>
 <dd><p>Router object.</p></dd>
 
 
@@ -99,7 +99,7 @@
 <dd><p>Data frame task log of the workers.</p></dd>
 
 
-<dt><code>until_scale</code></dt>
+<dt><code>until</code></dt>
 <dd><p>Numeric of length 1, time point when
 throttled auto-scaling unlocks.</p></dd>
 
@@ -130,12 +130,12 @@ throttled auto-scaling unlocks.</p></dd>
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p><code>mirai</code> controller constructor.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/crew_class_controller.html">crew_class_controller</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>router <span class="op">=</span> <span class="cn">NULL</span>, launcher <span class="op">=</span> <span class="cn">NULL</span>, schedule <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/crew_class_controller.html">crew_class_controller</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>client <span class="op">=</span> <span class="cn">NULL</span>, launcher <span class="op">=</span> <span class="cn">NULL</span>, schedule <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>router</code></dt>
+<p></p><div class="arguments"><dl><dt><code>client</code></dt>
 <dd><p>Router object. See <code><a href="crew_controller.html">crew_controller()</a></code>.</p></dd>
 
 
@@ -156,9 +156,9 @@ throttled auto-scaling unlocks.</p></dd>
 <div class="section">
 <h4 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h4>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
+<span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>client <span class="op">=</span> <span class="va">client</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"task"</span>, command <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span>
@@ -170,7 +170,7 @@ throttled auto-scaling unlocks.</p></dd>
 
 </div><p></p><hr><a id="method-crew_class_controller-validate"></a><div class="section">
 <h3 id="method-validate-">Method <code>validate()</code><a class="anchor" aria-label="anchor" href="#method-validate-"></a></h3>
-<p>Validate the router.</p><div class="section">
+<p>Validate the client.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -254,7 +254,7 @@ of any newly resolved tasks before determining saturation.</p></dd>
 
 <dt><code>throttle</code></dt>
 <dd><p>Logical of length 1, whether to delay task collection
-until the next request at least <code>self$router$seconds_interval</code>
+until the next request at least <code>self$client$seconds_interval</code>
 seconds from the original request.
 The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
 accumulate a backlog of requests. The technique improves robustness
@@ -346,7 +346,7 @@ compatible with the analogous method of controller groups.</p></dd>
 
 </div><p></p><hr><a id="method-crew_class_controller-scale"></a><div class="section">
 <h3 id="method-scale-">Method <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code><a class="anchor" aria-label="anchor" href="#method-scale-"></a></h3>
-<p>Run auto-scaling.</p><div class="section">
+<p>Auto-scale workers out to meet the demand of tasks.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">scale</span><span class="op">(</span>throttle <span class="op">=</span> <span class="cn">FALSE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
@@ -356,7 +356,7 @@ compatible with the analogous method of controller groups.</p></dd>
 <p></p><div class="arguments"><dl><dt><code>throttle</code></dt>
 <dd><p>Logical of length 1, whether to delay auto-scaling
 until the next auto-scaling request at least
-<code>self$router$seconds_interval</code> seconds from the original request.
+<code>self$client$seconds_interval</code> seconds from the original request.
 The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
 accumulate a backlog of requests. The technique improves robustness
 and efficiency.</p></dd>
@@ -373,8 +373,6 @@ compatible with the analogous method of controller groups.</p></dd>
 <h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
 <p>Methods <code>push()</code>, <code>pop()</code>, and <code>wait()</code> already invoke
 <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> if the <code>scale</code> argument is <code>TRUE</code>.
-If you call <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> manually, it is recommended to call <code>collect()</code>
-first so <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> can accurately assess the task load.
 For finer control of the number of workers launched,
 call <code>launch()</code> on the controller with the exact desired
 number of workers.</p>
@@ -460,16 +458,13 @@ argument of <code><a href="https://shikokuchuo.net/mirai/reference/mirai.html" c
 <dd><p>Logical, whether to automatically call <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code>
 to auto-scale workers to meet the demand of the task load.
 By design, auto-scaling might not actually happen
-if <code>throttle = TRUE</code>.
-If <code>scale</code> is <code>TRUE</code>, then <code>collect()</code> runs first
-so demand can be properly assessed before scaling and the number
-of workers is not too high.</p></dd>
+if <code>throttle = TRUE</code>.</p></dd>
 
 
 <dt><code>throttle</code></dt>
 <dd><p>If <code>scale</code> is <code>TRUE</code>, whether to defer auto-scaling
 until the next request at least
-<code>self$router$seconds_interval</code> seconds from the original request.
+<code>self$client$seconds_interval</code> seconds from the original request.
 The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
 accumulate a backlog of requests. The technique improves robustness
 and efficiency.</p></dd>
@@ -549,24 +544,20 @@ list as applicable and moves them to the <code>results</code> list.</p>
 whether to automatically call <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code>
 to auto-scale workers to meet the demand of the task load.
 Auto-scaling might not actually happen if <code>throttle</code> is <code>TRUE</code>.
-If <code>TRUE</code>, then <code>collect()</code> runs first
-so demand can be properly assessed before scaling and the number
-of workers is not too high. Scaling up on <code>pop()</code> may be important
+Scaling up on <code>pop()</code> may be important
 for transient or nearly transient workers that tend to drop off
 quickly after doing little work.</p></dd>
 
 
 <dt><code>collect</code></dt>
-<dd><p>Logical of length 1. If <code>scale</code> is <code>FALSE</code>,
-whether to call <code>collect()</code>
-to pick up the results of completed tasks. This task collection
-step always happens (with throttling) when <code>scale</code> is <code>TRUE</code>.</p></dd>
+<dd><p>Logical of length 1,
+whether to collect the results of completed tasks.</p></dd>
 
 
 <dt><code>throttle</code></dt>
 <dd><p>Whether to defer auto-scaling and task collection
 until the next request at least
-<code>self$router$seconds_interval</code> seconds from the original request.
+<code>self$client$seconds_interval</code> seconds from the original request.
 The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
 accumulate a backlog of requests. The technique improves robustness
 and efficiency.</p></dd>
@@ -635,7 +626,7 @@ is <code>TRUE</code>.</p></dd>
 <dt><code>throttle</code></dt>
 <dd><p>Whether to defer auto-scaling
 and task collection until the next request at least
-<code>self$router$seconds_interval</code> seconds from the original request.
+<code>self$client$seconds_interval</code> seconds from the original request.
 The idea is similar to <code>shiny::throttle()</code> except that <code>crew</code> does not
 accumulate a backlog of requests. The technique improves robustness
 and efficiency.
@@ -773,9 +764,9 @@ compatible with the analogous method of controller groups.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller.html">crew_controller</a></span><span class="op">(</span>client <span class="op">=</span> <span class="va">client</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"task"</span>, command <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -788,9 +779,9 @@ compatible with the analogous method of controller groups.</p></dd>
 <span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CREW_EXAMPLES"</span><span class="op">)</span>, <span class="st">"true"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">router</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_router.html">crew_router</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">client</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_client.html">crew_client</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">launcher</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_launcher_local.html">crew_launcher_local</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller.html">crew_controller</a></span><span class="op">(</span>router <span class="op">=</span> <span class="va">router</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="crew_controller.html">crew_controller</a></span><span class="op">(</span>client <span class="op">=</span> <span class="va">client</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"task"</span>, command <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span></span>
