@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9010</span>
       </span>
     </div>
 
@@ -32,10 +32,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/controller_groups.html">Controller groups</a>
+      <a href="../articles/groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="../articles/launcher_plugins.html">Launcher plugins</a>
+      <a href="../articles/plugins.html">Launcher plugins</a>
     </li>
     <li>
       <a href="../articles/shiny.html">Asynchronous Shiny apps</a>
@@ -96,7 +96,7 @@
 
 
 <dt><code>log</code></dt>
-<dd><p>Data frame task log of the workers.</p></dd>
+<dd><p>Tibble with per-worker metadata about tasks.</p></dd>
 
 
 <dt><code>until</code></dt>
@@ -660,21 +660,12 @@ its stopping condition based on the <code>mode</code> argument.</p>
 <h3 id="method-summary-">Method <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
 <p>Summarize the workers and tasks of the controller.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span></span>
-<span>  columns <span class="op">=</span> <span class="fu">tidyselect</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html" class="external-link">everything</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  controllers <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-11">Arguments<a class="anchor" aria-label="anchor" href="#arguments-11"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>columns</code></dt>
-<dd><p>Tidyselect expression to select a subset of columns.
-Examples include <code>columns = contains("worker")</code> and
-<code>columns = starts_with("tasks")</code>.</p></dd>
-
-
-<dt><code>controllers</code></dt>
+<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
 <dd><p>Not used. Included to ensure the signature is
 compatible with the analogous method of controller groups.</p></dd>
 
@@ -684,56 +675,23 @@ compatible with the analogous method of controller groups.</p></dd>
 <div class="section">
 <h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p>A data frame of summary statistics on the workers and tasks.
-It has one row per worker websocket and the following columns:</p><ul><li><p><code>controller</code>: name of the controller.</p></li>
-<li><p><code>popped_tasks</code>: number of tasks which were completed by
+It has one row per worker websocket and the following columns:</p><ul><li><p><code>controller</code>: name of the controller.
+.  * <code>worker</code>: integer index of the worker.</p></li>
+<li><p><code>tasks</code>: number of tasks which were completed by
 a worker at the websocket and then returned by calling
 <code>pop()</code> on the controller object.</p></li>
-<li><p><code>popped_seconds</code>: total number of runtime and seconds of
+<li><p><code>seconds</code>: total number of runtime and seconds of
 all the tasks that ran on a worker connected to this websocket
 and then were retrieved by calling <code>pop()</code> on the controller
 object.</p></li>
-<li><p><code>popped_errors</code>: total number of tasks which ran on a worker
+<li><p><code>errors</code>: total number of tasks which ran on a worker
 at the website, encountered an error in R, and then retrieved
 with <code>pop()</code>.</p></li>
-<li><p><code>popped_warnings</code>: total number of tasks which ran on a worker
+<li><p><code>warnings</code>: total number of tasks which ran on a worker
 at the website, encountered one or more warnings in R,
-and then retrieved with <code>pop()</code>. Note: <code>popped_warnings</code>
+and then retrieved with <code>pop()</code>. Note: <code>warnings</code>
 is actually the number of <em>tasks</em>, not the number of warnings.
-(A task could throw more than one warning.)</p></li>
-<li><p><code>tasks_assigned</code>: number of pushed tasks assigned to the
-current worker process at the websocket. The counter resets
-every time a new worker instance starts.
-So in the case of transient
-workers, this number may be much smaller than the number of
-popped tasks.</p></li>
-<li><p><code>tasks_complete</code>: number of pushed tasks completed by the
-current worker process at the websocket. The counter resets
-every time a new worker instance starts.
-So in the case of transient
-workers, this number may be much smaller than the number of
-popped tasks.</p></li>
-<li><p><code>worker_index</code>: Numeric index of the worker within the controller.</p></li>
-<li><p><code>worker_connected</code>: <code>TRUE</code> if a worker is currently connected
-to the websocket, <code>FALSE</code> if not connected, or <code>NA</code>
-if the status cannot be determined because the <code>mirai</code>
-client is not running.</p></li>
-<li><p><code>worker_launches</code>: number of attempts to launch a worker
-at the websocket since the controller started. If
-the number of launch attempts gets much higher than
-the number of popped tasks or worker instances, then this is a
-sign that something is wrong with the workers or platform,
-and it is recommended to quit the pipeline and troubleshoot.</p></li>
-<li><p><code>worker_instances</code>: number of different worker processes
-that have connected to the websocket since the <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code>
-of the controller object. Should either be 0 or 1 unless
-something is wrong and more than one worker has connected
-to the current websocket.</p></li>
-<li><p><code>worker_socket</code> full websocket address of the worker, including
-the protocol, IP address, TCP port, and path.
-This websocket rotates with every additional instance
-of a worker process.
-To identify specific pieces of the websocket address,
-call <code><a href="https://shikokuchuo.net/nanonext/reference/parse_url.html" class="external-link">nanonext::parse_url()</a></code>.</p></li>
+(A task could throw more than one warning.</p></li>
 </ul></div>
 
 </div><p></p><hr><a id="method-crew_class_controller-terminate"></a><div class="section">

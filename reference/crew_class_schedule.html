@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9010</span>
       </span>
     </div>
 
@@ -32,10 +32,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/controller_groups.html">Controller groups</a>
+      <a href="../articles/groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="../articles/launcher_plugins.html">Launcher plugins</a>
+      <a href="../articles/plugins.html">Launcher plugins</a>
     </li>
     <li>
       <a href="../articles/shiny.html">Asynchronous Shiny apps</a>
@@ -117,6 +117,7 @@ throttled task collection unlocks.</p></dd>
 <ul><li><p><a href="#method-crew_class_schedule-new"><code>crew_class_schedule$new()</code></a></p></li>
 <li><p><a href="#method-crew_class_schedule-validate"><code>crew_class_schedule$validate()</code></a></p></li>
 <li><p><a href="#method-crew_class_schedule-start"><code>crew_class_schedule$start()</code></a></p></li>
+<li><p><a href="#method-crew_class_schedule-summary"><code>crew_class_schedule$summary()</code></a></p></li>
 <li><p><a href="#method-crew_class_schedule-push"><code>crew_class_schedule$push()</code></a></p></li>
 <li><p><a href="#method-crew_class_schedule-throttle"><code>crew_class_schedule$throttle()</code></a></p></li>
 <li><p><a href="#method-crew_class_schedule-collect"><code>crew_class_schedule$collect()</code></a></p></li>
@@ -176,10 +177,26 @@ empty environments.</p>
 <p>NULL (invisibly).</p>
 </div>
 
+</div><p></p><hr><a id="method-crew_class_schedule-summary"></a><div class="section">
+<h3 id="method-summary-">Method <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
+<p>Summarize the schedule.</p><div class="section">
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p><code>NULL</code> if not started. Otherwise, a <code>tibble</code> with
+the following columns:</p><ul><li><p><code>pushed</code>: number tasks that were pushed but not collected yet.
+These tasks may or may not have completed.</p></li>
+<li><p><code>collected</code>: number of tasks that completed and were collected
+but not yet retrieved with <code>pop()</code>.</p></li>
+</ul></div>
+
 </div><p></p><hr><a id="method-crew_class_schedule-push"></a><div class="section">
 <h3 id="method-push-">Method <code>push()</code><a class="anchor" aria-label="anchor" href="#method-push-"></a></h3>
 <p>Push a task.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -197,26 +214,26 @@ empty environments.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_schedule-throttle"></a><div class="section">
 <h3 id="method-throttle-">Method <code>throttle()</code><a class="anchor" aria-label="anchor" href="#method-throttle-"></a></h3>
 <p>Throttle repeated calls.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">throttle</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
 <p><code>TRUE</code> to throttle, <code>FALSE</code> to continue.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_schedule-collect"></a><div class="section">
 <h3 id="method-collect-">Method <code>collect()</code><a class="anchor" aria-label="anchor" href="#method-collect-"></a></h3>
 <p>Collect resolved tasks.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>throttle <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -240,31 +257,31 @@ head of the <code>collected</code> stack.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_schedule-pop"></a><div class="section">
 <h3 id="method-pop-">Method <code>pop()</code><a class="anchor" aria-label="anchor" href="#method-pop-"></a></h3>
 <p>Pop a task from the <code>collected</code> stack.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
+<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
 <p>A task object if available, <code>NULL</code> otherwise.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_schedule-empty"></a><div class="section">
 <h3 id="method-empty-">Method <code>empty()</code><a class="anchor" aria-label="anchor" href="#method-empty-"></a></h3>
 <p>Check if the schedule is empty.</p><div class="section">
-<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">empty</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-7">Returns<a class="anchor" aria-label="anchor" href="#returns-7"></a></h4>
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
 <p><code>TRUE</code> if the <code>pushed</code> and <code>collected</code> hash tables are both
 empty, <code>FALSE</code> otherwise.</p>
 </div>
@@ -272,12 +289,12 @@ empty, <code>FALSE</code> otherwise.</p>
 </div><p></p><hr><a id="method-crew_class_schedule-nonempty"></a><div class="section">
 <h3 id="method-nonempty-">Method <code>nonempty()</code><a class="anchor" aria-label="anchor" href="#method-nonempty-"></a></h3>
 <p>Check if the schedule is nonempty.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">nonempty</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p><code>TRUE</code> if either <code>pushed</code> or <code>collected</code> is nonempty,
 <code>FALSE</code> otherwise.</p>
 </div>
@@ -285,12 +302,12 @@ empty, <code>FALSE</code> otherwise.</p>
 </div><p></p><hr><a id="method-crew_class_schedule-collected_all"></a><div class="section">
 <h3 id="method-collected-all-">Method <code>collected_all()</code><a class="anchor" aria-label="anchor" href="#method-collected-all-"></a></h3>
 <p>Check if all previously pushed tasks are now collected.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">collected_all</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p><code>TRUE</code> if all previously pushed tasks are now collected,
 <code>FALSE</code> otherwise. Could be <code>FALSE</code> if there are unresolved tasks
 or there are no tasks at all.</p>
@@ -300,12 +317,12 @@ or there are no tasks at all.</p>
 <h3 id="method-collected-one-">Method <code>collected_one()</code><a class="anchor" aria-label="anchor" href="#method-collected-one-"></a></h3>
 <p>Check if there is at least one collected task or
 there are no pushed tasks.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">collected_one</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p><code>TRUE</code> if there is at least one collected task or
 there are no pushed tasks, <code>FALSE</code> otherwise.</p>
 </div>
@@ -314,7 +331,7 @@ there are no pushed tasks, <code>FALSE</code> otherwise.</p>
 <h3 id="method-collected-mode-">Method <code>collected_mode()</code><a class="anchor" aria-label="anchor" href="#method-collected-mode-"></a></h3>
 <p>Either <code>collected_all()</code> or <code>collected_one()</code>, depending
 on the <code>mode</code> argument.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
+<h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">collected_mode</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -328,7 +345,7 @@ on the <code>mode</code> argument.</p><div class="section">
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
+<h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
 <p><code>TRUE</code> or <code>FALSE</code>, depending on <code>mode</code> and the state of the
 schedule.</p>
 </div>

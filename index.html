@@ -55,7 +55,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9010</span>
       </span>
     </div>
 
@@ -72,10 +72,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/controller_groups.html">Controller groups</a>
+      <a href="articles/groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="articles/launcher_plugins.html">Launcher plugins</a>
+      <a href="articles/plugins.html">Launcher plugins</a>
     </li>
     <li>
       <a href="articles/shiny.html">Asynchronous Shiny apps</a>
@@ -115,11 +115,10 @@
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<p>For <code>crew</code>, it is recommended to use <code>nanonext</code> version <code>0.8.3.9010</code> or higher and <code>mirai</code> version <code>0.8.7.9013</code> or higher. If the latest CRAN releases are older, then you can install the development versions from R-universe.</p>
+<p>It is recommended to use <code>mirai</code> version <code>0.8.7.9016</code> or higher. If the latest CRAN release is older, then you can install the development version from R-universe.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nanonext"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mirai"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
-<p>There are multiple ways to install <code>crew</code> itself, and both the latest release and the development version are available.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"mirai"</span>, repos <span class="op">=</span> <span class="st">"https://shikokuchuo.r-universe.dev"</span><span class="op">)</span></span></code></pre></div>
+<p>Install <code>crew</code> itself using one of the methods below.</p>
 <table class="table">
 <colgroup>
 <col width="13%">
@@ -153,154 +152,141 @@
 <div class="section level1">
 <h1 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h1>
-<p>Please see <a href="https://wlandau.github.io/crew/" class="external-link uri">https://wlandau.github.io/crew/</a> for documentation, including a full function reference and usage tutorial vignettes.</p>
+<p>The documentation website at <a href="https://wlandau.github.io/crew/" class="external-link uri">https://wlandau.github.io/crew/</a> includes a <a href="https://wlandau.github.io/crew/reference/index.html" class="external-link">function reference</a> and tutorial vignettes.</p>
+</div>
+<div class="section level1">
+<h1 id="concepts">Concepts<a class="anchor" aria-label="anchor" href="#concepts"></a>
+</h1>
+<p>A <em>task</em> is a piece of R code, such as an expression or a function call. A <em>worker</em> is a <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/interactive.html" class="external-link">non-interactive</a> R process that runs one or more tasks. When tasks run on workers, the local R session is free and responsive, and work gets done faster. For example, <a href="https://wlandau.github.io/crew/articles/shiny.html" class="external-link">this vignette</a> shows how <code>crew</code> and <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> work together to speed up <a href="https://rstudio.github.io/shiny/" class="external-link">Shiny</a> apps.</p>
 </div>
 <div class="section level1">
 <h1 id="plugins">Plugins<a class="anchor" aria-label="anchor" href="#plugins"></a>
 </h1>
-<p><code>crew</code> lets you write custom <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launchers</a> for different types of workers that connect over the local network. This flexibility can extend <code>crew</code> to platforms like <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>, Sun Grid Engine, <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a>, and <a href="https://kubernetes.io/" class="external-link">Kubernetes</a>. See the <a href="https://wlandau.github.io/crew/articles/plugins.html" class="external-link">plugin vignette</a> to learn how to create a launcher plugin. The following packages support ready-to-use plugins.</p>
-<ul>
-<li>
-<a href="https://wlandau.github.io/crew.cluster/" class="external-link"><code>crew.cluster</code></a>: traditional high-performance computing clusters such as Sun Grid Engine (SGE).</li>
-</ul>
+<p>A worker runs on your local computer, a SLURM cluster, AWS Batch, or any number of other platforms. As long as the worker connects to your R session over the local network, <code>crew</code> can use <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> to send it tasks. You can write your own <a href="https://wlandau.github.io/crew/articles/plugins.html" class="external-link">launcher plugin</a> to teach <code>crew</code> how to use your platform. The <a href="https://wlandau.github.io/crew.cluster/" class="external-link"><code>crew.cluster</code></a> package supports plugins for SLURM, Sun Grid Engine (SGE), LSF, and PBS/TORQUE.</p>
 </div>
 <div class="section level1">
-<h1 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h1 id="tasks">Tasks<a class="anchor" aria-label="anchor" href="#tasks"></a>
 </h1>
-<p>First, create a controller object. Thanks to the powerful features in <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a>, <code><a href="reference/crew_controller_local.html">crew_controller_local()</a></code> allows several ways to customize the way workers are launched and the conditions under which they time out. For example, arguments <code>tasks_max</code> and <code>seconds_idle</code> allow for a smooth continuum between fully persistent workers and fully transient workers.</p>
+<p>First, create a controller object to manage tasks and workers.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://wlandau.github.io/crew/" class="external-link">crew</a></span><span class="op">)</span></span>
-<span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>seconds_idle <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
-<p>The <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code> method starts a local <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> client and dispatcher process to listen to workers that dial in into websockets on the local network.</p>
+<span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"example"</span>,</span>
+<span>  workers <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  seconds_idle <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Next, start the controller to create the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> client. Later, when you are done with the controller, call <code>controller$terminate()</code> to clean up the workers and dispatcher.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method shows metadata on workers and tasks. Use the <code>columns</code> argument to select a subset of columns in the output. The following table has one row per worker, and each column is a summary metric on the popped tasks (tasks which completed and were retrieved with <code>pop()</code>).</p>
+<p>Use <code>push()</code> to submit a new task and <code>pop()</code> to return a completed task.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"popped_"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
-<span><span class="co">#&gt;   popped_tasks popped_seconds popped_errors popped_warnings</span></span>
-<span><span class="co">#&gt;          &lt;int&gt;          &lt;dbl&gt;         &lt;int&gt;           &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1            0              0             0               0</span></span>
-<span><span class="co">#&gt; 2            0              0             0               0</span></span></code></pre></div>
-<p>Use the <code>push()</code> method to submit a task.</p>
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"get pid"</span>, command <span class="op">=</span> <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps_pid</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Behind the scenes, <code>push()</code> and <code>pop()</code> also launch workers to run the tasks. This process is expensive, so <code>crew</code> uses <a href="https://css-tricks.com/debouncing-throttling-explained-examples/" class="external-link">throttling</a>. That means not every call to <code>push()</code> or <code>pop()</code> launches any workers. To ensure enough workers get launched, keep calling <code>pop()</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"get worker process ID"</span>, command <span class="op">=</span> <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps_pid</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Use <code>pop()</code> to get the result of a completed task. <code>pop()</code> returns <code>NULL</code> if there is no result yet.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NULL</span></span></code></pre></div>
-<p>Even if you submitted a task, <code>crew</code> may not have launched a worker yet. This is because <code>crew</code> uses its own version of throttling for robustness and efficiency. In other words, <code>push()</code> and <code>pop()</code> defer auto-scaling for a short window after the original request. For best results, either</p>
-<ol style="list-style-type: decimal">
-<li>Continue to loop over frequent calls to <code>push()</code> and <code>pop()</code>, or</li>
-<li>Call <code>wait()</code>.</li>
-</ol>
-<p>The <code>wait()</code> method blocks the R session, repeatedly scales workers, and collects completed tasks.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
-<p>When a result is available, <code>pop()</code> will retrieve it.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>The result is a <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" class="external-link">monad</a> with the result and its metadata. Even if the command of the task throws an error, it will still return the same kind of <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)" class="external-link">monad</a>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out</span></span>
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span> <span class="co"># No workers started yet and the task is not done.</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span></span>
+<span><span class="va">task</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span> <span class="co"># Worker started, task complete.</span></span>
+<span><span class="va">task</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 11</span></span>
-<span><span class="co">#&gt;   name         command result seconds   seed error trace warni…¹ launc…² worker insta…³</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;  </span></span>
-<span><span class="co">#&gt; 1 get worker … ps::ps… &lt;int&gt;        0 1.56e8 NA    NA    NA      79e71c…      1 7686b2…</span></span>
-<span><span class="co">#&gt; # … with abbreviated variable names ¹​warnings, ²​launcher, ³​instance</span></span></code></pre></div>
-<p>The return value of the command is available in the <code>result</code> column. In our case, it is the process ID of the parallel worker that ran it, as reported by <code><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps::ps_pid()</a></code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="va">result</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># process ID of the parallel worker reported by the task</span></span>
+<span><span class="co">#&gt;   name    command result seconds   seed error trace warnings launcher worker</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 get pid NA      &lt;int&gt;        0 1.78e9 NA    NA    NA       372d50b…      1</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: instance &lt;chr&gt;</span></span></code></pre></div>
+<p>Alternatively, <code>wait()</code> is a loop that repeatedly checks tasks and launches workers until all tasks complete.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
+<p>The return value of the task is in the <code>result</code> column.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">task</span><span class="op">$</span><span class="va">result</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="co"># return value of the task</span></span>
 <span><span class="co">#&gt; [1] 69631</span></span></code></pre></div>
-<p>Since it ran on a parallel worker, it is different from the process ID of the local R session.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_pid.html" class="external-link">ps_pid</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># local R session process ID</span></span>
-<span><span class="co">#&gt; [1] 69523</span></span></code></pre></div>
-<p>Continue the above process of asynchronously submitting and collecting tasks until your workflow is complete. You may periodically inspect different columns from the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"tasks"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span><span class="co">#&gt;   tasks_assigned tasks_complete</span></span>
-<span><span class="co">#&gt;            &lt;int&gt;          &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1              1              1</span></span>
-<span><span class="co">#&gt; 2              0              0</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>columns <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"popped"</span><span class="op">)</span><span class="op">)</span></span>
+</div>
+<div class="section level1">
+<h1 id="summaries">Summaries<a class="anchor" aria-label="anchor" href="#summaries"></a>
+</h1>
+<p>The controller summary shows how many tasks each worker ran, how many total seconds it spent running tasks, and how many tasks threw warnings and errors.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span><span class="co">#&gt;   controller worker tasks seconds errors warnings</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 example         1     1   0.001      0        0</span></span>
+<span><span class="co">#&gt; 2 example         2     0       0      0        0</span></span></code></pre></div>
+<p>The schedule summary counts “pushed” tasks which may not be complete and “collected” tasks which <code>pop()</code> can return.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">schedule</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span><span class="co">#&gt;   pushed collected</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;     &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1      0         0</span></span></code></pre></div>
+<p>The launcher summary counts the number of times each worker was launched, and it shows the total number of assigned and completed tasks from all past terminated instances of each worker.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">launcher</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
-<span><span class="co">#&gt;   popped_tasks popped_seconds popped_errors popped_warnings</span></span>
-<span><span class="co">#&gt;          &lt;int&gt;          &lt;dbl&gt;         &lt;int&gt;           &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1            1              0             0               0</span></span>
-<span><span class="co">#&gt; 2            0              0             0               0</span></span></code></pre></div>
-<p>When you are done, terminate the controller to close any workers still running, close the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher process, and free the TCP port.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;   worker launches assigned complete</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1      1        1        0        0</span></span>
+<span><span class="co">#&gt; 2      2        0        0        0</span></span></code></pre></div>
+<p>Finally, the client summary shows up-to-date worker status from <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">client</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span><span class="co">#&gt;   worker online instances assigned complete socket                          </span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;lgl&gt;      &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt;                           </span></span>
+<span><span class="co">#&gt; 1      1 FALSE          1        1        1 ws://10.0.0.32:58685/1/15e07250…</span></span>
+<span><span class="co">#&gt; 2      2 FALSE          0        0        0 ws://10.0.0.32:58685/2/cb45b3d4…</span></span></code></pre></div>
+</div>
+<div class="section level1">
+<h1 id="termination">Termination<a class="anchor" aria-label="anchor" href="#termination"></a>
+</h1>
+<p>Call <code>terminate()</code> on the controller after you finish using it. <code>terminate()</code> tries to close the the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher and any workers that may still be running. It is important to free up these resources.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
-<h1 id="efficiency-and-resources">Efficiency and resources<a class="anchor" aria-label="anchor" href="#efficiency-and-resources"></a>
+<h1 id="scale">Scale<a class="anchor" aria-label="anchor" href="#scale"></a>
 </h1>
-<p>Adding more workers might speed up your workflow, but not always. Beyond a certain point, the efficiency gains will diminish, and the extra workers will have nothing to do. With proper configuration, you can find the right balance.</p>
-<p>As mentioned above, the <code>push()</code>, <code>pop()</code>, and <code>wait()</code> methods of the controller launch new workers automatically in response to changing demand. By default, these workers stay running until <code>controller$terminate()</code>. However, you can customize the controller to scale down when circumstances allow, which helps help avoid wasting resources<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> The most useful arguments for down-scaling, in order of importance, are:</p>
+<p>As explained above, <code>push()</code>, <code>pop()</code>, and <code>wait()</code> launch new workers to run tasks. The number of new workers depends on the number of tasks at the time. In addition, workers can shut themselves down as work completes. In other words, <code>crew</code> automatically raises and lowers the number of workers in response to fluctuations in the task workload.</p>
+<p>The most useful arguments for down-scaling, in order of importance, are:</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>seconds_idle</code>: automatically shut down a worker if it spends too long waiting for a target.</li>
+<code>seconds_idle</code>: shut down a worker if it spends too long waiting for a task.</li>
 <li>
-<code>tasks_max</code>: maximum number of tasks a worker can run before shutting down.</li>
+<code>tasks_max</code>: shut down a worker after it completes a certain number of tasks.</li>
 <li>
 <code>seconds_wall</code>: soft wall time of a worker.</li>
 </ol>
-<p>On the other hand, it is not always helpful to eagerly down-scale workers. Because the workload can fluctuate rapidly, some workers may quit and relaunch so often that it creates noticeable overhead.</p>
-<p>Fortunately, you can investigate auto-scaling and configuration issues empirically. Simply run your workflow and then look at the output from <code>controller$summary()</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/crew_controller_local.html">crew_controller_local</a></span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">10</span>, seconds_idle <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">controller</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="kw">for</span> <span class="op">(</span><span class="va">index</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">controller</span><span class="op">$</span><span class="fu">push</span><span class="op">(</span>command <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">controller</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="st">"start collecting results"</span></span>
-<span><span class="kw">while</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"worker_index"</span>, <span class="st">"worker_launches"</span>, <span class="st">"popped_tasks"</span>, <span class="st">"popped_seconds"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 10 × 4</span></span>
-<span><span class="co">#&gt;    worker_index worker_launches popped_tasks popped_seconds</span></span>
-<span><span class="co">#&gt;           &lt;int&gt;           &lt;int&gt;        &lt;int&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1            1               1          236          0.005</span></span>
-<span><span class="co">#&gt;  2            2               1          110          0.004</span></span>
-<span><span class="co">#&gt;  3            3               1           96          0.001</span></span>
-<span><span class="co">#&gt;  4            4               1           81          0.005</span></span>
-<span><span class="co">#&gt;  5            5               1           89          0.002</span></span>
-<span><span class="co">#&gt;  6            6               1           77          0.003</span></span>
-<span><span class="co">#&gt;  7            7               1           78          0.005</span></span>
-<span><span class="co">#&gt;  8            8               1           75          0.001</span></span>
-<span><span class="co">#&gt;  9            9               1           78          0.008</span></span>
-<span><span class="co">#&gt; 10           10               1           80          0.002</span></span></code></pre></div>
-<p>Each worker only launched once and moved through tasks quickly, which is a good sign for a batch of 1000 instantaneous independent tasks. However, the first worker completed many more tasks than the others, even though all workers should share the load equally in this particular case. It would be helpful to see if the same workload runs just as fast with fewer workers.</p>
+<p>Please tune these these arguments to achieve the desired balance for auto-scaling. The two extremes of auto-scaling are <a href="https://mschubert.github.io/clustermq/" class="external-link"><code>clustermq</code></a>-like <em>persistent workers</em> and <a href="https://future.futureverse.org/" class="external-link"><code>future</code></a>-like <em>transient workers</em>, and each is problematic in its own way.</p>
+<ol style="list-style-type: decimal">
+<li>
+<em>Persistent workers</em>: a persistent worker launches once, typically runs many tasks, and stays running for the entire lifetime of the controller. Persistent workers minimize overhead and quickly complete large numbers of short tasks. However, they risk spending too much time in an idle state if there are no tasks to run. Excessive idling wastes resources, which could impact your colleagues on a shared cluster or drive up costs on Amazon Web Services.</li>
+<li>
+<em>Transient workers</em>: a transient worker terminates as soon as it completes a single task. Each subsequent task requires a new transient worker to run it. Transient workers avoid excessive idling, but frequent worker launches cause significant overhead and slows down the computation as a whole.</li>
+</ol>
 </div>
 <div class="section level1">
 <h1 id="risks">Risks<a class="anchor" aria-label="anchor" href="#risks"></a>
 </h1>
 <p>The <code>crew</code> package has unavoidable risk. It is your responsibility as the user to safely use <code>crew</code>. Please read the final clause of the <a href="https://wlandau.github.io/crew/LICENSE.html" class="external-link">software license</a>.</p>
-<div class="section level3">
-<h3 id="security">Security<a class="anchor" aria-label="anchor" href="#security"></a>
-</h3>
+<div class="section level2">
+<h2 id="security">Security<a class="anchor" aria-label="anchor" href="#security"></a>
+</h2>
 <p><code>crew</code> currently uses unencrypted TCP connections for transactions with workers inside a trusted local network. In a compromised network, an attacker can potentially access and exploit sensitive resources. It is your responsibility to assess the sensitivity and vulnerabilities of your computing environment and make sure your network is secure.</p>
 </div>
-<div class="section level3">
-<h3 id="ports">Ports<a class="anchor" aria-label="anchor" href="#ports"></a>
-</h3>
-<p><code>crew</code> uses one TCP port per controller. TCP ports range from 0 to 65535, and only around 16000 of these ports are considered ephemeral or dynamic, so please be careful not to run too many controllers simultaneously if you are running R on a machine you share with other people (such as the login node of a computing cluster). If you are running a <a href="https://wlandau.github.io/crew/articles/controller_groups.html" class="external-link">controller group</a> please add only a small number of controllers to the group. The <code>terminate()</code> method of the controller and <code>crew_session_terminate()</code> should free these ports again for other processes to use.</p>
+<div class="section level2">
+<h2 id="ports">Ports<a class="anchor" aria-label="anchor" href="#ports"></a>
+</h2>
+<p><code>crew</code> uses one TCP port per controller. TCP ports range from 0 to 65535, and only around 16000 of these ports are considered ephemeral or dynamic, so please be careful not to run too many controllers simultaneously if you are running R on a machine you share with other people (such as the login node of a shared cluster). If you are running a <a href="https://wlandau.github.io/crew/articles/groups.html" class="external-link">controller group</a> please add only a small number of controllers to the group. The <code>terminate()</code> frees these ports again for other processes to use.</p>
 </div>
-<div class="section level3">
-<h3 id="zombies">Zombies<a class="anchor" aria-label="anchor" href="#zombies"></a>
-</h3>
+<div class="section level2">
+<h2 id="zombies">Zombies<a class="anchor" aria-label="anchor" href="#zombies"></a>
+</h2>
 <p>The <code>crew</code> package launches external R processes:</p>
 <ol style="list-style-type: decimal">
 <li>Worker processes to run tasks, possibly on different computers on the local network, and</li>
 <li>A local <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher process to schedule the tasks.</li>
 </ol>
 <p>To the best of its ability, <code>crew</code> tries to only launch the processes it needs, and it relies on <code>mirai</code> to clean up these processes when the work is done. However, sometimes it is still possible that too many workers may run concurrently, and it is still possible that either the workers or the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher may run too long or hang. In large-scale workflows, these accidents can have egregious consequences. Depending on the launcher type, these consequences can range from overburdening your local machine or cluster, to incurring unexpectedly high costs on <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a>.</p>
-</div>
 <div class="section level3">
 <h3 id="workers">Workers<a class="anchor" aria-label="anchor" href="#workers"></a>
 </h3>
@@ -308,15 +294,10 @@
 <p>Workers may run on different computing platforms, depending on the type of launcher you choose. Each type of launcher connects to a different computing platform, and each platform has a different way of terminating workers. For example, the <a href="https://wlandau.github.io/crew/reference/crew_launcher_local.html" class="external-link">local process launcher</a> creates R processes on your local machine, which you can find and terminate with <a href="https://ps.r-lib.org/reference/ps.html" class="external-link"><code>ps::ps()</code></a>/<a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link"><code>ps::ps_kill()</code></a> or <a href="https://htop.dev/" class="external-link"><code>htop</code></a>. For a SLURM launcher, you need <a href="https://slurm.schedmd.com/squeue.html" class="external-link"><code>squeue</code></a> to find workers and <a href="https://slurm.schedmd.com/scancel.html" class="external-link"><code>scancel</code></a> to terminate them. For an <a href="https://aws.amazon.com/" class="external-link">Amazon Web Services</a> launcher, please use the <a href="https://aws.amazon.com/console/" class="external-link">AWS web console</a> or <a href="https://aws.amazon.com/cloudwatch/" class="external-link">CloudWatch</a>.</p>
 </div>
 <div class="section level3">
-<h3 id="scheduling">Scheduling<a class="anchor" aria-label="anchor" href="#scheduling"></a>
-</h3>
-<p>Depending on user settings, <code>crew</code> workers may run for the entire length of the analysis pipeline, or they may exit if they idle too long or complete a certain number of tasks. <code>crew</code> re-launches workers if there are more unfinished tasks in the queue than <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html#details" class="external-link">active workers</a> to run them at a given snapshot in time. This kind of auto-scaling does not dedicate any specific worker to any specific task, and it does not perform well when workers exit too quickly due to a small value of <code>seconds_idle</code>. Please set <code>seconds_idle</code> to a generous enough value for workers to accept work, and please use <code>tasks_max</code> to specify short-lived workers such as single-task transient workers (<code>tasks_max = 1</code>).</p>
-</div>
-<div class="section level3">
 <h3 id="dispatcher">Dispatcher<a class="anchor" aria-label="anchor" href="#dispatcher"></a>
 </h3>
 <p>The <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher is designed to gracefully exit when you call <code>terminate()</code> on the controller object or when you restart your R session. However, if you ever need to shut down the dispatcher manually, you can find the process ID using the controller object, then use <code><a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link">ps::ps_kill()</a></code> to terminate the process.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">client</span><span class="op">$</span><span class="va">dispatcher</span></span>
 <span><span class="co">#&gt; [1] 86028</span></span>
 <span><span class="va">handle</span> <span class="op">&lt;-</span> <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_handle.html" class="external-link">ps_handle</a></span><span class="op">(</span>pid <span class="op">=</span> <span class="fl">86028L</span><span class="op">)</span></span>
@@ -325,6 +306,7 @@
 <span><span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link">ps_kill</a></span><span class="op">(</span><span class="va">handle</span><span class="op">)</span></span>
 <span><span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_is_running.html" class="external-link">ps_is_running</a></span><span class="op">(</span><span class="va">handle</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+</div>
 </div>
 </div>
 <div class="section level1">
@@ -390,25 +372,19 @@
 <div class="section level1">
 <h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h1>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>To cite package ‘crew’ <span class="cf">in</span> publications use<span class="sc">:</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  Landau <span class="fu">WM</span> (<span class="dv">2023</span>). _crew<span class="sc">:</span> A Distributed Worker Launcher Framework_.</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew.</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">@</span>Manual{,</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {crew<span class="sc">:</span> A Distributed Worker Launcher Framework},</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> {William Michael Landau},</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2023</span>},</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    note <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew},</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
-</div>
-<div class="footnotes footnotes-end-of-document">
-<hr>
-<ol>
-<li id="fn1"><p>Automatic down-scaling also helps comply with wall time restrictions on shared computing clusters. See the arguments of <a href="https://wlandau.github.io/crew/reference/crew_controller_local.html" class="external-link"><code>crew_controller_local()</code></a> for details.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>To cite package ‘crew’ <span class="cf">in</span> publications use<span class="sc">:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  Landau <span class="fu">WM</span> (<span class="dv">2023</span>). _crew<span class="sc">:</span> A Distributed Worker Launcher Framework_.</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew.</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">@</span>Manual{,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {crew<span class="sc">:</span> A Distributed Worker Launcher Framework},</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> {William Michael Landau},</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2023</span>},</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    note <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew},</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 
   </div>

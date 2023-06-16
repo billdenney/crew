@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9010</span>
       </span>
     </div>
 
@@ -32,10 +32,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/controller_groups.html">Controller groups</a>
+      <a href="../articles/groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="../articles/launcher_plugins.html">Launcher plugins</a>
+      <a href="../articles/plugins.html">Launcher plugins</a>
     </li>
     <li>
       <a href="../articles/shiny.html">Asynchronous Shiny apps</a>
@@ -123,7 +123,7 @@
 <ul><li><p><a href="#method-crew_class_client-new"><code>crew_class_client$new()</code></a></p></li>
 <li><p><a href="#method-crew_class_client-validate"><code>crew_class_client$validate()</code></a></p></li>
 <li><p><a href="#method-crew_class_client-start"><code>crew_class_client$start()</code></a></p></li>
-<li><p><a href="#method-crew_class_client-log"><code>crew_class_client$log()</code></a></p></li>
+<li><p><a href="#method-crew_class_client-summary"><code>crew_class_client$summary()</code></a></p></li>
 <li><p><a href="#method-crew_class_client-terminate"><code>crew_class_client$terminate()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-crew_class_client-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
@@ -206,17 +206,28 @@
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_client-log"></a><div class="section">
-<h3 id="method-log-">Method <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code><a class="anchor" aria-label="anchor" href="#method-log-"></a></h3>
+</div><p></p><hr><a id="method-crew_class_client-summary"></a><div class="section">
+<h3 id="method-summary-">Method <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
 <p>Show an informative worker log.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_client</span><span class="op">$</span><span class="fu">log</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_client</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
-<p>A <code>tibble</code> with information on the workers.</p>
-</div>
+<p>A <code>tibble</code> with information on the workers, or <code>NULL</code>
+if the client is not started. The <code>tibble</code> has 1 row
+per worker and the following columns:</p><ul><li><p><code>worker</code>: integer index of the worker.</p></li>
+<li><p><code>online</code>: <code>TRUE</code> if the worker is online and connected to the
+websocket URL, <code>FALSE</code> otherwise.</p></li>
+<li><p><code>instances</code>: integer, number of instances of <code>mirai</code> servers
+(<code>crew</code> workers) that have connected to the websocket URL
+during the life cycle of the listener.</p></li>
+<li><p><code>assigned</code>: number of tasks assigned to the current websocket URL.</p></li>
+<li><p><code>complete</code>: number of tasks completed at the current websocket URL.</p></li>
+<li><p><code>socket</code>: websocket URL. <code>crew</code> changes the token at the end of the
+URL path periodically as a safeguard while managing workers.</p></li>
+</ul></div>
 
 </div><p></p><hr><a id="method-crew_class_client-terminate"></a><div class="section">
 <h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>

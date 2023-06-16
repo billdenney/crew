@@ -2,8 +2,8 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  controller_groups: controller_groups.html
-  launcher_plugins: launcher_plugins.html
+  groups: groups.html
+  plugins: plugins.html
   shiny: shiny.html
-last_built: 2023-06-16T14:01Z
+last_built: 2023-06-16T19:25Z
 

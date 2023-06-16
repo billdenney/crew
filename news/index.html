@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9010</span>
       </span>
     </div>
 
@@ -32,10 +32,10 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/controller_groups.html">Controller groups</a>
+      <a href="../articles/groups.html">Controller groups</a>
     </li>
     <li>
-      <a href="../articles/launcher_plugins.html">Launcher plugins</a>
+      <a href="../articles/plugins.html">Launcher plugins</a>
     </li>
     <li>
       <a href="../articles/shiny.html">Asynchronous Shiny apps</a>
@@ -64,7 +64,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.2.1.9009" id="crew-0219009-development">crew 0.2.1.9009 (development)<a class="anchor" aria-label="anchor" href="#crew-0219009-development"></a></h2>
+<h2 class="page-header" data-toc-text="0.2.1.9010" id="crew-0219010-development">crew 0.2.1.9010 (development)<a class="anchor" aria-label="anchor" href="#crew-0219010-development"></a></h2>
 <ul><li>Track warnings properly (<a href="https://github.com/wlandau/crew/issues/81" class="external-link">#81</a>, <a href="https://github.com/brendanf" class="external-link">@brendanf</a>).</li>
 <li>Optimize heavily (<a href="https://github.com/wlandau/crew/issues/81" class="external-link">#81</a>, <a href="https://github.com/wlandau/crew/issues/83" class="external-link">#83</a>, <a href="https://github.com/shikokuchuo" class="external-link">@shikokuchuo</a>, <a href="https://github.com/brendanf" class="external-link">@brendanf</a>).</li>
 <li>Use CRAN <code>nanonext</code> 0.9.0.</li>
@@ -74,6 +74,7 @@
 <li>Rename “router” to “client” and change the function signature of <code>launch_worker()</code> (<a href="https://github.com/wlandau/crew/issues/84" class="external-link">#84</a>). Unfortunately neither of these changes is back-compatible for third-party launcher plugins. However, the controller interface is still back-compatible, so <code>targets</code> remains unaffected.</li>
 <li>Terminate “lost” workers on websocket rotation.</li>
 <li>Allow <code>NULL</code> result in <code>pop()$result[[1L]]</code>.</li>
+<li>Delegate summaries among the controller, schedule, launcher, and client.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1" id="crew-021">crew 0.2.1<small>2023-05-22</small><a class="anchor" aria-label="anchor" href="#crew-021"></a></h2>
