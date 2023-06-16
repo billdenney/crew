@@ -180,9 +180,9 @@ function from <a href="https://koenderks.github.io/aRtsy/" class="external-link"
 <p>A separate function generates status messages based on the number of
 tasks in progress.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">status_message</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">number_tasks</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">number_tasks</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">"tasks in progress:"</span>, <span class="va">number_tasks</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">status_message</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">"tasks in progress:"</span>, <span class="va">n</span><span class="op">)</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>    <span class="st">"All tasks completed."</span></span>
 <span>  <span class="op">}</span></span>
@@ -238,7 +238,7 @@ scan for results in the <code>observe()</code> block covered next.</p>
 event loop that scans for results. The leading
 <code>req(reactive_poll())</code> ensures the loop only runs when
 results could come in, and the
-<code>reactive_poll(!controller$empty())</code> at the end turns off
+<code>reactive_poll(controller$nonempty())</code> at the end turns off
 polling when everything is all done.
 <code>invalidateLater(millis = 100)</code> says to poll every 0.1
 seconds when polling is activated.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The other three lines collect a result,
@@ -248,8 +248,8 @@ plot it if available, and update the status message.</p>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">invalidateLater</span>(<span class="at">millis =</span> <span class="dv">100</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    result <span class="ot">&lt;-</span> controller<span class="sc">$</span><span class="fu">pop</span>()<span class="sc">$</span>result</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(result)) <span class="fu">reactive_result</span>(result[[<span class="dv">1</span>]])</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_status</span>(<span class="fu">status_message</span>(<span class="at">number_tasks =</span> <span class="fu">length</span>(controller<span class="sc">$</span>queue)))</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_poll</span>(<span class="sc">!</span>controller<span class="sc">$</span><span class="fu">empty</span>())</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_status</span>(<span class="fu">status_message</span>(<span class="at">n =</span> <span class="fu">sum</span>(controller<span class="sc">$</span>schedule<span class="sc">$</span><span class="fu">summary</span>())))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reactive_poll</span>(controller<span class="sc">$</span><span class="fu">nonempty</span>())</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  })</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
 <p>Finally, <code>shinyApp()</code> runs the app with the UI and server
@@ -278,9 +278,9 @@ defined above.</p>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">status_message</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">number_tasks</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">number_tasks</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">"tasks in progress:"</span>, <span class="va">number_tasks</span><span class="op">)</span></span>
+<span><span class="va">status_message</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, <span class="st">"tasks in progress:"</span>, <span class="va">n</span><span class="op">)</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
 <span>    <span class="st">"All tasks completed."</span></span>
 <span>  <span class="op">}</span></span>
@@ -321,8 +321,8 @@ defined above.</p>
 <span>    <span class="fu">invalidateLater</span><span class="op">(</span>millis <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span>    <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">result</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span> <span class="fu">reactive_result</span><span class="op">(</span><span class="va">result</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span>    <span class="fu">reactive_status</span><span class="op">(</span><span class="fu">status_message</span><span class="op">(</span>number_tasks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="va">queue</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu">reactive_poll</span><span class="op">(</span><span class="op">!</span><span class="va">controller</span><span class="op">$</span><span class="fu">empty</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">reactive_status</span><span class="op">(</span><span class="fu">status_message</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="va">schedule</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu">reactive_poll</span><span class="op">(</span><span class="va">controller</span><span class="op">$</span><span class="fu">nonempty</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
