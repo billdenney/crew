@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">crew</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1.9011</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@
 
 
 <dt><code>collected</code></dt>
-<dd><p>Stack of resolved tasks with results available.</p></dd>
+<dd><p>Linked list of resolved tasks with results available.</p></dd>
 
 
 <dt><code>pushes</code></dt>
@@ -98,7 +98,11 @@
 
 
 <dt><code>head</code></dt>
-<dd><p>ID of the task at the head of the <code>collected</code> stack.</p></dd>
+<dd><p>ID of the task at the head of the <code>collected</code> linked list.</p></dd>
+
+
+<dt><code>tail</code></dt>
+<dd><p>ID of the task at the tail of the <code>collected</code> linked list.</p></dd>
 
 
 <dt><code>until</code></dt>
@@ -253,7 +257,7 @@ and efficiency.</p></dd>
 <div class="section">
 <h4 id="details-2">Details<a class="anchor" aria-label="anchor" href="#details-2"></a></h4>
 <p>Scan the tasks in <code>pushed</code> and move the resolved ones to the
-head of the <code>collected</code> stack.</p>
+head of the <code>collected</code> linked list.</p>
 </div>
 
 <div class="section">
@@ -263,7 +267,7 @@ head of the <code>collected</code> stack.</p>
 
 </div><p></p><hr><a id="method-crew_class_schedule-pop"></a><div class="section">
 <h3 id="method-pop-">Method <code>pop()</code><a class="anchor" aria-label="anchor" href="#method-pop-"></a></h3>
-<p>Pop a task from the <code>collected</code> stack.</p><div class="section">
+<p>Pop a task from the <code>collected</code> linked list.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_schedule</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
