@@ -104,12 +104,25 @@
 <div class="section level2">
 <h2 id="about">About<a class="anchor" aria-label="anchor" href="#about"></a>
 </h2>
-<p><code>crew</code> lets you write custom <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launchers</a>
-for different types of workers that connect over the local network. This
-flexibility can extend <code>crew</code> to platforms like <a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>, <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a>, and <a href="https://kubernetes.io/" class="external-link">Kubernetes</a>.</p>
+<p><code>crew</code> lets users write custom <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launchers</a>
+for different types of workers that connect over the local network. The
+<a href="https://wlandau.github.io/crew.cluster/" class="external-link"><code>crew.cluster</code></a>
+package already has plugins for traditional high-performance computing
+schedulers (<a href="https://slurm.schedmd.com/" class="external-link">SLURM</a>, SGE, LSF,
+and PBS/TORQUE).</p>
 </div>
 <div class="section level2">
-<h2 id="vision">Vision<a class="anchor" aria-label="anchor" href="#vision"></a>
+<h2 id="request-to-the-community">📣📣📣 Request to the community 📣📣📣<a class="anchor" aria-label="anchor" href="#request-to-the-community"></a>
+</h2>
+<p><span style="color: blue"><strong>The launcher plugin framework aims
+to extend <code>crew</code> to modern platforms and services like <a href="https://aws.amazon.com/batch/" class="external-link">AWS Batch</a>, Google Cloud Run, <a href="https://kubernetes.io/" class="external-link">Kubernetes</a>, and beyond. At the time of
+writing, plugins for cloud computing do not yet exist. So if you know
+how to use these services and connect them with R, please consider
+contributing a package with plugins of your own. The maintainer of
+<code>crew</code> would love to work with you!</strong></span></p>
+</div>
+<div class="section level2">
+<h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
 </h2>
 <p>These <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link">launcher</a>
 plugins need not become part of the <code>crew</code> package itself.
@@ -129,7 +142,7 @@ plugin. It assumes prior familiarity with <a href="https://r6.r-lib.org/articles
 classes</a> and the computing platform of your plugin.</p>
 </div>
 <div class="section level2">
-<h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
+<h2 id="implementation">Implementation<a class="anchor" aria-label="anchor" href="#implementation"></a>
 </h2>
 <p>To create your own launcher plugin, write an <a href="https://r6.r-lib.org/articles/Introduction.html" class="external-link"><code>R6</code></a>
 subclass of <a href="https://wlandau.github.io/crew/reference/crew_class_launcher.html" class="external-link"><code>crew_class_launcher</code></a>
