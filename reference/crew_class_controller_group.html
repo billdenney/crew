@@ -103,6 +103,7 @@
 <li><p><a href="#method-crew_class_controller_group-launch"><code>crew_class_controller_group$launch()</code></a></p></li>
 <li><p><a href="#method-crew_class_controller_group-scale"><code>crew_class_controller_group$scale()</code></a></p></li>
 <li><p><a href="#method-crew_class_controller_group-push"><code>crew_class_controller_group$push()</code></a></p></li>
+<li><p><a href="#method-crew_class_controller_group-map"><code>crew_class_controller_group$map()</code></a></p></li>
 <li><p><a href="#method-crew_class_controller_group-collect"><code>crew_class_controller_group$collect()</code></a></p></li>
 <li><p><a href="#method-crew_class_controller_group-pop"><code>crew_class_controller_group$pop()</code></a></p></li>
 <li><p><a href="#method-crew_class_controller_group-wait"><code>crew_class_controller_group$wait()</code></a></p></li>
@@ -432,16 +433,155 @@ first controller in the list.</p></dd>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
-</div><p></p><hr><a id="method-crew_class_controller_group-collect"></a><div class="section">
-<h3 id="method-collect-">Method <code>collect()</code><a class="anchor" aria-label="anchor" href="#method-collect-"></a></h3>
-<p>Check for done tasks and move the results to
-the results list.</p><div class="section">
+</div><p></p><hr><a id="method-crew_class_controller_group-map"></a><div class="section">
+<h3 id="method-map-">Method <code>map()</code><a class="anchor" aria-label="anchor" href="#method-map-"></a></h3>
+<p>Apply a single command to multiple inputs.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>throttle <span class="op">=</span> <span class="cn">FALSE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span></span>
+<span>  <span class="va">command</span>,</span>
+<span>  <span class="va">iterate</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  globals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu">nanonext</span><span class="fu">::</span><span class="fu"><a href="https://shikokuchuo.net/nanonext/reference/random.html" class="external-link">random</a></span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  packages <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  library <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seconds_interval <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  seconds_timeout <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_command <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  error <span class="op">=</span> <span class="st">"stop"</span>,</span>
+<span>  controller <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>command</code></dt>
+<dd><p>Language object with R code to run.</p></dd>
+
+
+<dt><code>iterate</code></dt>
+<dd><p>Named list of vectors or lists to iterate over.
+For example, to run function calls
+<code>f(x = 1, y = "a")</code> and <code>f(x = 2, y = "b")</code>,
+set <code>command</code> to <code>f(x, y)</code>, and set <code>iterate</code> to
+<code>list(x = c(1, 2), y = c("a", "b"))</code>. The individual
+function calls are evaluated as
+<code>f(x = iterate$x[[1]], y = iterate$y[[1]])</code> and
+<code>f(x = iterate$x[[2]], y = iterate$y[[2]])</code>.
+All the elements of <code>iterate</code> must have the same length.
+If there are any name conflicts between <code>iterate</code> and <code>data</code>,
+<code>iterate</code> takes precedence.</p></dd>
+
+
+<dt><code>data</code></dt>
+<dd><p>Named list of constant local data objects in the
+evaluation environment. Objects in this list are treated as single
+values and are held constant for each iteration of the map.</p></dd>
+
+
+<dt><code>globals</code></dt>
+<dd><p>Named list of constant objects to temporarily
+assign to the global environment for each task. This list should
+include any functions you previously defined in the global
+environment which are required to run tasks.
+See the <code>reset_globals</code> argument of <code><a href="crew_controller_local.html">crew_controller_local()</a></code>.
+Objects in this list are treated as single
+values and are held constant for each iteration of the map.</p></dd>
+
+
+<dt><code>substitute</code></dt>
+<dd><p>Logical of length 1, whether to call
+<code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">base::substitute()</a></code> on the supplied value of the
+<code>command</code> argument. If <code>TRUE</code> (default) then <code>command</code> is quoted
+literally as you write it, e.g.
+<code>push(command = your_function_call())</code>. If <code>FALSE</code>, then <code>crew</code>
+assumes <code>command</code> is a language object and you are passing its
+value, e.g. <code>push(command = quote(your_function_call()))</code>.
+<code>substitute = TRUE</code> is appropriate for interactive use,
+whereas <code>substitute = FALSE</code> is meant for automated R programs
+that invoke <code>crew</code> controllers.</p></dd>
+
+
+<dt><code>seed</code></dt>
+<dd><p>Integer of length 1 with a pseudo-random number generator
+seed. Task-specific task seeds are non-randomly derived
+from this seed.</p></dd>
+
+
+<dt><code>packages</code></dt>
+<dd><p>Character vector of packages to load for the task.</p></dd>
+
+
+<dt><code>library</code></dt>
+<dd><p>Library path to load the packages. See the <code>lib.loc</code>
+argument of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code>.</p></dd>
+
+
+<dt><code>seconds_interval</code></dt>
+<dd><p>Number of seconds to wait between intervals
+polling the tasks for completion.</p></dd>
+
+
+<dt><code>seconds_timeout</code></dt>
+<dd><p>Optional task timeout passed to the <code>.timeout</code>
+argument of <code><a href="https://shikokuchuo.net/mirai/reference/mirai.html" class="external-link">mirai::mirai()</a></code> (after converting to milliseconds).</p></dd>
+
+
+<dt><code>names</code></dt>
+<dd><p>Optional character of length 1, name of the element of
+<code>iterate</code> with names for the tasks. If <code>names</code> is supplied,
+then <code>iterate[[names]]</code> must be a character vector.</p></dd>
+
+
+<dt><code>save_command</code></dt>
+<dd><p>Logical of length 1, whether to store
+a text string version of the R command in the output.</p></dd>
+
+
+<dt><code>error</code></dt>
+<dd><p>Character vector of length 1, choice of action if
+a task has an error. Possible values:</p><ul><li><p><code>"stop"</code>: throw an error in the main R session instead of returning
+a value.</p></li>
+<li><p><code>"warn"</code>: throw a warning. This allows the return value with
+all the error messages and tracebacks to be generated.</p></li>
+<li><p><code>"silent"</code>: do nothing special.</p></li>
+</ul></dd>
+
+
+<dt><code>controller</code></dt>
+<dd><p>Character of length 1,
+name of the controller to submit the task.
+If <code>NULL</code>, the controller defaults to the
+first controller in the list.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
+<p>The idea comes from functional programming: for example,
+the <code>map()</code> function from the <code>purrr</code> package.
+The controller must be started and empty before calling <code>map()</code>.</p>
+</div>
+
+<div class="section">
+<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<p>A <code>tibble</code> of results and metadata, like the output of <code>pop()</code>
+but with multiple rows aggregated together (one row per task).</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_controller_group-collect"></a><div class="section">
+<h3 id="method-collect-">Method <code>collect()</code><a class="anchor" aria-label="anchor" href="#method-collect-"></a></h3>
+<p>Check for done tasks and move the results to
+the results list.</p><div class="section">
+<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">collect</span><span class="op">(</span>throttle <span class="op">=</span> <span class="cn">FALSE</span>, controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>throttle</code></dt>
 <dd><p>whether to defer task collection
 until the next task collection request at least
@@ -459,7 +599,7 @@ Set to <code>NULL</code> to select all controllers.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-8">Returns<a class="anchor" aria-label="anchor" href="#returns-8"></a></h4>
+<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
 <p><code>NULL</code> (invisibly). Removes elements from the <code>queue</code>
 list as applicable and moves them to the <code>results</code> list.</p>
 </div>
@@ -467,7 +607,7 @@ list as applicable and moves them to the <code>results</code> list.</p>
 </div><p></p><hr><a id="method-crew_class_controller_group-pop"></a><div class="section">
 <h3 id="method-pop-">Method <code>pop()</code><a class="anchor" aria-label="anchor" href="#method-pop-"></a></h3>
 <p>Pop a completed task from the results data frame.</p><div class="section">
-<h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
+<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">pop</span><span class="op">(</span></span>
 <span>  scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  collect <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -477,7 +617,7 @@ list as applicable and moves them to the <code>results</code> list.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>scale</code></dt>
 <dd><p>Logical, whether to automatically scale workers to meet
 demand.
@@ -512,7 +652,7 @@ Set to <code>NULL</code> to select all controllers.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="returns-9">Returns<a class="anchor" aria-label="anchor" href="#returns-9"></a></h4>
+<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
 <p>If there is a completed task available to collect, the return
 value is a one-row data frame with the results, warnings, and errors.
 Otherwise, if there are no results available to collect,
@@ -522,7 +662,7 @@ the return value is <code>NULL</code>.</p>
 </div><p></p><hr><a id="method-crew_class_controller_group-wait"></a><div class="section">
 <h3 id="method-wait-">Method <code>wait()</code><a class="anchor" aria-label="anchor" href="#method-wait-"></a></h3>
 <p>Wait for tasks.</p><div class="section">
-<h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
+<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">wait</span><span class="op">(</span></span>
 <span>  mode <span class="op">=</span> <span class="st">"all"</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">0.01</span>,</span>
@@ -534,7 +674,7 @@ the return value is <code>NULL</code>.</p>
 </div>
 
 <div class="section">
-<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
+<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>mode</code></dt>
 <dd><p>If <code>mode</code> is <code>"all"</code>,
 then the method waits for all tasks to complete. If <code>mode</code> is
@@ -577,7 +717,7 @@ Set to <code>NULL</code> to select all controllers.</p></dd>
 </dl><p></p></div>
 </div>
 <div class="section">
-<h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
+<h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a></h4>
 <p>The <code>wait()</code> method blocks the calling R session,
 repeatedly auto-scales workers for tasks
 that need them, and repeatedly collects results.
@@ -587,41 +727,15 @@ based on the <code>mode</code> argument.</p>
 </div>
 
 <div class="section">
-<h4 id="returns-10">Returns<a class="anchor" aria-label="anchor" href="#returns-10"></a></h4>
+<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
 <p><code>NULL</code> (invisibly). Call <code>pop()</code> to get the result.</p>
 </div>
 
 </div><p></p><hr><a id="method-crew_class_controller_group-summary"></a><div class="section">
 <h3 id="method-summary-">Method <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
 <p>Summarize the workers of one or more controllers.</p><div class="section">
-<h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-10">Arguments<a class="anchor" aria-label="anchor" href="#arguments-10"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
-<dd><p>Character vector of controller names.
-Set to <code>NULL</code> to select all controllers.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-11">Returns<a class="anchor" aria-label="anchor" href="#returns-11"></a></h4>
-<p>A data frame of aggregated worker summary statistics
-of all the selected controllers. It has one row per worker,
-and the rows are grouped by controller.
-See the documentation of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method of the controller
-class for specific information about the columns in the output.</p>
-</div>
-
-</div><p></p><hr><a id="method-crew_class_controller_group-terminate"></a><div class="section">
-<h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
-<p>Terminate the workers and disconnect the client
-for one or more controllers.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -635,6 +749,32 @@ Set to <code>NULL</code> to select all controllers.</p></dd>
 </div>
 <div class="section">
 <h4 id="returns-12">Returns<a class="anchor" aria-label="anchor" href="#returns-12"></a></h4>
+<p>A data frame of aggregated worker summary statistics
+of all the selected controllers. It has one row per worker,
+and the rows are grouped by controller.
+See the documentation of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method of the controller
+class for specific information about the columns in the output.</p>
+</div>
+
+</div><p></p><hr><a id="method-crew_class_controller_group-terminate"></a><div class="section">
+<h3 id="method-terminate-">Method <code>terminate()</code><a class="anchor" aria-label="anchor" href="#method-terminate-"></a></h3>
+<p>Terminate the workers and disconnect the client
+for one or more controllers.</p><div class="section">
+<h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">crew_class_controller_group</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span>controllers <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="arguments-12">Arguments<a class="anchor" aria-label="anchor" href="#arguments-12"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>controllers</code></dt>
+<dd><p>Character vector of controller names.
+Set to <code>NULL</code> to select all controllers.</p></dd>
+
+
+</dl><p></p></div>
+</div>
+<div class="section">
+<h4 id="returns-13">Returns<a class="anchor" aria-label="anchor" href="#returns-13"></a></h4>
 <p><code>NULL</code> (invisibly).</p>
 </div>
 
