@@ -109,7 +109,6 @@
 <div class="section level1">
 <div class="page-header"><h1 id="crew-a-distributed-worker-launcher-framework-">crew: a distributed worker launcher framework <img src="reference/figures/logo-readme.png" align="right" height="139"><a class="anchor" aria-label="anchor" href="#crew-a-distributed-worker-launcher-framework-"></a>
 </h1></div>
-<p><a href="https://CRAN.R-project.org/package=crew" class="external-link"><img src="https://www.r-pkg.org/badges/version/crew" alt="CRAN"></a> <a href="https://www.repostatus.org/#active" class="external-link"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="status"></a> <a href="https://github.com/wlandau/crew/actions?query=workflow%3Acheck" class="external-link"><img src="https://github.com/wlandau/crew/workflows/check/badge.svg" alt="check"></a> <a href="https://app.codecov.io/gh/wlandau/crew" class="external-link"><img src="https://codecov.io/gh/wlandau/crew/branch/main/graph/badge.svg?token=3T5DlLwUVl" alt="codecov"></a> <a href="https://github.com/wlandau/crew/actions?query=workflow%3Alint" class="external-link"><img src="https://github.com/wlandau/crew/workflows/lint/badge.svg" alt="lint"></a></p>
 <p>In computationally demanding analysis projects, statisticians and data scientists asynchronously deploy long-running tasks to distributed systems, ranging from traditional clusters to cloud services. The <a href="https://nng.nanomsg.org" class="external-link">NNG</a>-powered <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> R package is a sleek and sophisticated scheduler that efficiently processes these intense workloads. The <code>crew</code> package extends <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> with a unifying interface for third-party worker launchers. Inspiration also comes from packages <a href="https://future.futureverse.org/" class="external-link"><code>future</code></a>, <a href="https://mrc-ide.github.io/rrq/" class="external-link"><code>rrq</code></a>, <a href="https://mschubert.github.io/clustermq/" class="external-link"><code>clustermq</code></a>, and <a href="https://mllg.github.io/batchtools/" class="external-link"><code>batchtools</code></a>.</p>
 </div>
 <div class="section level1">
@@ -203,45 +202,73 @@
 <span><span class="co">#&gt; [1] 69631</span></span></code></pre></div>
 </div>
 <div class="section level1">
+<h1 id="functional-programming">Functional programming<a class="anchor" aria-label="anchor" href="#functional-programming"></a>
+</h1>
+<p>The <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-map" class="external-link"><code>map()</code></a> method of the controller supports functional programming similar to <a href="https://purrr.tidyverse.org/reference/map.html" class="external-link"><code>purrr::map()</code></a> and <a href="https://mschubert.github.io/clustermq/reference/Q.html" class="external-link"><code>clustermq::Q()</code></a>. The arguments of <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-map" class="external-link"><code>map()</code></a> are mostly the same those of <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-push" class="external-link"><code>push()</code></a>, but there is a new <code>iterate</code> argument to define the inputs of individual tasks. <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-map" class="external-link"><code>map()</code></a> submits a whole collection of tasks, auto-scales the workers, waits for all the tasks to finish, and returns the results in a <code>tibble</code>.</p>
+<p>Below, <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-map" class="external-link"><code>map()</code></a> submits one task to compute <code>1 + 2 + 5 + 6</code> and another task to compute <code>3 + 4 + 5 + 6</code>. The lists and vectors inside <code>iterate</code> vary from task to task, while the elements of <code>data</code> and <code>globals</code> stay constant across tasks.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="va">controller</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span></span>
+<span>  command <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">+</span> <span class="va">c</span> <span class="op">+</span> <span class="va">d</span>,</span>
+<span>  iterate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>    b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  globals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">results</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 11</span></span>
+<span><span class="co">#&gt;   name  command result    seconds      seed error trace warnings</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;list&gt;      &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt; 1 1     NA      &lt;dbl [1]&gt;       0    1.82e9 NA    NA    NA      </span></span>
+<span><span class="co">#&gt; 2 2     NA      &lt;dbl [1]&gt;       0    1.82e9 NA    NA    NA      </span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: launcher &lt;chr&gt;, worker &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   instance &lt;chr&gt;</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">result</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 14 18</span></span></code></pre></div>
+</div>
+<div class="section level1">
 <h1 id="summaries">Summaries<a class="anchor" aria-label="anchor" href="#summaries"></a>
 </h1>
 <p>The controller summary shows how many tasks each worker ran, how many total seconds it spent running tasks, and how many tasks threw warnings and errors.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
 <span><span class="co">#&gt;   controller worker tasks seconds errors warnings</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 example         1     1   0.001      0        0</span></span>
-<span><span class="co">#&gt; 2 example         2     0       0      0        0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 example         1     2   0.001      0        0</span></span>
+<span><span class="co">#&gt; 2 example         2     1   0          0        0</span></span></code></pre></div>
 <p>The schedule summary counts “pushed” tasks which may not be complete and “collected” tasks which <code>pop()</code> can return.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">schedule</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 2</span></span>
 <span><span class="co">#&gt;   pushed collected</span></span>
 <span><span class="co">#&gt;    &lt;int&gt;     &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1      0         0</span></span></code></pre></div>
 <p>The launcher summary counts the number of times each worker was launched, and it shows the total number of assigned and completed tasks from all past terminated instances of each worker.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">launcher</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
 <span><span class="co">#&gt;   worker launches assigned complete</span></span>
 <span><span class="co">#&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1      1        1        0        0</span></span>
-<span><span class="co">#&gt; 2      2        0        0        0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      1        2        1        1</span></span>
+<span><span class="co">#&gt; 2      2        1        0        0</span></span></code></pre></div>
 <p>Finally, the client summary shows up-to-date worker status from <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">client</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
 <span><span class="co">#&gt;   worker online instances assigned complete socket                          </span></span>
 <span><span class="co">#&gt;    &lt;int&gt; &lt;lgl&gt;      &lt;int&gt;    &lt;int&gt;    &lt;int&gt; &lt;chr&gt;                           </span></span>
-<span><span class="co">#&gt; 1      1 FALSE          1        1        1 ws://10.0.0.32:58685/1/15e07250…</span></span>
-<span><span class="co">#&gt; 2      2 FALSE          0        0        0 ws://10.0.0.32:58685/2/cb45b3d4…</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      1 FALSE          1        2        2 ws://10.0.0.32:58685/1/15e07250…</span></span>
+<span><span class="co">#&gt; 2      2 FALSE          1        1        1 ws://10.0.0.32:58685/2/cb45b3d4…</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="termination">Termination<a class="anchor" aria-label="anchor" href="#termination"></a>
 </h1>
 <p>Call <code>terminate()</code> on the controller after you finish using it. <code>terminate()</code> tries to close the the <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher and any workers that may still be running. It is important to free up these resources.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
@@ -298,7 +325,7 @@
 <h3 id="dispatcher">Dispatcher<a class="anchor" aria-label="anchor" href="#dispatcher"></a>
 </h3>
 <p>The <a href="https://github.com/shikokuchuo/mirai" class="external-link"><code>mirai</code></a> dispatcher is designed to gracefully exit when you call <code>terminate()</code> on the controller object or when you restart your R session. However, if you ever need to shut down the dispatcher manually, you can find the process ID using the controller object, then use <code><a href="https://ps.r-lib.org/reference/ps_kill.html" class="external-link">ps::ps_kill()</a></code> to terminate the process.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">controller</span><span class="op">$</span><span class="va">client</span><span class="op">$</span><span class="va">dispatcher</span></span>
 <span><span class="co">#&gt; [1] 86028</span></span>
 <span><span class="va">handle</span> <span class="op">&lt;-</span> <span class="fu">ps</span><span class="fu">::</span><span class="fu"><a href="https://ps.r-lib.org/reference/ps_handle.html" class="external-link">ps_handle</a></span><span class="op">(</span>pid <span class="op">=</span> <span class="fl">86028L</span><span class="op">)</span></span>
@@ -373,19 +400,19 @@
 <div class="section level1">
 <h1 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h1>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>To cite package ‘crew’ <span class="cf">in</span> publications use<span class="sc">:</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  Landau <span class="fu">WM</span> (<span class="dv">2023</span>). _crew<span class="sc">:</span> A Distributed Worker Launcher Framework_.</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew.</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">@</span>Manual{,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {crew<span class="sc">:</span> A Distributed Worker Launcher Framework},</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> {William Michael Landau},</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2023</span>},</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    note <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew},</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>To cite package ‘crew’ <span class="cf">in</span> publications use<span class="sc">:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  Landau <span class="fu">WM</span> (<span class="dv">2023</span>). _crew<span class="sc">:</span> A Distributed Worker Launcher Framework_.</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew.</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="sc">@</span>Manual{,</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    title <span class="ot">=</span> {crew<span class="sc">:</span> A Distributed Worker Launcher Framework},</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    author <span class="ot">=</span> {William Michael Landau},</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2023</span>},</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    note <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>wlandau.github.io<span class="sc">/</span>crew<span class="sc">/</span>, https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>wlandau<span class="sc">/</span>crew},</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div>
 </div>
 
   </div>

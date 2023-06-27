@@ -145,18 +145,39 @@ ran the task.</p>
 <span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;list&gt;   &lt;dbl&gt;  &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;int&gt;</span></span>
 <span><span class="co">#&gt; 1 my task NA      &lt;dbl&gt;        0 6.30e8 NA    NA    NA       semi-pe…      1</span></span>
 <span><span class="co">#&gt; # ℹ 1 more variable: instance &lt;chr&gt;</span></span></code></pre></div>
+<p>The <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-group-map" class="external-link"><code>map()</code></a>
+method provides functional programming, and the <code>controller</code>
+argument lets you choose the controller to submit the tasks.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span></span>
+<span>  command <span class="op">=</span> <span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">+</span> <span class="va">c</span> <span class="op">+</span> <span class="va">d</span>,</span>
+<span>  iterate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>    a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>    b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>,</span>
+<span>  globals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
+<span>  controller <span class="op">=</span> <span class="st">"persistent"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 11</span></span>
+<span><span class="co">#&gt;   name  command result    seconds      seed error trace warnings</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;list&gt;      &lt;dbl&gt;     &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt; 1 1     NA      &lt;dbl [1]&gt;       0 870591596 NA    NA    NA      </span></span>
+<span><span class="co">#&gt; 2 2     NA      &lt;dbl [1]&gt;       0 870591595 NA    NA    NA      </span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: launcher &lt;chr&gt;, worker &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   instance &lt;chr&gt;</span></span></code></pre></div>
 <p>The controller group has a <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> method which
 aggregates the summaries of one or more controllers.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">summary</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 2 × 6</span></span>
 <span><span class="co">#&gt;   controller      worker tasks seconds errors warnings</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt;</span></span>
-<span><span class="co">#&gt; 1 persistent           1     0       0      0        0</span></span>
+<span><span class="co">#&gt; 1 persistent           1     2       0      0        0</span></span>
 <span><span class="co">#&gt; 2 semi-persistent      1     1       0      0        0</span></span></code></pre></div>
 <p>When you are finished, please call <code>terminate()</code> with no
 arguments to terminate all controllers in the controller group.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group</span><span class="op">$</span><span class="fu">terminate</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
   </div>
 
