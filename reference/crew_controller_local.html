@@ -76,6 +76,8 @@ launch workers on local processes.</p>
 <span>  workers <span class="op">=</span> <span class="fl">1L</span>,</span>
 <span>  host <span class="op">=</span> <span class="st">"127.0.0.1"</span>,</span>
 <span>  port <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tls_enable <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  tls_config <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seconds_interval <span class="op">=</span> <span class="fl">0.25</span>,</span>
 <span>  seconds_timeout <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  seconds_launch <span class="op">=</span> <span class="fl">30</span>,</span>
@@ -110,6 +112,36 @@ If <code>NULL</code>, the host defaults to the local IP address.</p></dd>
 <dt>port</dt>
 <dd><p>TCP port to listen for the workers. If <code>NULL</code>,
 then an available ephemeral port is automatically chosen.</p></dd>
+
+
+<dt>tls_enable</dt>
+<dd><p>Logical of length 1, whether to use transport layer
+security (TLS) to secure connections between the client and workers.
+Only supported for <code>mirai</code> version 0.9.0.9013 and above.
+Uses an automatically generated one-time self-signed certificate by
+default. To guard against man-in-the-middle attacks, consider
+generating a one-time certificate yourself, requesting a trusted
+certificate authority (CA) to sign it, and then supplying the
+keys to the <code>tls_config</code> argument. Enabling TLS requires <code>mirai</code>
+version 0.9.0.9013 or above, and a <code>NULL</code> value for <code>tls_enable</code>
+will enable TLS if and only if the <code>mirai</code> version is sufficient.</p></dd>
+
+
+<dt>tls_config</dt>
+<dd><p>Optional and only relevant if TLS is enabled
+(see the <code>tls_config</code> argument). The <code>tls_config</code> argument
+controls how transport layer security (TLS) is configured,
+and it is directly forwarded to the <code>tls</code> argument of
+<code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code>. If <code>tls_config</code> is <code>NULL</code>,
+then <code>mirai</code> will generate a one-time
+self-signed certificate. This default approach is protects against
+the simplest attempts at packet sniffing, but it is still vulnerable
+to man-in-the-middle attacks. When greater security is required,
+consider generating a PEM-encoded certificate and associated
+private key yourself and using a trusted certificate authority (CA)
+to sign the former. The documentation of <code>mirai</code>, including the
+<code>tls</code> arguments of the <code><a href="https://shikokuchuo.net/mirai/reference/daemons.html" class="external-link">mirai::daemons()</a></code> and <code><a href="https://shikokuchuo.net/mirai/reference/server.html" class="external-link">mirai::server()</a></code>
+functions, has more details.</p></dd>
 
 
 <dt>seconds_interval</dt>
