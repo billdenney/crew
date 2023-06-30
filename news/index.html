@@ -69,6 +69,7 @@
 <li>Add a <code>map()</code> method to the controller class for functional programming (<a href="https://github.com/wlandau/crew/issues/93" class="external-link">#93</a>).</li>
 <li>Fix bug in <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code> which launched too many workers when <code>active - demand</code> was less than 0.</li>
 <li>Add guardrails to make sure the controller is started for methods that require this. Part of this involved improving the error messages.</li>
+<li>Retry <code>daemons()</code> in <code>daemons_info()</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="crew-030">crew 0.3.0<small>2023-06-26</small><a class="anchor" aria-label="anchor" href="#crew-030"></a></h2>
