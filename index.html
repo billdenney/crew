@@ -249,6 +249,7 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">results</span><span class="op">$</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 14 18</span></span></code></pre></div>
+<p>If at least one task in <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-map" class="external-link"><code>map()</code></a> throws an error, the default behavior is to error out in the main session and not return the results, If that happens, the results are available in the <code>controller$error</code>. To return the results instead of setting <code>controller$error</code>, regardless of error status, set <code>error = "warn"</code> or <code>"silent"</code> in <a href="https://wlandau.github.io/crew/reference/crew_class_controller.html#method-crew_class_controller-map" class="external-link"><code>map()</code></a>. To conserve memory, consider setting <code>controller$error &lt;- NULL</code> when you are done troubleshooting.</p>
 </div>
 <div class="section level1">
 <h1 id="summaries">Summaries<a class="anchor" aria-label="anchor" href="#summaries"></a>
