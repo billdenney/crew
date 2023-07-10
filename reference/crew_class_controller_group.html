@@ -545,7 +545,11 @@ a text string version of the R command in the output.</p></dd>
 <dt><code>error</code></dt>
 <dd><p>Character vector of length 1, choice of action if
 a task has an error. Possible values:</p><ul><li><p><code>"stop"</code>: throw an error in the main R session instead of returning
-a value.</p></li>
+a value. In case of an error, the results from the last errored
+<code>map()</code> are in the <code>error</code> field
+of the controller, e.g. <code>controller_object$error</code>. To reduce
+memory consumption, set <code>controller_object$error &lt;- NULL</code> after
+you are finished troubleshooting.</p></li>
 <li><p><code>"warn"</code>: throw a warning. This allows the return value with
 all the error messages and tracebacks to be generated.</p></li>
 <li><p><code>"silent"</code>: do nothing special.</p></li>
@@ -568,8 +572,7 @@ first controller in the list.</p></dd>
 <div class="section">
 <h4 id="details-3">Details<a class="anchor" aria-label="anchor" href="#details-3"></a></h4>
 <p>The idea comes from functional programming: for example,
-the <code>map()</code> function from the <code>purrr</code> package.
-The controller must be started and empty before calling <code>map()</code>.</p>
+the <code>map()</code> function from the <code>purrr</code> package.</p>
 </div>
 
 <div class="section">
