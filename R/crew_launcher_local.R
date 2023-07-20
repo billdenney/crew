@@ -91,19 +91,22 @@ crew_class_launcher_local <- R6::R6Class(
     launch_worker = function(call, name, launcher, worker, instance) {
       bin <- if_any(tolower(Sys.info()[["sysname"]]) == "windows", "R.exe", "R")
       path <- file.path(R.home("bin"), bin)
-      processx::process$new(
+      marker <- ps::ps_mark_tree()
+      system2(
         command = path,
-        args = c("-e", call),
-        cleanup = TRUE
+        args = c("-e", shQuote(call)),
+        wait = FALSE,
+        stdout = FALSE,
+        stderr = FALSE
       )
+      marker
     },
     #' @description Terminate a local process worker.
     #' @return `NULL` (invisibly).
     #' @param handle A process handle object previously
     #'   returned by `launch_worker()`.
     terminate_worker = function(handle) {
-      handle$kill()
-      invisible()
+      ps::ps_kill_tree(marker = handle)
     }
   )
 )
