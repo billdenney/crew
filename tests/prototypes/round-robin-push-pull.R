@@ -4,7 +4,7 @@
 
 # Worker 1 and worker 2:
 library(nanonext)
-dialer <- socket("rep", dial = "tcp://127.0.0.1:5007")
+dialer <- socket("pull", dial = "tcp://127.0.0.1:5007")
 while (TRUE) {
   raw <- recv(dialer, mode = "raw", block = TRUE)
   seconds <- as.integer(rawToChar(raw))
@@ -14,7 +14,7 @@ while (TRUE) {
 
 # Client:
 library(nanonext)
-listener <- socket("req", listen = "tcp://127.0.0.1:5007")
+listener <- socket("push", listen = "tcp://127.0.0.1:5007")
 # Send tasks manually to avoid error code 8 (try again)
 send(listener, data = charToRaw("3"), mode = "raw")
 send(listener, data = charToRaw("10"), mode = "raw")
@@ -22,3 +22,4 @@ send(listener, data = charToRaw("3"), mode = "raw")
 send(listener, data = charToRaw("10"), mode = "raw")
 send(listener, data = charToRaw("3"), mode = "raw")
 send(listener, data = charToRaw("10"), mode = "raw")
+
