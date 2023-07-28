@@ -300,7 +300,8 @@ workers take a long time to launch.</p>
 <span>  <span class="va">reset_globals</span> <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">reset_packages</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">reset_options</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">garbage_collection</span> <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="va">garbage_collection</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">launch_max</span> <span class="op">=</span> <span class="fl">5L</span></span>
 <span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">client</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_client.html">crew_client</a></span><span class="op">(</span></span>
 <span>    name <span class="op">=</span> <span class="va">name</span>,</span>
@@ -324,7 +325,8 @@ workers take a long time to launch.</p>
 <span>    reset_globals <span class="op">=</span> <span class="va">reset_globals</span>,</span>
 <span>    reset_packages <span class="op">=</span> <span class="va">reset_packages</span>,</span>
 <span>    reset_options <span class="op">=</span> <span class="va">reset_options</span>,</span>
-<span>    garbage_collection <span class="op">=</span> <span class="va">garbage_collection</span></span>
+<span>    garbage_collection <span class="op">=</span> <span class="va">garbage_collection</span>,</span>
+<span>    launch_max <span class="op">=</span> <span class="va">launch_max</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">controller</span> <span class="op">&lt;-</span> <span class="fu">crew</span><span class="fu">::</span><span class="fu"><a href="../reference/crew_controller.html">crew_controller</a></span><span class="op">(</span>client <span class="op">=</span> <span class="va">client</span>, launcher <span class="op">=</span> <span class="va">launcher</span><span class="op">)</span></span>
 <span>  <span class="va">controller</span><span class="op">$</span><span class="fu">validate</span><span class="op">(</span><span class="op">)</span></span>

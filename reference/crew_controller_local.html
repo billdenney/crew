@@ -89,7 +89,8 @@ launch workers on local processes.</p>
 <span>  reset_globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  reset_packages <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  reset_options <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  garbage_collection <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  garbage_collection <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  launch_max <span class="op">=</span> <span class="fl">5L</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -226,6 +227,18 @@ because packages sometimes rely on options they set at loading time.</p></dd>
 <dt>garbage_collection</dt>
 <dd><p><code>TRUE</code> to run garbage collection between
 tasks, <code>FALSE</code> to skip.</p></dd>
+
+
+<dt>launch_max</dt>
+<dd><p>Positive integer of length 1, maximum allowed
+consecutive launch attempts which do not complete any tasks.
+Enforced on a worker-by-worker basis.
+The futile launch count resets to back 0
+for each worker that completes a task.
+It is recommended to set <code>launch_max</code> above 0
+because sometimes workers are unproductive under perfectly ordinary
+circumstances. But <code>launch_max</code> should still be small enough
+to detect errors in the underlying platform.</p></dd>
 
 </dl></div>
     <div id="see-also">
